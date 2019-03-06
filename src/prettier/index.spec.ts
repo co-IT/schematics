@@ -44,4 +44,8 @@ describe('@co-it/schematics:prettier', () => {
       );
     });
   });
+
+  describe('When no prettier configuration is present', () => {
+    it('should add an opinionated prettier configuration ', () => {});
+  });
 });
