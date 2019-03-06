@@ -15,26 +15,19 @@ describe('@co-it/schematics:prettier', () => {
     beforeEach(() => {
       runner = new SchematicTestRunner('prettier', collectionPath);
       actualTree = new UnitTestTree(new VirtualTree());
+
+      const packageBeforeInstall = { devDependencies: {} };
+      actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
     });
 
     it('should add prettier to the devDependencies', () => {
-      const packageBeforeInstall = { devDependencies: {} };
-      actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
-
       const tree = runner.runSchematic('prettier', {}, actualTree);
-
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
 
       expect(packageAfterInstall.devDependencies).toHaveProperty('prettier');
     });
-
     it('should add task for node package installer', () => {
-      const packageBeforeInstall = { devDependencies: {} };
-      actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
-
       runner.runSchematic('prettier', {}, actualTree);
-
-      console.log(runner.tasks);
 
       expect(runner.tasks).toContainEqual(
         expect.objectContaining({ name: 'node-package' })
