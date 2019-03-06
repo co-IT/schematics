@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "tsconfig",
+    "outDir": "./dist/src/",
     "lib": ["es2018", "dom"],
     "strict": true,
     "declaration": true,
