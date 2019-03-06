@@ -27,5 +27,18 @@ describe('@co-it/schematics:prettier', () => {
 
       expect(packageAfterInstall.devDependencies).toHaveProperty('prettier');
     });
+
+    it('should add task for node package installer', () => {
+      const packageBeforeInstall = { devDependencies: {} };
+      actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
+
+      runner.runSchematic('prettier', {}, actualTree);
+
+      console.log(runner.tasks);
+
+      expect(runner.tasks).toContainEqual(
+        expect.objectContaining({ name: 'node-package' })
+      );
+    });
   });
 });
