@@ -12,6 +12,9 @@ export default function(): Rule {
     const nodePackageDefinitions = JSON.parse(buffer.toString('utf-8'));
     nodePackageDefinitions.devDependencies.prettier = '@latest';
 
+    nodePackageDefinitions.scripts.format =
+      'prettier --write "**/*.{js,json,css,scss,md,ts,html}\'';
+
     tree.overwrite('package.json', JSON.stringify(nodePackageDefinitions));
 
     _context.addTask(new NodePackageInstallTask());

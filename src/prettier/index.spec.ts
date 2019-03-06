@@ -16,7 +16,7 @@ describe('@co-it/schematics:prettier', () => {
       runner = new SchematicTestRunner('prettier', collectionPath);
       actualTree = new UnitTestTree(new VirtualTree());
 
-      const packageBeforeInstall = { devDependencies: {} };
+      const packageBeforeInstall = { scripts: {}, devDependencies: {} };
       actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
     });
 
@@ -26,6 +26,16 @@ describe('@co-it/schematics:prettier', () => {
 
       expect(packageAfterInstall.devDependencies).toHaveProperty('prettier');
     });
+
+    it('should register a script executing prettier', () => {
+      const tree = runner.runSchematic('prettier', {}, actualTree);
+      const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
+
+      expect(packageAfterInstall.scripts.format).toBe(
+        'prettier --write "**/*.{js,json,css,scss,md,ts,html}\''
+      );
+    });
+
     it('should add task for node package installer', () => {
       runner.runSchematic('prettier', {}, actualTree);
 
