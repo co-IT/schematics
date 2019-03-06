@@ -5,7 +5,7 @@
   "scripts": {
     "build": "ts-node -P ./build/tsconfig.json ./build",
     "tsc:prod": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine src/**/*_spec.js"
+    "test": "jest"
   },
   "keywords": [
     "schematics"
@@ -16,14 +16,15 @@
   "dependencies": {
     "@angular-devkit/core": "^7.3.4",
     "@angular-devkit/schematics": "^7.3.4",
-    "@types/jasmine": "^3.0.0",
     "@types/node": "^8.0.31",
-    "jasmine": "^3.0.0",
     "typescript": "~3.2.2"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.9",
     "fs-extra": "^7.0.1",
     "globby": "^9.1.0",
+    "jest": "^24.1.0",
+    "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2"
   }
 }

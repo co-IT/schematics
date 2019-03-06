@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "es6",
-    "types": ["jasmine", "node"]
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src/**/*"],
   "exclude": ["src/*/files/**/*"]
