@@ -10,10 +10,10 @@ export default function(): Rule {
     }
 
     const packageJson = new PackageJson(buffer);
-    packageJson.setDevDependency('prettier', '@latest');
+    packageJson.setDevDependency('prettier', 'latest');
     packageJson.setScript(
       'format',
-      'prettier --write "**/*.{js,json,css,scss,md,ts,html}\''
+      'prettier --write "**/*.{js,json,css,scss,md,ts,html}"'
     );
 
     tree.overwrite('package.json', packageJson.stringify());
