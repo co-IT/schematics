@@ -16,9 +16,10 @@ export default function(parameters: TsConfigSchema): Rule {
 
     const tsconfig = JSON.parse(tree.read('tsconfig.json')!.toString('utf-8'));
 
-    tsconfig.compilerOptions = tsconfig.compilerOptions || {};
-    tsconfig.compilerOptions.strict = parameters.strict;
-    tsconfig.compilerOptions.noUnusedParameters = parameters.noUnusedParameters;
+    tsconfig.compilerOptions = {
+      ...(tsconfig.compilerOptions || {}),
+      ...parameters
+    };
 
     tree.overwrite('tsconfig.json', JSON.stringify(tsconfig));
 
