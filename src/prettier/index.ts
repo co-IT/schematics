@@ -4,13 +4,8 @@ import { PackageJson } from '../lib';
 
 export default function(): Rule {
   return (tree: Tree, _context: SchematicContext) => {
-    const buffer = tree.read('package.json');
+    const packageJson = new PackageJson(tree.read('package.json'));
 
-    if (!buffer) {
-      return tree;
-    }
-
-    const packageJson = new PackageJson(buffer);
     packageJson.setDevDependency('prettier', 'latest');
     packageJson.setScript(
       'format',
