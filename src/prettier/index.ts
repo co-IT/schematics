@@ -11,7 +11,12 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { PackageJson } from '../lib';
 
 export default function(options: any): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
+  return (tree: Tree, _context: SchematicContext) =>
+    chain([registerPrettier()])(tree, _context);
+}
+
+function registerPrettier(): Rule {
+  return (tree: Tree, context: SchematicContext) => {
     const packageJson = new PackageJson(tree.read('package.json'));
 
     packageJson.setDevDependency('prettier', 'latest');
@@ -22,9 +27,8 @@ export default function(options: any): Rule {
 
     tree.overwrite('package.json', packageJson.stringify());
 
-    _context.addTask(new NodePackageInstallTask());
-    const templateSource = apply(url('./templates'), []);
+    context.addTask(new NodePackageInstallTask());
 
-    return chain([mergeWith(templateSource)])(tree, _context);
+    return mergeWith(apply(url('./templates'), []));
   };
 }
