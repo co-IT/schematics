@@ -40,5 +40,13 @@ describe('PackageJson', () => {
 
       expect(packageJson.stringify()).toContain('"test": "jest"');
     });
+
+    it('should allow setting devDependencies', () => {
+      const buffer = Buffer.from(JSON.stringify({}));
+      const packageJson = new PackageJson(buffer);
+      packageJson.setDevDependency('prettier', '~1.16.0');
+
+      expect(packageJson.stringify()).toContain('"prettier": "~1.16.0"');
+    });
   });
 });
