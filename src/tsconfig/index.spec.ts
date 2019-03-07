@@ -25,7 +25,7 @@ describe('@co-it/schematics:tsconfig', () => {
       const project = new UnitTestTree(new EmptyTree());
       project.create('tsconfig.json', JSON.stringify({}));
       const runner = new SchematicTestRunner('schematics', collectionPath);
-      const tree = runner.runSchematic('tsconfig', {}, project);
+      const tree = runner.runSchematic('tsconfig', { strict: true }, project);
       const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
 
       expect(tsconfig.compilerOptions.strict).toBe(true);
