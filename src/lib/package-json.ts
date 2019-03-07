@@ -27,7 +27,7 @@ export class PackageJson {
     this._config.scripts[name] = command;
   }
   stringify(): string {
-    return JSON.stringify(this._config);
+    return JSON.stringify(this._config, null, 2);
   }
 
   private _hasNoContent(

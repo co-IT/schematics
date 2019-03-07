@@ -31,4 +31,14 @@ describe('PackageJson', () => {
       expect(packageJson.stringify()).toContain('"devDependencies":');
     });
   });
+
+  describe('When package.json is valid', () => {
+    it('should allow setting scripts', () => {
+      const buffer = Buffer.from(JSON.stringify({}));
+      const packageJson = new PackageJson(buffer);
+      packageJson.setScript('test', 'jest');
+
+      expect(packageJson.stringify()).toContain('"test": "jest"');
+    });
+  });
 });
