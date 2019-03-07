@@ -9,4 +9,26 @@ describe('PackageJson', () => {
       );
     });
   });
+
+  describe('When package.json does not contain an entry scripts', () => {
+    it('should create the entry', () => {
+      const buffer = Buffer.from(JSON.stringify({ devDependencies: {} }));
+      const packageJson = new PackageJson(buffer);
+
+      packageJson.setScript('test', 'jest');
+
+      expect(packageJson.stringify()).toContain('"scripts":');
+    });
+  });
+
+  describe('When package.json does not contain an entry devDependencies', () => {
+    it('should create the entry', () => {
+      const buffer = Buffer.from(JSON.stringify({ scripts: {} }));
+      const packageJson = new PackageJson(buffer);
+
+      packageJson.setDevDependency('prettier', '~1.16.0');
+
+      expect(packageJson.stringify()).toContain('"devDependencies":');
+    });
+  });
 });

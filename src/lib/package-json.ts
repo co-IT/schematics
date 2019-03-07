@@ -2,7 +2,10 @@ import { SchematicsException } from '@angular-devkit/schematics';
 import { PackageJsonSchema } from './package-json-schema';
 
 export class PackageJson {
-  private _config: PackageJsonSchema;
+  private _config: PackageJsonSchema = {
+    devDependencies: {},
+    scripts: {}
+  };
 
   constructor(buffer: Buffer | undefined | null) {
     if (this._hasNoContent(buffer)) {
@@ -11,7 +14,10 @@ export class PackageJson {
       );
     }
 
-    this._config = JSON.parse(buffer.toString('utf-8'));
+    this._config = {
+      ...this._config,
+      ...JSON.parse(buffer.toString('utf-8'))
+    };
   }
 
   setDevDependency(name: string, version: string): void {
