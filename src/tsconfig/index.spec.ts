@@ -13,7 +13,8 @@ describe('@co-it/schematics:tsconfig', () => {
   const parameterDefaults: TsConfigSchema = {
     strict: schema.properties.strict.default,
     noUnusedLocals: schema.properties.noUnusedLocals.default,
-    noUnusedParameters: schema.properties.noUnusedParameters.default
+    noUnusedParameters: schema.properties.noUnusedParameters.default,
+    noImplicitAny: schema.properties.noImplicitAny.default
   };
 
   describe('When tsconfig.json is not present', () => {
@@ -57,6 +58,16 @@ describe('@co-it/schematics:tsconfig', () => {
       const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
 
       expect(tsconfig.compilerOptions.noUnusedLocals).toBe(true);
+    });
+
+    it('should should set "noImplicitAny: true"', () => {
+      const project = new UnitTestTree(new EmptyTree());
+      project.create('tsconfig.json', JSON.stringify({}));
+      const runner = new SchematicTestRunner('schematics', collectionPath);
+      const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
+      const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+
+      expect(tsconfig.compilerOptions.noImplicitAny).toBe(true);
     });
   });
 });
