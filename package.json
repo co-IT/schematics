@@ -1,7 +1,7 @@
 {
-  "name": "schematics",
+  "name": "@co-it/schematics",
   "version": "0.0.0",
-  "description": "A blank schematics",
+  "description": "Automated & opinionated setup for large scaled Angular applications",
   "scripts": {
     "build": "ts-node -P ./build/tsconfig.json ./build",
     "tsc:prod": "tsc -p tsconfig.json",
