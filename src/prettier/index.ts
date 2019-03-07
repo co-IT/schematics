@@ -11,8 +11,7 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { PackageJson } from '../lib';
 
 export default function(): Rule {
-  return (tree: Tree, _context: SchematicContext) =>
-    chain([registerPrettier()])(tree, _context);
+  return chain([registerPrettier()]);
 }
 
 function registerPrettier(): Rule {
