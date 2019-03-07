@@ -8,6 +8,10 @@
     "commitlint": {
       "description": "Install & configure commitlint",
       "factory": "./commitlint/index"
+    "tsconfig": {
+      "description": "refine tsconfig.json making it more strict",
+      "factory": "./tsconfig/index",
+      "schema": "./tsconfig/schema.json"
     }
   }
 }

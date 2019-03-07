@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "properties": {
+    "strict-mode": {
+      "type": "boolean",
+      "description": "Enable typescript's strict mode",
+      "default": true,
+      "x-prompt": "Enable strict mode?"
+    },
+    "no-unused-parameters": {
+      "type": "boolean",
+      "description": "Detect unused parameters",
+      "default": true,
+      "x-prompt": "Enable check for unused parameters?"
+    },
+    "no-unused-locals": {
+      "type": "boolean",
+      "description": "Detect unused locals",
+      "default": true,
+      "x-prompt": "Enable check for unused locals?"
+    }
+  }
+}
