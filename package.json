@@ -5,7 +5,8 @@
   "scripts": {
     "build": "ts-node -P ./build/tsconfig.json ./build",
     "tsc:prod": "tsc -p tsconfig.json",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "schematics"
