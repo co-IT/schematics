@@ -1,7 +1,7 @@
 import { Tree, VirtualTree } from '@angular-devkit/schematics';
 import {
   SchematicTestRunner,
-  UnitTestTree
+  UnitTestTree,
 } from '@angular-devkit/schematics/testing';
 import * as path from 'path';
 
@@ -32,7 +32,7 @@ describe('@co-it/schematics:prettier', () => {
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
 
       expect(packageAfterInstall.scripts.format).toBe(
-        'prettier --write "**/*.{js,json,css,scss,md,ts,html}\''
+        'prettier --write "**/*.{js,json,css,scss,md,ts,html}"'
       );
     });
 
