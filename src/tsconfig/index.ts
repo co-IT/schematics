@@ -18,6 +18,7 @@ export default function(parameters: TsConfigSchema): Rule {
 
     tsconfig.compilerOptions = tsconfig.compilerOptions || {};
     tsconfig.compilerOptions.strict = parameters.strict;
+    tsconfig.compilerOptions.noUnusedParameters = parameters.noUnusedParameters;
 
     tree.overwrite('tsconfig.json', JSON.stringify(tsconfig));
 
