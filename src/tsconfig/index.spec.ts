@@ -48,5 +48,15 @@ describe('@co-it/schematics:tsconfig', () => {
 
       expect(tsconfig.compilerOptions.noUnusedParameters).toBe(true);
     });
+
+    it('should should set "noUnusedParameters: true"', () => {
+      const project = new UnitTestTree(new EmptyTree());
+      project.create('tsconfig.json', JSON.stringify({}));
+      const runner = new SchematicTestRunner('schematics', collectionPath);
+      const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
+      const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+
+      expect(tsconfig.compilerOptions.noUnusedLocals).toBe(true);
+    });
   });
 });
