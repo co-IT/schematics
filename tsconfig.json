@@ -15,7 +15,8 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "es6",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": ["src/*/files/**/*"]
