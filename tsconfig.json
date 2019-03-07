@@ -4,6 +4,7 @@
     "outDir": "./dist/src/",
     "lib": ["es2018", "dom"],
     "strict": true,
+    "noUnusedParameters": true,
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",

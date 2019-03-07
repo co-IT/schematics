@@ -10,7 +10,7 @@ import {
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { PackageJson } from '../lib';
 
-export default function(options: any): Rule {
+export default function(): Rule {
   return (tree: Tree, _context: SchematicContext) =>
     chain([registerPrettier()])(tree, _context);
 }
