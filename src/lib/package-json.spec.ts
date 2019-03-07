@@ -12,8 +12,7 @@ describe('PackageJson', () => {
 
   describe('When package.json does not contain an entry scripts', () => {
     it('should create the entry', () => {
-      const buffer = Buffer.from(JSON.stringify({ devDependencies: {} }));
-      const packageJson = new PackageJson(buffer);
+      const packageJson = new PackageJson(toBuffer({ devDependencies: {} }));
 
       packageJson.setScript('test', 'jest');
 
@@ -23,8 +22,7 @@ describe('PackageJson', () => {
 
   describe('When package.json does not contain an entry devDependencies', () => {
     it('should create the entry', () => {
-      const buffer = Buffer.from(JSON.stringify({ scripts: {} }));
-      const packageJson = new PackageJson(buffer);
+      const packageJson = new PackageJson(toBuffer({ scripts: {} }));
 
       packageJson.setDevDependency('prettier', '~1.16.0');
 
@@ -34,19 +32,21 @@ describe('PackageJson', () => {
 
   describe('When package.json is valid', () => {
     it('should allow setting scripts', () => {
-      const buffer = Buffer.from(JSON.stringify({}));
-      const packageJson = new PackageJson(buffer);
+      const packageJson = new PackageJson(toBuffer({}));
       packageJson.setScript('test', 'jest');
 
       expect(packageJson.stringify()).toContain('"test": "jest"');
     });
 
     it('should allow setting devDependencies', () => {
-      const buffer = Buffer.from(JSON.stringify({}));
-      const packageJson = new PackageJson(buffer);
+      const packageJson = new PackageJson(toBuffer({}));
       packageJson.setDevDependency('prettier', '~1.16.0');
 
       expect(packageJson.stringify()).toContain('"prettier": "~1.16.0"');
     });
   });
 });
+
+function toBuffer(value: object): Buffer {
+  return Buffer.from(JSON.stringify(value));
+}
