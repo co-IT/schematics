@@ -4,21 +4,37 @@ import {
   SchematicTestRunner,
   UnitTestTree
 } from '@angular-devkit/schematics/testing';
+// tslint:disable-next-line: import-name
+import fetch from 'node-fetch';
 import { join } from 'path';
 import { TsConfigSchema } from './tsconfig.schema.js';
 import * as schema from './tsconfig.schema.json';
 
-import Ajv = require('ajv');
+import ajv = require('ajv');
 
 const collectionPath = join(__dirname, '../collection.json');
 
 describe('@co-it/schematics:tsconfig', () => {
+  let schemaValidator: ajv.Ajv;
+  let tsconfigSchema: any;
+
   const parameterDefaults: TsConfigSchema = {
     strict: schema.properties.strict.default,
     noUnusedLocals: schema.properties.noUnusedLocals.default,
     noUnusedParameters: schema.properties.noUnusedParameters.default,
     noImplicitAny: schema.properties.noImplicitAny.default
   };
+
+  beforeAll(async () => {
+    schemaValidator = new ajv();
+
+    return fetch('http://json.schemastore.org/tsconfig')
+      .then(response => response.json())
+      .then(schema => {
+        delete schema.$schema;
+        tsconfigSchema = schema;
+      });
+  });
 
   describe('When tsconfig.json is not present', () => {
     it('should fail', () => {
@@ -74,6 +90,14 @@ describe('@co-it/schematics:tsconfig', () => {
       tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
 
       expect(tsconfig.compilerOptions.noImplicitAny).toBe(true);
+    });
+
+    afterEach(done => {
+      if (schemaValidator.validate(tsconfigSchema, tsconfig)) {
+        done();
+      } else {
+        done.fail(schemaValidator.errors!.join('\n'));
+      }
     });
   });
 });
