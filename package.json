@@ -10,7 +10,12 @@
     "lint": "tslint --project ./tsconfig.json --format stylish"
   },
   "keywords": [
-    "schematics"
+    "schematics",
+    "angular",
+    "typescript",
+    "prettier",
+    "jest",
+    "husky"
   ],
   "author": "",
   "license": "MIT",
