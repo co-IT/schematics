@@ -38,6 +38,15 @@ describe('PackageJson', () => {
       expect(packageJson.stringify()).toContain('"test": "jest"');
     });
 
+    it('should place a script in the scripts section', () => {
+      const packageJson = new PackageJson(toBuffer({}));
+      packageJson.setScript('test', 'jest');
+
+      expect(JSON.parse(packageJson.stringify())).toMatchObject({
+        scripts: { test: 'jest' }
+      });
+    });
+
     it('should allow setting devDependencies', () => {
       const packageJson = new PackageJson(toBuffer({}));
       packageJson.setDevDependency('prettier', '~1.16.0');
