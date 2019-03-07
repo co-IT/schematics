@@ -1,8 +1,19 @@
-import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import {
+  Rule,
+  SchematicContext,
+  Tree,
+  apply,
+  url,
+  chain,
+  mergeWith,
+  move,
+  template,
+  branchAndMerge,
+} from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { PackageJson } from '../lib';
 
-export default function(): Rule {
+export default function(options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const packageJson = new PackageJson(tree.read('package.json'));
 
@@ -15,7 +26,8 @@ export default function(): Rule {
     tree.overwrite('package.json', packageJson.stringify());
 
     _context.addTask(new NodePackageInstallTask());
+    const templateSource = apply(url('./templates'), []);
 
-    return tree;
+    return chain([mergeWith(templateSource)])(tree, _context);
   };
 }
