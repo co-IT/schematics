@@ -1,14 +1,11 @@
 import {
+  apply,
+  chain,
+  mergeWith,
   Rule,
   SchematicContext,
   Tree,
-  apply,
-  url,
-  chain,
-  mergeWith,
-  move,
-  template,
-  branchAndMerge,
+  url
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { PackageJson } from '../lib';
