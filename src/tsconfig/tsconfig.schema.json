@@ -18,6 +18,12 @@
       "description": "Detect unused locals",
       "default": true,
       "x-prompt": "Enable check for unused locals?"
+    },
+    "noImplicitAny": {
+      "type": "boolean",
+      "description": "Detect usage of implicit any",
+      "default": true,
+      "x-prompt": "Enable check implicit any?"
     }
   }
 }
