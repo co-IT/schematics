@@ -1,4 +1,5 @@
 import { EmptyTree, SchematicsException } from '@angular-devkit/schematics';
+import { Tree } from '@angular-devkit/schematics/src/tree/interface';
 import {
   SchematicTestRunner,
   UnitTestTree
@@ -6,6 +7,8 @@ import {
 import { join } from 'path';
 import { TsConfigSchema } from './tsconfig.schema.js';
 import * as schema from './tsconfig.schema.json';
+
+import Ajv = require('ajv');
 
 const collectionPath = join(__dirname, '../collection.json');
 
@@ -30,42 +33,45 @@ describe('@co-it/schematics:tsconfig', () => {
   });
 
   describe('When tsconfig.json is present', () => {
-    it('should should set "strict: true"', () => {
-      const project = new UnitTestTree(new EmptyTree());
+    let project: Tree;
+    let runner: SchematicTestRunner;
+    let tsconfig: any;
+
+    beforeEach(() => {
+      project = new UnitTestTree(new EmptyTree());
       project.create('tsconfig.json', JSON.stringify({}));
-      const runner = new SchematicTestRunner('schematics', collectionPath);
+
+      runner = new SchematicTestRunner('schematics', collectionPath);
+    });
+
+    it('should should set "strict: true"', () => {
       const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
-      const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+
+      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
 
       expect(tsconfig.compilerOptions.strict).toBe(true);
     });
 
     it('should should set "noUnusedParameters: true"', () => {
-      const project = new UnitTestTree(new EmptyTree());
-      project.create('tsconfig.json', JSON.stringify({}));
-      const runner = new SchematicTestRunner('schematics', collectionPath);
       const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
-      const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+
+      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
 
       expect(tsconfig.compilerOptions.noUnusedParameters).toBe(true);
     });
 
     it('should should set "noUnusedParameters: true"', () => {
-      const project = new UnitTestTree(new EmptyTree());
-      project.create('tsconfig.json', JSON.stringify({}));
-      const runner = new SchematicTestRunner('schematics', collectionPath);
       const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
-      const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+
+      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
 
       expect(tsconfig.compilerOptions.noUnusedLocals).toBe(true);
     });
 
     it('should should set "noImplicitAny: true"', () => {
-      const project = new UnitTestTree(new EmptyTree());
-      project.create('tsconfig.json', JSON.stringify({}));
-      const runner = new SchematicTestRunner('schematics', collectionPath);
       const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
-      const tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+
+      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
 
       expect(tsconfig.compilerOptions.noImplicitAny).toBe(true);
     });
