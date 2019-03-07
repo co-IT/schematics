@@ -21,7 +21,7 @@ export default function(parameters: TsConfigSchema): Rule {
       ...parameters
     };
 
-    tree.overwrite('tsconfig.json', JSON.stringify(tsconfig));
+    tree.overwrite('tsconfig.json', JSON.stringify(tsconfig, null, 2));
 
     return tree;
   };
