@@ -1,7 +1,6 @@
 import { copy as cp } from 'fs-extra';
+import globby from 'globby';
 import { resolve } from 'path';
-
-const globby = require('globby');
 
 export function copy(tasks: [string, string][]) {
   return Promise.all(tasks.map(task => copySingle(task[0], task[1])));
