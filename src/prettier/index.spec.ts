@@ -1,4 +1,4 @@
-import { Tree, VirtualTree } from '@angular-devkit/schematics';
+import { Tree } from '@angular-devkit/schematics';
 import {
   SchematicTestRunner,
   UnitTestTree
@@ -14,7 +14,7 @@ describe('@co-it/schematics:prettier', () => {
 
     beforeEach(() => {
       runner = new SchematicTestRunner('prettier', collectionPath);
-      actualTree = new UnitTestTree(new VirtualTree());
+      actualTree = new UnitTestTree(Tree.empty());
 
       const packageBeforeInstall = { scripts: {}, devDependencies: {} };
       actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
