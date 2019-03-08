@@ -1,4 +1,4 @@
-import { Tree, VirtualTree } from '@angular-devkit/schematics';
+import { Tree } from '@angular-devkit/schematics';
 import {
   SchematicTestRunner,
   UnitTestTree
@@ -13,7 +13,7 @@ describe('@co-it/schematics:commitlint', () => {
 
   beforeEach(() => {
     runner = new SchematicTestRunner('commitlint', collectionPath);
-    treeBefore = new UnitTestTree(new VirtualTree());
+    treeBefore = new UnitTestTree(Tree.empty());
   });
 
   describe('When commitlint is not installed', () => {

@@ -1,4 +1,4 @@
-import { SchematicContext, VirtualTree } from '@angular-devkit/schematics';
+import { SchematicContext, Tree } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { installDependencies } from './install-dependencies';
@@ -9,7 +9,7 @@ describe('installDependencies', () => {
     let mockContext: Partial<SchematicContext>;
 
     beforeEach(() => {
-      tree = new UnitTestTree(new VirtualTree());
+      tree = new UnitTestTree(Tree.empty());
 
       const packageBeforeInstall = { scripts: {}, devDependencies: {} };
       tree.create('package.json', JSON.stringify(packageBeforeInstall));
