@@ -26,6 +26,7 @@
     "@angular-devkit/schematics": "^7.3.4"
   },
   "devDependencies": {
+    "@types/globby": "^8.0.0",
     "@types/jest": "^24.0.9",
     "@types/node": "^8.0.31",
     "@types/node-fetch": "^2.1.6",
