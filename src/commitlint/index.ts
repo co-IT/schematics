@@ -1,17 +1,14 @@
 import {
-  Rule,
-  SchematicContext,
-  Tree,
+  apply,
   chain,
   mergeWith,
-  apply,
-  url,
-  move
+  Rule,
+  Tree,
+  url
 } from '@angular-devkit/schematics';
-import { PackageJson, installDependencies } from '../lib';
-import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
+import { installDependencies, PackageJson } from '../lib';
 
-export default function commitlint(_options: any): Rule {
+export default function commitlint(): Rule {
   return chain([
     installDependencies({
       devDependencies: [
