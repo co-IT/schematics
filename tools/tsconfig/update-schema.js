@@ -16,5 +16,5 @@ function downloadSchema(url) {
 }
 
 downloadSchema('http://json.schemastore.org/tsconfig')
-  .then(schema => write('./tools/tsconfig/schema.json', schema))
+  .then(schema => write('./src/tsconfig/test/schema.json', schema))
   .catch(err => console.log(err));
