@@ -30,6 +30,41 @@ describe('PackageJson', () => {
     });
   });
 
+  describe('When package.json does not contain an entry husky', () => {
+    it('should create the entry', () => {
+      const packageJson = new PackageJson(toBuffer({}));
+
+      packageJson.setHuskyHook('commit-msg', 'commitlint -E HUSKY_GIT_PARAMS');
+
+      expect(packageJson.stringify()).toContain('"husky":');
+    });
+
+    it('should allow setting husky hook', () => {
+      const packageJson = new PackageJson(toBuffer({}));
+
+      packageJson.setHuskyHook('commit-msg', 'commitlint -E HUSKY_GIT_PARAMS');
+
+      expect(JSON.parse(packageJson.stringify()).husky.hooks).toEqual({
+        'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS'
+      });
+    });
+  });
+
+  describe('When package.json contains an entry husky', () => {
+    it('should allow adding an additional husky hook', () => {
+      const packageJson = new PackageJson(
+        toBuffer({ husky: { hooks: { 'existing-hook': 'with-command' } } })
+      );
+
+      packageJson.setHuskyHook('commit-msg', 'commitlint -E HUSKY_GIT_PARAMS');
+
+      expect(JSON.parse(packageJson.stringify()).husky.hooks).toEqual({
+        'existing-hook': 'with-command',
+        'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS'
+      });
+    });
+  });
+
   describe('When package.json is valid', () => {
     it('should allow setting scripts', () => {
       const packageJson = new PackageJson(toBuffer({}));
@@ -52,6 +87,15 @@ describe('PackageJson', () => {
       packageJson.setDevDependency('prettier', '~1.16.0');
 
       expect(packageJson.stringify()).toContain('"prettier": "~1.16.0"');
+    });
+
+    it('should allow setting husky hook', () => {
+      const packageJson = new PackageJson(toBuffer({}));
+      packageJson.setHuskyHook('commit-msg', 'commitlint -E HUSKY_GIT_PARAMS');
+
+      expect(JSON.parse(packageJson.stringify()).husky.hooks).toEqual({
+        'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS'
+      });
     });
   });
 });

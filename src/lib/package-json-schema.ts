@@ -5,4 +5,9 @@ export interface PackageJsonSchema {
   scripts: {
     [key: string]: string;
   };
+  husky?: {
+    hooks: {
+      [key: string]: string;
+    };
+  };
 }
