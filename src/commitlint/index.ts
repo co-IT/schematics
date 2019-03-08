@@ -8,26 +8,20 @@ import {
   url,
   move
 } from '@angular-devkit/schematics';
-import { PackageJson } from '../lib';
+import { PackageJson, installDependencies } from '../lib';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export default function commitlint(_options: any): Rule {
-  return chain([installCommitlintDependencies(), addCommitlintConfig()]);
-}
-
-function installCommitlintDependencies(): Rule {
-  return (tree: Tree, context: SchematicContext) => {
-    const packageJson = new PackageJson(tree.read('package.json'));
-
-    packageJson.setDevDependency('@commitlint/cli', 'latest');
-    packageJson.setDevDependency('@commitlint/config-conventional', 'latest');
-
-    tree.overwrite('package.json', packageJson.stringify());
-
-    context.addTask(new NodePackageInstallTask());
-
-    return tree;
-  };
+  return chain([
+    installDependencies({
+      devDependencies: [
+        '@commitlint/cli',
+        '@commitlint/config-conventional',
+        'husky'
+      ]
+    }),
+    addCommitlintConfig()
+  ]);
 }
 
 function addCommitlintConfig(): Rule {
