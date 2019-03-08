@@ -8,7 +8,7 @@ export function copy(tasks: [string, string][]) {
 }
 
 export function copySingle(from: string, dest: string) {
-  return globby(from).then((sources: string[]) =>
+  return globby(from, { dot: true }).then((sources: string[]) =>
     Promise.all(sources.map(source => cp(source, resolve(dest, source))))
   );
 }

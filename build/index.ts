@@ -8,7 +8,6 @@ clean('./dist')
       ['./package.json', './dist'],
       ['./src/collection.json', './dist'],
       ['./src/**/schema.json', './dist'],
-      ['./src/prettier/templates/.prettierrc', './dist'],
       ['./src/**/templates/**/*', './dist']
     ])
   )
