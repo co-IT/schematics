@@ -1,13 +1,7 @@
 import { Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
-import { PackageJson } from '../package-json';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-
-export interface InstallOptions {
-  /**
-   * Array containing package names to be installed as devDependencies
-   */
-  readonly devDependencies: string[];
-}
+import { PackageJson } from '../package-json';
+import { InstallOptions } from './install-options';
 
 export function installDependencies(options: InstallOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
