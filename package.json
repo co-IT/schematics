@@ -5,6 +5,7 @@
   "scripts": {
     "build": "ts-node -P ./build/tsconfig.json ./build",
     "tsc:prod": "tsc -p tsconfig.json",
+    "tsc:update-schema": "node ./tools/tsconfig/update-schema.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "tslint --project ./tsconfig.json --format stylish"
