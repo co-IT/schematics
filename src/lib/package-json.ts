@@ -26,6 +26,15 @@ export class PackageJson {
   setScript(name: string, command: string): void {
     this._config.scripts[name] = command;
   }
+  setHuskyHook(name: string, command: string): void {
+    if (!this._config.husky) {
+      this._config.husky = { hooks: {} };
+    }
+    if (!this._config.husky.hooks) {
+      this._config.husky.hooks = {};
+    }
+    this._config.husky.hooks[name] = command;
+  }
   stringify(): string {
     return JSON.stringify(this._config, null, 2);
   }
