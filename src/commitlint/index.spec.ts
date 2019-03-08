@@ -33,5 +33,17 @@ describe('@co-it/schematics:commitlint', () => {
         })
       );
     });
+
+    it('should add an opinionated commitlint configuration ', () => {
+      const treeAfter = runner.runSchematic('commitlint', {}, treeBefore);
+
+      expect(treeAfter.files).toContain('/commitlint.config.js');
+    });
+
+    it('should add an opinionated commitlint configuration ', () => {
+      const treeAfter = runner.runSchematic('commitlint', {}, treeBefore);
+
+      expect(treeAfter.files).toContain('/commitlint.config.js');
+    });
   });
 });
