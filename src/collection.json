@@ -4,6 +4,10 @@
     "prettier": {
       "description": "install & configure prettier automatically",
       "factory": "./prettier/index"
+    },
+    "commitlint": {
+      "description": "Install & configure commitlint",
+      "factory": "./commitlint/index"
     }
   }
 }
