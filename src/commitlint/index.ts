@@ -27,7 +27,7 @@ export default function commitlint(_options: any): Rule {
 
 function addCommitlintConfig(): Rule {
   return () => {
-    return chain([mergeWith(apply(url('./templates'), [move('')]))]);
+    return chain([mergeWith(apply(url('./templates'), []))]);
   };
 }
 
