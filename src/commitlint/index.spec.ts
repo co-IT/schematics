@@ -1,14 +1,37 @@
-import { Tree } from '@angular-devkit/schematics';
-import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+import { Tree, VirtualTree } from '@angular-devkit/schematics';
+import {
+  SchematicTestRunner,
+  UnitTestTree
+} from '@angular-devkit/schematics/testing';
 import * as path from 'path';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
 describe('@co-it/schematics:commitlint', () => {
-  it('When commitlint is not installed', () => {
-    const runner = new SchematicTestRunner('schematics', collectionPath);
-    const tree = runner.runSchematic('commitlint', {}, Tree.empty());
+  describe('When commitlint is not installed', () => {
+    let runner: SchematicTestRunner;
+    let treeBefore: Tree;
 
-    expect(tree.files).toEqual([]);
+    beforeEach(() => {
+      runner = new SchematicTestRunner('commitlint', collectionPath);
+      treeBefore = new UnitTestTree(new VirtualTree());
+
+      const packageBeforeInstall = { scripts: {}, devDependencies: {} };
+      treeBefore.create('package.json', JSON.stringify(packageBeforeInstall));
+    });
+
+    it('should add @commitlint/cli and @commitlint/config-conventional as devDependencies', () => {
+      const treeAfter = runner.runSchematic('commitlint', {}, treeBefore);
+
+      const packageAfterInstall = JSON.parse(
+        treeAfter.readContent('package.json')
+      );
+      expect(packageAfterInstall.devDependencies).toEqual(
+        expect.objectContaining({
+          '@commitlint/cli': 'latest',
+          '@commitlint/config-conventional': 'latest'
+        })
+      );
+    });
   });
 });

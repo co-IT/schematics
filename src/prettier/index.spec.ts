@@ -1,7 +1,7 @@
 import { Tree, VirtualTree } from '@angular-devkit/schematics';
 import {
   SchematicTestRunner,
-  UnitTestTree,
+  UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import * as path from 'path';
 
