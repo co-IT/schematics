@@ -20,7 +20,7 @@ describe('@co-it/schematics:commitlint', () => {
       treeBefore.create('package.json', JSON.stringify(packageBeforeInstall));
     });
 
-    it('should add @commitlint/cli and @commitlint/config-conventional as devDependencies', () => {
+    it('should add required devDependencies', () => {
       const treeAfter = runner.runSchematic('commitlint', {}, treeBefore);
 
       const packageAfterInstall = JSON.parse(
@@ -29,15 +29,10 @@ describe('@co-it/schematics:commitlint', () => {
       expect(packageAfterInstall.devDependencies).toEqual(
         expect.objectContaining({
           '@commitlint/cli': 'latest',
-          '@commitlint/config-conventional': 'latest'
+          '@commitlint/config-conventional': 'latest',
+          husky: 'latest'
         })
       );
-    });
-
-    it('should add an opinionated commitlint configuration ', () => {
-      const treeAfter = runner.runSchematic('commitlint', {}, treeBefore);
-
-      expect(treeAfter.files).toContain('/commitlint.config.js');
     });
 
     it('should add an opinionated commitlint configuration ', () => {
