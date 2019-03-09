@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - 11
+cache: yarn
+git:
+  depth: 3
+script:
+  - yarn lint
+  - yarn test
+  - yarn build
