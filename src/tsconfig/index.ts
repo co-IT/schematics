@@ -4,7 +4,7 @@ import {
   SchematicsException,
   Tree
 } from '@angular-devkit/schematics';
-import { CompilerOptions } from './compiler-options.schema';
+import { CompilerOptions } from './models';
 
 export default function(parameters: CompilerOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {

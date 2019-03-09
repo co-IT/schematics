@@ -5,7 +5,7 @@ import {
   UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import { join } from 'path';
-import { CompilerOptions } from './compiler-options.schema.js';
+import { CompilerOptions } from './models';
 import * as tsconfigSchema from './test/schema.json';
 import * as parameterSchema from './tsconfig.schema.json';
 
