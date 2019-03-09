@@ -5,8 +5,8 @@ import {
   UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import { join } from 'path';
+import { CompilerOptions } from './compiler-options.schema.js';
 import * as tsconfigSchema from './test/schema.json';
-import { TsConfigSchema } from './tsconfig.schema.js';
 import * as parameterSchema from './tsconfig.schema.json';
 
 import ajv = require('ajv');
@@ -16,7 +16,7 @@ const collectionPath = join(__dirname, '../collection.json');
 describe('@co-it/schematics:tsconfig', () => {
   const schemaValidator = new ajv();
 
-  const parameterDefaults: TsConfigSchema = {
+  const parameterDefaults: CompilerOptions = {
     strict: parameterSchema.properties.strict.default,
     noUnusedLocals: parameterSchema.properties.noUnusedLocals.default,
     noUnusedParameters: parameterSchema.properties.noUnusedParameters.default,
