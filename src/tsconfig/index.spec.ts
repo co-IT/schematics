@@ -5,23 +5,16 @@ import {
   UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import { join } from 'path';
-import { CompilerOptions } from './models';
+import { readParameterDefaults } from './test/read-parameter-defaults';
 import * as tsconfigSchema from './test/schema.json';
 import * as parameterSchema from './tsconfig.schema.json';
 
 import ajv = require('ajv');
 
-const collectionPath = join(__dirname, '../collection.json');
-
 describe('@co-it/schematics:tsconfig', () => {
   const schemaValidator = new ajv();
-
-  const parameterDefaults: CompilerOptions = {
-    strict: parameterSchema.properties.strict.default,
-    noUnusedLocals: parameterSchema.properties.noUnusedLocals.default,
-    noUnusedParameters: parameterSchema.properties.noUnusedParameters.default,
-    noImplicitAny: parameterSchema.properties.noImplicitAny.default
-  };
+  const parameterDefaults = readParameterDefaults(parameterSchema);
+  const collectionPath = join(__dirname, '../collection.json');
 
   describe('When tsconfig.json is not present', () => {
     it('should fail', () => {
