@@ -1,5 +1,4 @@
-import { EmptyTree, SchematicsException } from '@angular-devkit/schematics';
-import { Tree } from '@angular-devkit/schematics/src/tree/interface';
+import { SchematicsException, Tree } from '@angular-devkit/schematics';
 import {
   SchematicTestRunner,
   UnitTestTree
@@ -34,7 +33,7 @@ describe('@co-it/schematics:tsconfig', () => {
     let tsconfig: any;
 
     beforeEach(() => {
-      project = new UnitTestTree(new EmptyTree());
+      project = new UnitTestTree(Tree.empty());
       project.create('tsconfig.json', JSON.stringify({}));
 
       runner = new SchematicTestRunner('schematics', collectionPath);
