@@ -6,6 +6,9 @@ notifications:
   email: false
 git:
   depth: 3
+branches:
+  only:
+    - master
 script:
   - yarn lint
   - yarn test
