@@ -1,3 +1,15 @@
 {
-    "extends": "tslint-config-airbnb"
+  "extends": "tslint-config-airbnb",
+  "rules": {
+    "function-name": [
+      true,
+      {
+        "private-method-regex": "^_[a-z$][\\w\\d]+$"
+      }
+    ],
+    "trailing-comma": false,
+    "ter-arrow-parens": [true, "as-needed"],
+    "space-before-function-paren": false,
+    "variable-name": [true, "allow-leading-underscore"]
+  }
 }
