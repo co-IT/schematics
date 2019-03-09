@@ -4,9 +4,9 @@ import {
   SchematicsException,
   Tree
 } from '@angular-devkit/schematics';
-import { TsConfigSchema } from './tsconfig.schema';
+import { CompilerOptions } from './compiler-options.schema';
 
-export default function(parameters: TsConfigSchema): Rule {
+export default function(parameters: CompilerOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     if (!tree.exists('tsconfig.json')) {
       throw new SchematicsException(
