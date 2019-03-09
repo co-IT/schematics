@@ -39,37 +39,25 @@ describe('@co-it/schematics:tsconfig', () => {
       runner = new SchematicTestRunner('schematics', collectionPath);
     });
 
-    it('should should set "strict: true"', () => {
-      const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
+    it.each`
+      compilerOption          | expected
+      ${'strict'}             | ${true}
+      ${'noUnusedParameters'} | ${true}
+      ${'noUnusedLocals'}     | ${true}
+      ${'noImplicitAny'}      | ${true}
+    `(
+      'should set $compilerOption to $expected',
+      ({ compilerOption: option, expected }) => {
+        const tree = runner.runSchematic(
+          'tsconfig',
+          parameterDefaults,
+          project
+        );
 
-      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
-
-      expect(tsconfig.compilerOptions.strict).toBe(true);
-    });
-
-    it('should should set "noUnusedParameters: true"', () => {
-      const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
-
-      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
-
-      expect(tsconfig.compilerOptions.noUnusedParameters).toBe(true);
-    });
-
-    it('should should set "noUnusedParameters: true"', () => {
-      const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
-
-      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
-
-      expect(tsconfig.compilerOptions.noUnusedLocals).toBe(true);
-    });
-
-    it('should should set "noImplicitAny: true"', () => {
-      const tree = runner.runSchematic('tsconfig', parameterDefaults, project);
-
-      tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
-
-      expect(tsconfig.compilerOptions.noImplicitAny).toBe(true);
-    });
+        tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+        expect(tsconfig.compilerOptions[option]).toBe(expected);
+      }
+    );
 
     afterEach(done => {
       if (schemaValidator.validate(tsconfigSchema, tsconfig)) {
