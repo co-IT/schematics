@@ -66,7 +66,7 @@ describe('@co-it/schematics:tsconfig', () => {
       ${'noUnusedLocals'}     | ${false}
       ${'noImplicitAny'}      | ${false}
     `(
-      'should set $compilerOption to default value of schema ($passedParameter)',
+      'should use passed parameter if present ("$compilerOption":$passedParameter)',
       ({ compilerOption: option, passedParameter }) => {
         const tree = runner.runSchematic(
           'tsconfig',
