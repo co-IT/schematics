@@ -59,6 +59,26 @@ describe('@co-it/schematics:tsconfig', () => {
       }
     );
 
+    it.each`
+      compilerOption          | passedParameter
+      ${'strict'}             | ${false}
+      ${'noUnusedParameters'} | ${false}
+      ${'noUnusedLocals'}     | ${false}
+      ${'noImplicitAny'}      | ${false}
+    `(
+      'should set $compilerOption to default value of schema ($passedParameter)',
+      ({ compilerOption: option, passedParameter }) => {
+        const tree = runner.runSchematic(
+          'tsconfig',
+          { ...parameterDefaults, [option]: passedParameter },
+          project
+        );
+
+        tsconfig = JSON.parse(tree.readContent('tsconfig.json'));
+        expect(tsconfig.compilerOptions[option]).toBe(passedParameter);
+      }
+    );
+
     afterEach(done => {
       if (schemaValidator.validate(tsconfigSchema, tsconfig)) {
         done();
