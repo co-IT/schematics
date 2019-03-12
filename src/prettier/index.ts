@@ -3,23 +3,23 @@ import {
   chain,
   mergeWith,
   Rule,
-  SchematicContext,
   Tree,
   url
 } from '@angular-devkit/schematics';
-import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-import { PackageJson } from '../lib';
+import { installDependencies, PackageJson } from '../lib';
 
 export default function(): Rule {
-  return chain([registerPrettier()]);
+  return chain([
+    installDependencies({
+      devDependencies: ['prettier', 'tslint-config-prettier']
+    }),
+    registerPrettier()
+  ]);
 }
 
 function registerPrettier(): Rule {
-  return (tree: Tree, context: SchematicContext) => {
+  return (tree: Tree) => {
     const packageJson = new PackageJson(tree.read('package.json'));
-
-    packageJson.setDevDependency('prettier', 'latest');
-    packageJson.setDevDependency('tslint-config-prettier', 'latest');
 
     packageJson.setScript(
       'format',
@@ -27,8 +27,6 @@ function registerPrettier(): Rule {
     );
 
     tree.overwrite('package.json', packageJson.stringify());
-
-    context.addTask(new NodePackageInstallTask());
 
     return mergeWith(apply(url('./templates'), []));
   };
