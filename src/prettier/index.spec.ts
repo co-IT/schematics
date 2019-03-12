@@ -20,13 +20,6 @@ describe('@co-it/schematics:prettier', () => {
       actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
     });
 
-    it('should add prettier to the devDependencies', () => {
-      const tree = runner.runSchematic('prettier', {}, actualTree);
-      const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
-
-      expect(packageAfterInstall.devDependencies).toHaveProperty('prettier');
-    });
-
     it('should register a script executing prettier', () => {
       const tree = runner.runSchematic('prettier', {}, actualTree);
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
