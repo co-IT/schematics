@@ -19,6 +19,8 @@ function registerPrettier(): Rule {
     const packageJson = new PackageJson(tree.read('package.json'));
 
     packageJson.setDevDependency('prettier', 'latest');
+    packageJson.setDevDependency('tslint-config-prettier', 'latest');
+
     packageJson.setScript(
       'format',
       'prettier --write "**/*.{js,json,css,scss,md,ts,html}"'

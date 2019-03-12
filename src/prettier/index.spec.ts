@@ -8,7 +8,7 @@ import * as path from 'path';
 const collectionPath = path.join(__dirname, '../collection.json');
 
 describe('@co-it/schematics:prettier', () => {
-  describe('When prettier is not installed', () => {
+  describe('When prettier is setup', () => {
     let runner: SchematicTestRunner;
     let actualTree: Tree;
 
@@ -43,6 +43,19 @@ describe('@co-it/schematics:prettier', () => {
         expect.objectContaining({ name: 'node-package' })
       );
     });
+
+    it.each([['prettier'], ['tslint-config-prettier']])(
+      'should install $packageId',
+      packageId => {
+        const tree = runner.runSchematic('prettier', {}, actualTree);
+
+        const packageJson = JSON.parse(tree.readContent('package.json'));
+
+        expect(packageJson.devDependencies).toEqual(
+          expect.objectContaining({ [packageId]: expect.anything() })
+        );
+      }
+    );
   });
 
   describe('When no prettier configuration is present', () => {
