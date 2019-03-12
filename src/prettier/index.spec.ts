@@ -49,6 +49,37 @@ describe('@co-it/schematics:prettier', () => {
         );
       }
     );
+
+    it('should add tslint-config-prettier to tslint.json', () => {
+      actualTree.create(
+        'tslint.json',
+        JSON.stringify({ extends: 'some-preset' })
+      );
+
+      const tree = runner.runSchematic('prettier', {}, actualTree);
+      const tslintJson = JSON.parse(tree.readContent('tslint.json'));
+
+      expect(tslintJson.extends).toContain('tslint-config-prettier');
+    });
+  });
+
+  describe('When no tslint.json is present', () => {
+    let runner: SchematicTestRunner;
+    let actualTree: Tree;
+
+    beforeEach(() => {
+      runner = new SchematicTestRunner('prettier', collectionPath);
+      actualTree = new UnitTestTree(Tree.empty());
+
+      const packageBeforeInstall = { scripts: {}, devDependencies: {} };
+      actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
+    });
+
+    it('should skip patching tslint configuration', () => {
+      expect(() =>
+        runner.runSchematic('prettier', {}, actualTree)
+      ).not.toThrow();
+    });
   });
 
   describe('When no prettier configuration is present', () => {
