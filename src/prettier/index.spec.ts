@@ -38,7 +38,7 @@ describe('@co-it/schematics:prettier', () => {
     });
 
     it.each([['prettier'], ['tslint-config-prettier']])(
-      'should install $packageId',
+      'should install %s',
       packageId => {
         const tree = runner.runSchematic('prettier', {}, actualTree);
 
