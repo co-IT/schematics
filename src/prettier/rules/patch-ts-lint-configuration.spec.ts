@@ -15,3 +15,13 @@ describe('When "extends" does not exist', () => {
     expect(tslintJson.extends).toContain('tslint-config-prettier');
   });
 });
+
+describe('When no tslint.json is present', () => {
+  it('should skip patching tslint configuration', () => {
+    const rule = patchTsLintConfiguration();
+    const tree = new UnitTestTree(Tree.empty());
+    const emptyContext: SchematicContext = {} as SchematicContext;
+
+    expect(() => rule(tree, emptyContext)).not.toThrow();
+  });
+});
