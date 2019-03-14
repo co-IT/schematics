@@ -34,6 +34,13 @@ describe('When "extends" does not exist', () => {
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
     expect(tslintJson.rules['max-line-length']).toEqual([true, 80]);
   });
+
+  it('should avoid arrow parens', () => {
+    rule(tree, emptyContext);
+
+    const tslintJson = JSON.parse(tree.readContent('tslint.json'));
+    expect(tslintJson.rules['arrow-parens']).toBe(false);
+  });
 });
 
 describe('When no tslint.json is present', () => {
