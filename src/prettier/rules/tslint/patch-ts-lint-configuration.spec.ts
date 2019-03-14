@@ -27,6 +27,13 @@ describe('When "extends" does not exist', () => {
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
     expect(tslintJson.rules.quotemark).toEqual([true, 'single']);
   });
+
+  it('should enforce max line length 80', () => {
+    rule(tree, emptyContext);
+
+    const tslintJson = JSON.parse(tree.readContent('tslint.json'));
+    expect(tslintJson.rules['max-line-length']).toEqual([true, 80]);
+  });
 });
 
 describe('When no tslint.json is present', () => {
