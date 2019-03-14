@@ -123,17 +123,15 @@ describe('When prettier is already configured', () => {
       devDependencies: {},
       prettier: {}
     };
-
     project.create('package.json', JSON.stringify(packageBeforeInstall));
   });
 
-  it('should warn that a conflicting configuration exists in package.json', () => {
+  it(' should warn if configuration is detected in package.json', () => {
     runner.runSchematic('prettier', {}, project);
     expect(warn).toHaveBeenCalledWith(
       'Found competing prettier configuration in package.json.'
     );
   });
-
   it.each([
     ['.prettierrc.yaml'],
     ['.prettierrc.yml'],
@@ -141,7 +139,7 @@ describe('When prettier is already configured', () => {
     ['.prettierrc.json'],
     ['.prettierrc.js'],
     ['.prettier.config.js']
-  ])('should warn if configuration is detected in %s', file => {
+  ])(' should warn if configuration is detected in %s', (file: string) => {
     project.create(file, JSON.stringify({}));
     runner.runSchematic('prettier', {}, project);
     expect(warn).toHaveBeenCalledWith(
