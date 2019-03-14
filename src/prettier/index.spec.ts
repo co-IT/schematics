@@ -82,3 +82,24 @@ describe('When no prettier configuration is present', () => {
     expect(tree.exists('.prettierrc')).toBe(true);
   });
 });
+
+describe('When .prettierrc is present', () => {
+  let runner: SchematicTestRunner;
+  let project: Tree;
+
+  beforeEach(() => {
+    runner = new SchematicTestRunner('prettier', collectionPath);
+    project = new UnitTestTree(Tree.empty());
+
+    const packageBeforeInstall = { scripts: {}, devDependencies: {} };
+    project.create('package.json', JSON.stringify(packageBeforeInstall));
+    project.create('.prettierrc', JSON.stringify({}));
+  });
+
+  it('should be overridden', () => {
+    const tree = runner.runSchematic('prettier', {}, project);
+    const prettierrc = JSON.parse(tree.readContent('.prettierrc'));
+
+    expect(prettierrc.printWidth).toBe(80);
+  });
+});
