@@ -24,8 +24,6 @@ export function discoverConflictingPrettierConfigurations() {
   return (tree: Tree, context: SchematicContext) => {
     const packageJson = new PackageJson(tree.read('package.json'));
     if (packageJson.hasProperty('prettier')) {
-      console.log('a[sodka[pdjapdja[spjd[apkjd[p');
-
       context.logger.warn('Found prettier configuration in package.json');
     }
   };

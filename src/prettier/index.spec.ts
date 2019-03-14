@@ -104,7 +104,7 @@ describe('When .prettierrc is present', () => {
   });
 });
 
-describe('When prettier is configured in package.json', () => {
+describe('When prettier is already configured', () => {
   let mockLogger: { warn: () => void };
   let runner: SchematicTestRunner;
   let warn: jest.SpyInstance;
@@ -127,7 +127,7 @@ describe('When prettier is configured in package.json', () => {
     project.create('package.json', JSON.stringify(packageBeforeInstall));
   });
 
-  it('should warn that a conflicting configuration exists', () => {
+  it('should warn that a conflicting configuration exists in package.json', () => {
     runner.runSchematic('prettier', {}, project);
     expect(warn).toHaveBeenCalledWith(
       'Found prettier configuration in package.json'
