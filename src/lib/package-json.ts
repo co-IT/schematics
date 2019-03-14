@@ -2,7 +2,7 @@ import { SchematicsException } from '@angular-devkit/schematics';
 import { PackageJsonSchema } from './package-json-schema';
 
 export class PackageJson {
-  private _config: PackageJsonSchema = {
+  private _config: PackageJsonSchema & { [key: string]: object } = {
     devDependencies: {},
     scripts: {}
   };
@@ -18,6 +18,10 @@ export class PackageJson {
       ...this._config,
       ...JSON.parse(buffer.toString('utf-8'))
     };
+  }
+
+  hasProperty(key: string): boolean {
+    return !!this._config[key];
   }
 
   setDevDependency(name: string, version: string): void {
