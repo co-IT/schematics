@@ -41,6 +41,16 @@ describe('When "extends" does not exist', () => {
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
     expect(tslintJson.rules['arrow-parens']).toBe(false);
   });
+
+  it('should avoid trailing-comma', () => {
+    rule(tree, emptyContext);
+
+    const tslintJson = JSON.parse(tree.readContent('tslint.json'));
+    expect(tslintJson.rules['trailing-comma']).toEqual([
+      true,
+      { multiline: 'never', singleline: 'never' }
+    ]);
+  });
 });
 
 describe('When no tslint.json is present', () => {
