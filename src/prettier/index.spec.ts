@@ -130,7 +130,22 @@ describe('When prettier is already configured', () => {
   it('should warn that a conflicting configuration exists in package.json', () => {
     runner.runSchematic('prettier', {}, project);
     expect(warn).toHaveBeenCalledWith(
-      'Found prettier configuration in package.json'
+      'Found competing prettier configuration in package.json.'
+    );
+  });
+
+  it.each([
+    ['.prettierrc.yaml'],
+    ['.prettierrc.yml'],
+    ['.prettierrc.toml'],
+    ['.prettierrc.json'],
+    ['.prettierrc.js'],
+    ['.prettier.config.js']
+  ])('should warn if configuration is detected in %s', file => {
+    project.create(file, JSON.stringify({}));
+    runner.runSchematic('prettier', {}, project);
+    expect(warn).toHaveBeenCalledWith(
+      `Found competing prettier configuration in ${file}.`
     );
   });
 });
