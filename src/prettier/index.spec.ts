@@ -103,3 +103,34 @@ describe('When .prettierrc is present', () => {
     expect(prettierrc.printWidth).toBe(80);
   });
 });
+
+describe('When prettier is configured in package.json', () => {
+  let mockLogger: { warn: () => void };
+  let runner: SchematicTestRunner;
+  let warn: jest.SpyInstance;
+  let project: Tree;
+
+  beforeEach(() => {
+    mockLogger = { warn: () => {} };
+    runner = new SchematicTestRunner('prettier', collectionPath);
+    runner['_logger'] = { createChild: () => mockLogger as any } as any;
+    warn = jest.spyOn(mockLogger, 'warn');
+
+    project = new UnitTestTree(Tree.empty());
+
+    const packageBeforeInstall = {
+      scripts: {},
+      devDependencies: {},
+      prettier: {}
+    };
+
+    project.create('package.json', JSON.stringify(packageBeforeInstall));
+  });
+
+  it('should warn that a conflicting configuration exists', () => {
+    runner.runSchematic('prettier', {}, project);
+    expect(warn).toHaveBeenCalledWith(
+      'Found prettier configuration in package.json'
+    );
+  });
+});
