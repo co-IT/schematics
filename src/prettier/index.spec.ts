@@ -63,3 +63,22 @@ describe('@co-it/schematics:prettier', () => {
     });
   });
 });
+
+describe('When no prettier configuration is present', () => {
+  let runner: SchematicTestRunner;
+  let project: Tree;
+
+  beforeEach(() => {
+    runner = new SchematicTestRunner('prettier', collectionPath);
+    project = new UnitTestTree(Tree.empty());
+
+    const packageBeforeInstall = { scripts: {}, devDependencies: {} };
+    project.create('package.json', JSON.stringify(packageBeforeInstall));
+  });
+
+  it('should add .prettierrc', () => {
+    const tree = runner.runSchematic('prettier', {}, project);
+
+    expect(tree.exists('.prettierrc')).toBe(true);
+  });
+});
