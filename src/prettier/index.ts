@@ -14,12 +14,13 @@ export default function(): Rule {
     installDependencies({
       devDependencies: ['prettier', 'tslint-config-prettier']
     }),
+    configurePrettier(),
     registerPrettier(),
     patchTsLintConfiguration()
   ]);
 }
 
-function registerPrettier(): Rule {
+export function registerPrettier(): Rule {
   return (tree: Tree) => {
     const packageJson = new PackageJson(tree.read('package.json'));
 
@@ -29,7 +30,9 @@ function registerPrettier(): Rule {
     );
 
     tree.overwrite('package.json', packageJson.stringify());
-
-    return mergeWith(apply(url('./templates'), []));
   };
+}
+
+export function configurePrettier(): Rule {
+  return mergeWith(apply(url('./templates'), []));
 }
