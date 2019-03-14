@@ -62,8 +62,4 @@ describe('@co-it/schematics:prettier', () => {
       expect(tslintJson.extends).toContain('tslint-config-prettier');
     });
   });
-
-  describe('When no prettier configuration is present', () => {
-    it('should add an opinionated prettier configuration ', () => {});
-  });
 });
