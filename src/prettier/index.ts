@@ -1,7 +1,7 @@
 import { chain, Rule } from '@angular-devkit/schematics';
 import { installDependencies } from '../lib';
-import { patchTsLintConfiguration } from './rules';
 import { configurePrettier, registerPrettier } from './rules/prettier';
+import { patchTsLintConfiguration } from './rules/tslint';
 
 export default function(): Rule {
   return chain([
