@@ -13,6 +13,6 @@ export function configurePrettier(): Rule {
     installDependencies({
       devDependencies: ['prettier', 'tslint-config-prettier']
     }),
-    mergeWith(apply(url('./templates'), []), MergeStrategy.Overwrite)
+    mergeWith(apply(url('./templates/prettier'), []), MergeStrategy.Overwrite)
   ]);
 }
