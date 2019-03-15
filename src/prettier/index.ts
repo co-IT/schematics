@@ -28,7 +28,7 @@ export default function(parameters: PrettierSchematicOptions): Rule {
 export function configureHusky(): Rule {
   return chain([
     installDependencies({
-      devDependencies: ['husky']
+      devDependencies: ['husky', 'pretty-quick', 'lint-staged']
     }),
     mergeWith(apply(url('./templates/hook'), []))
   ]);
