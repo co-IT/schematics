@@ -173,14 +173,17 @@ describe('When the developer wants to use a commit hook', () => {
     project.create('package.json', JSON.stringify(packageBeforeInstall));
   });
 
-  it('should install husky', () => {
-    const tree = runner.runSchematic('prettier', defaultParameters, project);
-    const packageJson = JSON.parse(tree.readContent('package.json'));
+  it.each([['husky'], ['pretty-quick'], ['lint-staged']])(
+    'should install %s',
+    packageId => {
+      const tree = runner.runSchematic('prettier', defaultParameters, project);
+      const packageJson = JSON.parse(tree.readContent('package.json'));
 
-    expect(packageJson.devDependencies).toEqual(
-      expect.objectContaining({ husky: expect.anything() })
-    );
-  });
+      expect(packageJson.devDependencies).toEqual(
+        expect.objectContaining({ [packageId]: expect.anything() })
+      );
+    }
+  );
 
   it('should configure a pre-commit hook in .huskyrc.json', () => {
     const tree = runner.runSchematic('prettier', defaultParameters, project);
