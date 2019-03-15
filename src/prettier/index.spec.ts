@@ -193,4 +193,11 @@ describe('When the developer wants to use a commit hook', () => {
       'pretty-quick --staged && lint-staged'
     );
   });
+
+  it('should configure lint-staged to check typescript files', () => {
+    const tree = runner.runSchematic('prettier', defaultParameters, project);
+    const lintStagedRc = JSON.parse(tree.readContent('.lintstagedrc'));
+
+    expect(lintStagedRc['*.ts']).toEqual(['tslint --fix', 'git add']);
+  });
 });
