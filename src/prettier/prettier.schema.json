@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "properties": {
+    "hook": {
+      "type": "boolean",
+      "description": "Enable commit hook formatting & linting staged files with prettier and tslint",
+      "default": true,
+      "x-prompt": "Setup pre-commit hook?"
+    }
+  }
+}

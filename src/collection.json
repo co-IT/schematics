@@ -3,7 +3,8 @@
   "schematics": {
     "prettier": {
       "description": "install & configure prettier automatically",
-      "factory": "./prettier/index"
+      "factory": "./prettier/index",
+      "schema": "./prettier/prettier.schema.json"
     },
     "commitlint": {
       "description": "Install & configure commitlint",
