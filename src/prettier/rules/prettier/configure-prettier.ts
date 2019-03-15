@@ -10,6 +10,15 @@ import {
 } from '@angular-devkit/schematics';
 import { installDependencies } from '../../../lib';
 
+/**
+ * Workaround
+ * ----------
+ * The operator `forEach` should not be needed to overwrite a file.
+ * There is a bug in the devkit: https://github.com/angular/angular-cli/issues/11337
+ * The MergeStrategy.Overwrite takes no effect.
+ *
+ * Since the issue is resolved `forEach` should be removed.
+ */
 export function configurePrettier(): Rule {
   return (tree: Tree) =>
     chain([
