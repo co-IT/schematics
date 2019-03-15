@@ -135,12 +135,13 @@ describe('When prettier is already configured', () => {
     project.create('package.json', JSON.stringify(packageBeforeInstall));
   });
 
-  it(' should warn if configuration is detected in package.json', () => {
+  it('should warn if configuration is detected in package.json', () => {
     runner.runSchematic('prettier', {}, project);
     expect(warn).toHaveBeenCalledWith(
       'Found competing prettier configuration in package.json.'
     );
   });
+
   it.each([
     ['.prettierrc.yaml'],
     ['.prettierrc.yml'],
