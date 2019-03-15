@@ -1,4 +1,11 @@
-import { chain, noop, Rule } from '@angular-devkit/schematics';
+import {
+  apply,
+  chain,
+  mergeWith,
+  noop,
+  Rule,
+  url
+} from '@angular-devkit/schematics';
 import { installDependencies } from '../lib';
 import { PrettierSchematicOptions } from './models';
 import {
@@ -22,6 +29,7 @@ export function configureHusky(): Rule {
   return chain([
     installDependencies({
       devDependencies: ['husky']
-    })
+    }),
+    mergeWith(apply(url('./templates/hook'), []))
   ]);
 }

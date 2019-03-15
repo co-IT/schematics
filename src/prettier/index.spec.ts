@@ -175,4 +175,13 @@ describe('When the developer wants to use a commit hook', () => {
       expect.objectContaining({ husky: expect.anything() })
     );
   });
+
+  it('should configure a pre-commit hook in .huskyrc.json', () => {
+    const tree = runner.runSchematic('prettier', defaultParameters, project);
+    const huskyRc = JSON.parse(tree.readContent('.huskyrc.json'));
+
+    expect(huskyRc.hooks['pre-commit']).toEqual(
+      'pretty-quick --staged && lint-staged'
+    );
+  });
 });
