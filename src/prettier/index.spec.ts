@@ -201,3 +201,36 @@ describe('When the developer wants to use a commit hook', () => {
     expect(lintStagedRc['*.ts']).toEqual(['tslint --fix', 'git add']);
   });
 });
+
+describe('When .huskyrc.json already exists', () => {
+  let runner: SchematicTestRunner;
+  let project: Tree;
+  let defaultParameters: PrettierSchematicOptions;
+
+  beforeEach(() => {
+    runner = new SchematicTestRunner('prettier', collectionPath);
+    project = new UnitTestTree(Tree.empty());
+    defaultParameters = readParameterDefaults<PrettierSchematicOptions>(
+      parameterSchema
+    );
+
+    const packageBeforeInstall = { scripts: {}, devDependencies: {} };
+    project.create('package.json', JSON.stringify(packageBeforeInstall));
+    project.create(
+      '.huskyrc.json',
+      JSON.stringify({ hooks: { 'commit-msg': 'script' } })
+    );
+  });
+
+  it('should be merged', () => {
+    const tree = runner.runSchematic('prettier', defaultParameters, project);
+    const huskyRc = JSON.parse(tree.readContent('.huskyrc.json'));
+
+    expect(huskyRc.hooks).toEqual(
+      expect.objectContaining({
+        'commit-msg': expect.anything(),
+        'pre-commit': expect.anything()
+      })
+    );
+  });
+});
