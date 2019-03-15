@@ -98,6 +98,24 @@ describe('PackageJson', () => {
       });
     });
   });
+
+  describe('When a package.json has multiple entries', () => {
+    it('should preserve the order of keys', () => {
+      const packageJson = new PackageJson(
+        toBuffer({
+          name: '',
+          version: '',
+          scripts: {},
+          devDependencies: {}
+        })
+      );
+
+      const stringified = packageJson.stringify();
+      const parsed = JSON.parse(stringified);
+
+      expect(Object.keys(parsed)[0]).toBe('name');
+    });
+  });
 });
 
 function toBuffer(value: object): Buffer {
