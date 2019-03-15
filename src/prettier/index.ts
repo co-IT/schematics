@@ -1,4 +1,6 @@
-import { chain, Rule } from '@angular-devkit/schematics';
+import { chain, noop, Rule } from '@angular-devkit/schematics';
+import { installDependencies } from '../lib';
+import { PrettierSchematicOptions } from './models';
 import {
   configurePrettier,
   registerPrettier,
@@ -6,11 +8,20 @@ import {
 } from './rules/prettier';
 import { patchTsLintConfiguration } from './rules/tslint';
 
-export default function(): Rule {
+export default function(parameters: PrettierSchematicOptions): Rule {
   return chain([
     configurePrettier(),
     warnAgainstCompetingPrettierConfiguration(),
     registerPrettier(),
-    patchTsLintConfiguration()
+    patchTsLintConfiguration(),
+    parameters.hook ? configureHusky() : noop()
+  ]);
+}
+
+export function configureHusky(): Rule {
+  return chain([
+    installDependencies({
+      devDependencies: ['husky']
+    })
   ]);
 }

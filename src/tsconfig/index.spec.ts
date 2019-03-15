@@ -4,7 +4,8 @@ import {
   UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import { join } from 'path';
-import { readParameterDefaults } from './test/read-parameter-defaults';
+import { readParameterDefaults } from '../test/read-parameter-defaults';
+import { CompilerOptions } from './models';
 import * as tsconfigSchema from './test/schema.json';
 import * as parameterSchema from './tsconfig.schema.json';
 
@@ -12,7 +13,9 @@ import ajv = require('ajv');
 
 describe('@co-it/schematics:tsconfig', () => {
   const schemaValidator = new ajv();
-  const parameterDefaults = readParameterDefaults(parameterSchema);
+  const parameterDefaults = readParameterDefaults<CompilerOptions>(
+    parameterSchema
+  );
   const collectionPath = join(__dirname, '../collection.json');
 
   describe('When tsconfig.json is not present', () => {

@@ -4,6 +4,9 @@ import {
   UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import * as path from 'path';
+import { readParameterDefaults } from '../test';
+import { PrettierSchematicOptions } from './models';
+import * as parameterSchema from './prettier.schema.json';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
@@ -144,6 +147,32 @@ describe('When prettier is already configured', () => {
     runner.runSchematic('prettier', {}, project);
     expect(warn).toHaveBeenCalledWith(
       `Found competing prettier configuration in ${file}.`
+    );
+  });
+});
+
+describe('When the developer wants to use a commit hook', () => {
+  let runner: SchematicTestRunner;
+  let project: Tree;
+  let defaultParameters: PrettierSchematicOptions;
+
+  beforeEach(() => {
+    runner = new SchematicTestRunner('prettier', collectionPath);
+    project = new UnitTestTree(Tree.empty());
+    defaultParameters = readParameterDefaults<PrettierSchematicOptions>(
+      parameterSchema
+    );
+
+    const packageBeforeInstall = { scripts: {}, devDependencies: {} };
+    project.create('package.json', JSON.stringify(packageBeforeInstall));
+  });
+
+  it('should install husky', () => {
+    const tree = runner.runSchematic('prettier', defaultParameters, project);
+    const packageJson = JSON.parse(tree.readContent('package.json'));
+
+    expect(packageJson.devDependencies).toEqual(
+      expect.objectContaining({ husky: expect.anything() })
     );
   });
 });
