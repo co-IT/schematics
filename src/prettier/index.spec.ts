@@ -84,6 +84,12 @@ describe('When no prettier configuration is present', () => {
 
     expect(tree.exists('.prettierrc')).toBe(true);
   });
+
+  it('should not add .huskyrc.json', () => {
+    const tree = runner.runSchematic('prettier', { hook: false }, project);
+
+    expect(tree.exists('.huskyrc.json')).toBe(false);
+  });
 });
 
 describe('When .prettierrc is present', () => {
