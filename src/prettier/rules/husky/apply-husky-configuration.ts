@@ -4,7 +4,7 @@ import { updateHuskyRc } from './update-husky-rc';
 
 export function applyHuskyConfiguration(): Rule {
   return (tree: Tree) =>
-    !tree.exists('.huskyrc.json')
+    !tree.exists('.huskyrc')
       ? createHuskyRc()
-      : updateHuskyRc(tree.read('.huskyrc.json')!);
+      : updateHuskyRc(tree.read('.huskyrc')!);
 }
