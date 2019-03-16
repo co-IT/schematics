@@ -1,24 +1,24 @@
-import {
-  chain,
-  noop,
-  Rule,
-  SchematicContext,
-  Tree
-} from '@angular-devkit/schematics';
-import { installDependencies, PackageJson } from '../lib';
+import { chain, noop, Rule } from '@angular-devkit/schematics';
+import { installDependencies, warnAgainstCompetingConfiguration } from '../lib';
 import { PrettierSchematicOptions } from './models';
 import { applyHuskyConfiguration } from './rules/husky';
-import {
-  configurePrettier,
-  registerPrettier,
-  warnAgainstCompetingPrettierConfiguration
-} from './rules/prettier';
+import { configurePrettier, registerPrettier } from './rules/prettier';
 import { patchTsLintConfiguration } from './rules/tslint';
 
 export default function(parameters: PrettierSchematicOptions): Rule {
   return chain([
     configurePrettier(),
-    warnAgainstCompetingPrettierConfiguration(),
+    warnAgainstCompetingConfiguration({
+      packageJsonKey: 'prettier',
+      files: [
+        '.prettierrc.yaml',
+        '.prettierrc.yml',
+        '.prettierrc.toml',
+        '.prettierrc.json',
+        '.prettierrc.js',
+        '.prettier.config.js'
+      ]
+    }),
     registerPrettier(),
     patchTsLintConfiguration(),
     parameters.hook ? configureHusky() : noop()
@@ -36,30 +36,4 @@ export function configureHusky(): Rule {
       files: ['.huskyrc.json', '.huskyrc.js']
     })
   ]);
-}
-
-export interface CompetingConfigurationOptions {
-  packageJsonKey: string;
-  files: string[];
-}
-
-export function warnAgainstCompetingConfiguration(
-  config: CompetingConfigurationOptions
-) {
-  return (tree: Tree, context: SchematicContext) => {
-    const packageJson = new PackageJson(tree.read('package.json'));
-    [
-      ...config.files,
-      packageJson.hasProperty(config.packageJsonKey) ? 'package.json' : null
-    ]
-      .map(file =>
-        file && tree.exists(file)
-          ? `Found competing ${config.packageJsonKey} configuration in ${file}.`
-          : null
-      )
-      .filter((candidate): candidate is string => !!candidate)
-      .forEach(detectedConfiguration =>
-        context.logger.warn(detectedConfiguration)
-      );
-  };
 }
