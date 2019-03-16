@@ -49,10 +49,10 @@ describe('@co-it/schematics:prettier', () => {
         expect(tree.exists('.prettierrc')).toBe(true);
       });
 
-      it('should not add .huskyrc.json', () => {
+      it('should not add .huskyrc', () => {
         const tree = runner.runSchematic('prettier', { hook: false }, project);
 
-        expect(tree.exists('.huskyrc.json')).toBe(false);
+        expect(tree.exists('.huskyrc')).toBe(false);
       });
 
       it.each([['prettier'], ['tslint-config-prettier']])(
@@ -181,13 +181,13 @@ describe('@co-it/schematics:prettier', () => {
         }
       );
 
-      it('should configure a pre-commit hook in .huskyrc.json', () => {
+      it('should configure a pre-commit hook in .huskyrc', () => {
         const tree = runner.runSchematic(
           'prettier',
           defaultParameters,
           project
         );
-        const huskyRc = JSON.parse(tree.readContent('.huskyrc.json'));
+        const huskyRc = JSON.parse(tree.readContent('.huskyrc'));
 
         expect(huskyRc.hooks['pre-commit']).toEqual(
           'pretty-quick --staged && lint-staged'
@@ -206,7 +206,7 @@ describe('@co-it/schematics:prettier', () => {
       });
     });
 
-    describe('When .huskyrc.json already exists', () => {
+    describe('When .huskyrc already exists', () => {
       let runner: SchematicTestRunner;
       let project: Tree;
       let defaultParameters: PrettierSchematicOptions;
@@ -221,7 +221,7 @@ describe('@co-it/schematics:prettier', () => {
         const packageBeforeInstall = { scripts: {}, devDependencies: {} };
         project.create('package.json', JSON.stringify(packageBeforeInstall));
         project.create(
-          '.huskyrc.json',
+          '.huskyrc',
           JSON.stringify({ hooks: { 'commit-msg': 'script' } })
         );
       });
@@ -232,7 +232,7 @@ describe('@co-it/schematics:prettier', () => {
           defaultParameters,
           project
         );
-        const huskyRc = JSON.parse(tree.readContent('.huskyrc.json'));
+        const huskyRc = JSON.parse(tree.readContent('.huskyrc'));
 
         expect(huskyRc.hooks).toEqual(
           expect.objectContaining({

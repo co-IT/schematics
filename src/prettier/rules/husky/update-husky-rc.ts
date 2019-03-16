@@ -9,6 +9,6 @@ export function updateHuskyRc(origin: Buffer): Rule {
         'pre-commit': 'pretty-quick --staged && lint-staged'
       }
     };
-    tree.overwrite('.huskyrc.json', JSON.stringify(updatedHuskyRc, null, 2));
+    tree.overwrite('.huskyrc', JSON.stringify(updatedHuskyRc, null, 2));
   };
 }
