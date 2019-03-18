@@ -1,9 +1,9 @@
 import { chain, noop, Rule } from '@angular-devkit/schematics';
 import { installDependencies, warnAgainstCompetingConfiguration } from '../lib';
 import { PrettierSchematicOptions } from './models';
-import { applyHuskyConfiguration } from './rules/husky';
 import { configurePrettier, registerPrettier } from './rules/prettier';
 import { patchTsLintConfiguration } from './rules/tslint';
+import { applyHuskyConfiguration } from '../lib/rules/husky';
 
 export default function(parameters: PrettierSchematicOptions): Rule {
   return chain([
@@ -30,7 +30,10 @@ export function configureHusky(): Rule {
     installDependencies({
       devDependencies: ['husky', 'pretty-quick', 'lint-staged']
     }),
-    applyHuskyConfiguration(),
+    applyHuskyConfiguration([
+      'pre-commit',
+      'pretty-quick --staged && lint-staged'
+    ]),
     warnAgainstCompetingConfiguration({
       packageJsonKey: 'husky',
       files: ['.huskyrc.json', '.huskyrc.js']

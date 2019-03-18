@@ -7,7 +7,7 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { installDependencies, PackageJson } from '../lib';
-import { applyHuskyConfiguration } from './rules/husky';
+import { applyHuskyConfiguration } from '../lib/rules/husky';
 
 export default function commitlint(): Rule {
   return chain([
@@ -30,5 +30,7 @@ function addCommitlintConfig(): Rule {
 }
 
 function addHuskyHook(): Rule {
-  return chain([applyHuskyConfiguration()]);
+  return chain([
+    applyHuskyConfiguration(['commit-msg', 'commitlint -E HUSKY_GIT_PARAMS'])
+  ]);
 }
