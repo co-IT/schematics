@@ -7,6 +7,7 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { installDependencies, PackageJson } from '../lib';
+import { applyHuskyConfiguration } from './rules/husky';
 
 export default function commitlint(): Rule {
   return chain([
@@ -24,18 +25,10 @@ export default function commitlint(): Rule {
 
 function addCommitlintConfig(): Rule {
   return () => {
-    return chain([mergeWith(apply(url('./templates'), []))]);
+    return chain([mergeWith(apply(url('./templates/commitlint'), []))]);
   };
 }
 
 function addHuskyHook(): Rule {
-  return (tree: Tree) => {
-    const packageJson = new PackageJson(tree.read('package.json'));
-
-    packageJson.setHuskyHook('commit-msg', 'commitlint -E HUSKY_GIT_PARAMS');
-
-    tree.overwrite('package.json', packageJson.stringify());
-
-    return tree;
-  };
+  return chain([applyHuskyConfiguration()]);
 }

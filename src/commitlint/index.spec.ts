@@ -44,21 +44,45 @@ describe('@co-it/schematics:commitlint', () => {
     });
   });
 
-  describe('When package.json has no husky entry', () => {
+  describe('When .huskyrc does not exist', () => {
     beforeEach(() => {
       const packageBeforeInstall = { devDependencies: {} };
       treeBefore.create('package.json', JSON.stringify(packageBeforeInstall));
     });
 
-    it('should add an husky entry with commitlint', () => {
+    it('should configure a commit-msg hook in .huskyrc', () => {
       const treeAfter = runner.runSchematic('commitlint', {}, treeBefore);
 
-      const packageAfterInstall = JSON.parse(
-        treeAfter.readContent('package.json')
-      );
+      const huskyRc = JSON.parse(treeAfter.readContent('.huskyrc'));
 
-      expect(packageAfterInstall.husky).toEqual({
+      expect(huskyRc).toEqual({
         hooks: {
+          'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS'
+        }
+      });
+    });
+  });
+
+  describe('When .huskyrc already exists', () => {
+    beforeEach(() => {
+      treeBefore.create(
+        'package.json',
+        JSON.stringify({ devDependencies: {} })
+      );
+      treeBefore.create(
+        '.huskyrc',
+        JSON.stringify({ hooks: { 'pre-commit': 'script' } })
+      );
+    });
+
+    it('should merge commit-msg hook into .huskyrc', () => {
+      const treeAfter = runner.runSchematic('commitlint', {}, treeBefore);
+
+      const huskyRc = JSON.parse(treeAfter.readContent('.huskyrc'));
+
+      expect(huskyRc).toEqual({
+        hooks: {
+          'pre-commit': 'script',
           'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS'
         }
       });
