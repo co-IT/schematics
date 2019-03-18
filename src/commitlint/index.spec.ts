@@ -16,6 +16,31 @@ describe('@co-it/schematics:commitlint', () => {
     treeBefore = new UnitTestTree(Tree.empty());
   });
 
+  describe('When commitlint is already configured', () => {
+    let mockLogger: { warn: () => void };
+    let warn: jest.SpyInstance;
+
+    beforeEach(() => {
+      mockLogger = { warn: () => {} };
+      runner['_logger'] = { createChild: () => mockLogger as any } as any;
+      warn = jest.spyOn(mockLogger, 'warn');
+
+      const packageBeforeInstall = {
+        scripts: {},
+        devDependencies: {}
+      };
+      treeBefore.create('package.json', JSON.stringify(packageBeforeInstall));
+    });
+
+    it('should print a warning', () => {
+      treeBefore.create('commitlint.config.js', JSON.stringify({}));
+      runner.runSchematic('commitlint', {}, treeBefore);
+      expect(warn).toHaveBeenCalledWith(
+        'Found competing commitlint configuration in commitlint.config.js.'
+      );
+    });
+  });
+
   describe('When commitlint is not installed', () => {
     beforeEach(() => {
       const packageBeforeInstall = { devDependencies: {} };

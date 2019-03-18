@@ -4,7 +4,8 @@ import {
   mergeWith,
   Rule,
   Tree,
-  url
+  url,
+  forEach
 } from '@angular-devkit/schematics';
 import {
   installDependencies,
@@ -22,14 +23,29 @@ export default function commitlint(): Rule {
         'husky'
       ]
     }),
+    warnAgainstCompetingConfiguration({
+      packageJsonKey: 'commitlint',
+      files: ['commitlint.config.js']
+    }),
     addCommitlintConfig(),
     addHuskyHook()
   ]);
 }
 
 function addCommitlintConfig(): Rule {
-  return () => {
-    return chain([mergeWith(apply(url('./templates/commitlint'), []))]);
+  return (tree: Tree) => {
+    return chain([
+      mergeWith(
+        apply(url('./templates/commitlint'), [
+          forEach(template => {
+            tree.exists(template.path)
+              ? tree.overwrite(template.path, template.content)
+              : tree.create(template.path, template.content);
+            return null;
+          })
+        ])
+      )
+    ]);
   };
 }
 
