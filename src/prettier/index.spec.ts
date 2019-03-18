@@ -260,7 +260,7 @@ describe('@co-it/schematics:prettier', () => {
         const packageBeforeInstall = {
           scripts: {},
           devDependencies: {},
-          prettier: {}
+          husky: {}
         };
         project.create('package.json', JSON.stringify(packageBeforeInstall));
       });
@@ -268,7 +268,7 @@ describe('@co-it/schematics:prettier', () => {
       it('should warn if detected in package.json', () => {
         runner.runSchematic('prettier', {}, project);
         expect(warn).toHaveBeenCalledWith(
-          'Found competing prettier configuration in package.json.'
+          'Found competing husky configuration in package.json.'
         );
       });
 
