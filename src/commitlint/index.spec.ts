@@ -88,4 +88,40 @@ describe('@co-it/schematics:commitlint', () => {
       });
     });
   });
+
+  describe('When a competing husky configuration is found', () => {
+    let mockLogger: { warn: () => void };
+    let warn: jest.SpyInstance;
+
+    beforeEach(() => {
+      mockLogger = { warn: () => {} };
+      runner['_logger'] = { createChild: () => mockLogger as any } as any;
+      warn = jest.spyOn(mockLogger, 'warn');
+
+      const packageBeforeInstall = {
+        scripts: {},
+        devDependencies: {},
+        husky: {}
+      };
+      treeBefore.create('package.json', JSON.stringify(packageBeforeInstall));
+    });
+
+    it('should warn if detected in package.json', () => {
+      runner.runSchematic('commitlint', {}, treeBefore);
+      expect(warn).toHaveBeenCalledWith(
+        'Found competing husky configuration in package.json.'
+      );
+    });
+
+    it.each([['.huskyrc.json'], ['.huskyrc.js']])(
+      ' should warn if detected in %s',
+      (file: string) => {
+        treeBefore.create(file, JSON.stringify({}));
+        runner.runSchematic('commitlint', {}, treeBefore);
+        expect(warn).toHaveBeenCalledWith(
+          `Found competing husky configuration in ${file}.`
+        );
+      }
+    );
+  });
 });
