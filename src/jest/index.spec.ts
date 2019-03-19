@@ -44,4 +44,22 @@ describe('@co-it/schematics:jest', () => {
       expect(tree.exists('src/setup-jest.ts'));
     });
   });
+
+  describe('when package.json does not contain jest scripts', () => {
+    it('should add a jest watch script', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
+      expect(packageAfterInstall.scripts['test:watch']).toBe(
+        'jest --watch true'
+      );
+    });
+
+    it('should set the test script to jest', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
+      expect(packageAfterInstall.scripts['test']).toBe('jest');
+    });
+
+    it.todo('should add a husky git hook before push');
+  });
 });
