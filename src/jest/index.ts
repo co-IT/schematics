@@ -1,6 +1,6 @@
 import { Rule, chain } from '@angular-devkit/schematics';
-import { configureJest } from './rules/jest/configure-jest';
+import { configureJest, registerJest } from './rules/jest';
 
 export default function(): Rule {
-  return chain([configureJest()]);
+  return chain([configureJest(), registerJest()]);
 }
