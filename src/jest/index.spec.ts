@@ -32,5 +32,16 @@ describe('@co-it/schematics:jest', () => {
         );
       }
     );
+
+    it('should add a jest configuration file', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      expect(tree.exists('jest.config.js'));
+    });
+
+    it('should add a jest setup file', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+
+      expect(tree.exists('src/setup-jest.ts'));
+    });
   });
 });
