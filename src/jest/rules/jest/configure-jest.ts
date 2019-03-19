@@ -26,7 +26,7 @@ export function configureJest(): Rule {
         devDependencies: ['jest', 'jest-preset-angular'],
       }),
       mergeWith(
-        apply(url('./templates/jest'), [
+        apply(url('./templates'), [
           forEach(template => {
             tree.exists(template.path)
               ? tree.overwrite(template.path, template.content)
