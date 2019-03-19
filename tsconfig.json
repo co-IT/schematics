@@ -19,5 +19,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/*/files/**/*"]
+  "exclude": ["src/*/templates/**/*"]
 }
