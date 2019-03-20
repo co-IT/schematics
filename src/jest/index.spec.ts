@@ -25,7 +25,17 @@ describe('@co-it/schematics:jest', () => {
         'karma-jasmine-html-reporter': 'latest'
       }
     };
+    const specsTsConfigBeforeInstall = {
+      compilerOptions: {
+        types: ['jasmine', 'node']
+      },
+      files: ['test.ts']
+    };
     actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
+    actualTree.create(
+      'src/tsconfig.spec.json',
+      JSON.stringify(specsTsConfigBeforeInstall)
+    );
   });
 
   describe('when jest is not installed', () => {
@@ -73,6 +83,41 @@ describe('@co-it/schematics:jest', () => {
 
       const tree = runner.runSchematic('jest', {}, actualTree);
       expect(tree.exists('src/karma.conf.js')).toBeFalsy();
+    });
+
+    it('should remove the karma setup file', () => {
+      actualTree.create('src/test.ts', '');
+
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      expect(tree.exists('src/test.ts')).toBeFalsy();
+    });
+
+    it('should remove the karma setup file from the test-tsConfig', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
+
+      expect(tsConfig.files.includes('test.ts')).toEqual(false);
+    });
+
+    it('should remove jasmine types from test-compiler options', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
+
+      expect(tsConfig.compilerOptions.types.includes('jasmine')).toEqual(false);
+    });
+
+    it('should add jest types to test-compiler options', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
+
+      expect(tsConfig.compilerOptions.types.includes('jest')).toEqual(true);
+    });
+
+    it('should set module to commonjs in test-compiler options', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
+
+      expect(tsConfig.compilerOptions.module).toEqual('commonjs');
     });
   });
 
