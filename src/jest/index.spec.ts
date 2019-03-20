@@ -80,9 +80,7 @@ describe('@co-it/schematics:jest', () => {
     it('should add a jest watch script', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
-      expect(packageAfterInstall.scripts['test:watch']).toBe(
-        'jest --watch true'
-      );
+      expect(packageAfterInstall.scripts['test:watch']).toBe('jest --watch');
     });
 
     it('should set the test script to jest', () => {
