@@ -23,7 +23,10 @@ export function configurePrettier(): Rule {
   return (tree: Tree) =>
     chain([
       installDependencies({
-        devDependencies: ['prettier', 'tslint-config-prettier']
+        devDependencies: [
+          { name: 'prettier' },
+          { name: 'tslint-config-prettier' }
+        ]
       }),
       mergeWith(
         apply(url('./templates/prettier'), [

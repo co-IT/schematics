@@ -7,8 +7,11 @@ export function installDependencies(options: InstallOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
     const packageJson = new PackageJson(tree.read('package.json'));
 
-    options.devDependencies.forEach(packageName =>
-      packageJson.setDevDependency(packageName, 'latest')
+    options.devDependencies.forEach(npmPackage =>
+      packageJson.setDevDependency(
+        npmPackage.name,
+        npmPackage.version || 'latest'
+      )
     );
 
     tree.overwrite('package.json', packageJson.stringify());

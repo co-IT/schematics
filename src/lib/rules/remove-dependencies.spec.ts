@@ -1,7 +1,5 @@
-import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { SchematicContext, Tree } from '@angular-devkit/schematics';
-import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
-import { installDependencies } from './install-dependencies';
+import { UnitTestTree } from '@angular-devkit/schematics/testing';
 import { removeDependencies } from '..';
 
 describe('removeDependencies', () => {
@@ -25,7 +23,7 @@ describe('removeDependencies', () => {
 
     it('should remove devDependencies from package.json', () => {
       const rule = removeDependencies({
-        devDependencies: ['test-dependency2']
+        devDependencies: [{ name: 'test-dependency2' }]
       });
       rule(tree, mockContext as SchematicContext);
 

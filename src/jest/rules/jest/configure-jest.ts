@@ -25,15 +25,19 @@ export function configureJest(): Rule {
   return (tree: Tree) =>
     chain([
       installDependencies({
-        devDependencies: ['jest', 'jest-preset-angular', '@types/jest']
+        devDependencies: [
+          { name: 'jest' },
+          { name: 'jest-preset-angular' },
+          { name: '@types/jest' }
+        ]
       }),
       removeDependencies({
         devDependencies: [
-          'karma',
-          'karma-chrome-launcher',
-          'karma-coverage-istanbul-reporter',
-          'karma-jasmine',
-          'karma-jasmine-html-reporter'
+          { name: 'karma' },
+          { name: 'karma-chrome-launcher' },
+          { name: 'karma-coverage-istanbul-reporter' },
+          { name: 'karma-jasmine' },
+          { name: 'karma-jasmine-html-reporter' }
         ]
       }),
       mergeWith(() => {
