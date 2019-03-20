@@ -1,4 +1,4 @@
-import { NpmPackage } from './package';
+import { NpmPackage } from './npm-package';
 
 export interface InstallOptions {
   /**
