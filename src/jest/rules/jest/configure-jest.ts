@@ -10,6 +10,8 @@ import {
 } from '@angular-devkit/schematics';
 import { installDependencies, removeDependencies } from '../../../lib';
 
+const possibleKarmaConfigs = ['src/karma.conf.js'];
+
 /**
  * TODO: Workaround
  * ----------------
@@ -34,6 +36,12 @@ export function configureJest(): Rule {
           'karma-jasmine-html-reporter',
         ],
       }),
+      mergeWith(() => {
+        possibleKarmaConfigs.forEach(path =>
+          tree.exists(path) ? tree.delete(path) : ''
+        );
+        return tree;
+      }, MergeStrategy.Overwrite),
       mergeWith(
         apply(url('./templates'), [
           forEach(template => {

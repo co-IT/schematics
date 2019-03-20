@@ -67,6 +67,13 @@ describe('@co-it/schematics:jest', () => {
         expect(packageJson.devDependencies[packageId]).toBeUndefined();
       }
     );
+
+    it('should remove the karma configuration', () => {
+      actualTree.create('src/karma.conf.js', '');
+
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      expect(tree.exists('src/karma.conf.js')).toBeFalsy();
+    });
   });
 
   describe('when package.json does not contain jest scripts', () => {
