@@ -1,7 +1,7 @@
 import { Tree } from '@angular-devkit/schematics';
 import {
   SchematicTestRunner,
-  UnitTestTree,
+  UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import * as path from 'path';
 import { readParameterDefaults } from '../test';
@@ -119,7 +119,7 @@ describe('@co-it/schematics:prettier', () => {
         const packageBeforeInstall = {
           scripts: {},
           devDependencies: {},
-          prettier: {},
+          prettier: {}
         };
         project.create('package.json', JSON.stringify(packageBeforeInstall));
       });
@@ -137,7 +137,7 @@ describe('@co-it/schematics:prettier', () => {
         ['.prettierrc.toml'],
         ['.prettierrc.json'],
         ['.prettierrc.js'],
-        ['.prettier.config.js'],
+        ['.prettier.config.js']
       ])(' should warn if configuration is detected in %s', (file: string) => {
         project.create(file, JSON.stringify({}));
         runner.runSchematic('prettier', {}, project);
@@ -237,7 +237,7 @@ describe('@co-it/schematics:prettier', () => {
         expect(huskyRc.hooks).toEqual(
           expect.objectContaining({
             'commit-msg': expect.anything(),
-            'pre-commit': expect.anything(),
+            'pre-commit': expect.anything()
           })
         );
       });
@@ -260,7 +260,7 @@ describe('@co-it/schematics:prettier', () => {
         const packageBeforeInstall = {
           scripts: {},
           devDependencies: {},
-          husky: {},
+          husky: {}
         };
         project.create('package.json', JSON.stringify(packageBeforeInstall));
       });

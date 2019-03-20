@@ -6,7 +6,7 @@ import {
   mergeWith,
   Rule,
   Tree,
-  url,
+  url
 } from '@angular-devkit/schematics';
 import { installDependencies, removeDependencies } from '../../../lib';
 
@@ -25,7 +25,7 @@ export function configureJest(): Rule {
   return (tree: Tree) =>
     chain([
       installDependencies({
-        devDependencies: ['jest', 'jest-preset-angular', '@types/jest'],
+        devDependencies: ['jest', 'jest-preset-angular', '@types/jest']
       }),
       removeDependencies({
         devDependencies: [
@@ -33,8 +33,8 @@ export function configureJest(): Rule {
           'karma-chrome-launcher',
           'karma-coverage-istanbul-reporter',
           'karma-jasmine',
-          'karma-jasmine-html-reporter',
-        ],
+          'karma-jasmine-html-reporter'
+        ]
       }),
       mergeWith(() => {
         possibleKarmaConfigs.forEach(path =>
@@ -49,9 +49,9 @@ export function configureJest(): Rule {
               ? tree.overwrite(template.path, template.content)
               : tree.create(template.path, template.content);
             return null;
-          }),
+          })
         ]),
         MergeStrategy.Overwrite
-      ),
+      )
     ]);
 }

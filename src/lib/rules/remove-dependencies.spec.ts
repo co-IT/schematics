@@ -16,8 +16,8 @@ describe('removeDependencies', () => {
         scripts: {},
         devDependencies: {
           'test-dependency1': 'latest',
-          'test-dependency2': 'latest',
-        },
+          'test-dependency2': 'latest'
+        }
       };
       tree.create('package.json', JSON.stringify(packageBeforeInstall));
       mockContext = { addTask: jest.fn() };
@@ -25,14 +25,14 @@ describe('removeDependencies', () => {
 
     it('should remove devDependencies from package.json', () => {
       const rule = removeDependencies({
-        devDependencies: ['test-dependency2'],
+        devDependencies: ['test-dependency2']
       });
       rule(tree, mockContext as SchematicContext);
 
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
       expect(packageAfterInstall.devDependencies).toEqual(
         expect.not.objectContaining({
-          'test-dependency2': 'latest',
+          'test-dependency2': 'latest'
         })
       );
     });

@@ -94,11 +94,7 @@
             },
             "jsx": {
               "description": "Specify JSX code generation: 'preserve', 'react', or 'react-native'.",
-              "enum": [
-                "preserve",
-                "react",
-                "react-native"
-              ]
+              "enum": ["preserve", "react", "react-native"]
             },
             "reactNamespace": {
               "description": "Specifies the object invoked for createElement and __spread when targeting 'react' JSX emit.",
@@ -138,10 +134,7 @@
               "type": "string",
               "anyOf": [
                 {
-                  "enum": [
-                    "CRLF",
-                    "LF"
-                  ]
+                  "enum": ["CRLF", "LF"]
                 },
                 {
                   "pattern": "^(CRLF|LF|crlf|lf)$"
@@ -290,10 +283,7 @@
               "type": "string",
               "anyOf": [
                 {
-                  "enum": [
-                    "classic",
-                    "node"
-                  ]
+                  "enum": ["classic", "node"]
                 },
                 {
                   "pattern": "^(([Nn]ode)|([Cc]lassic))$"
