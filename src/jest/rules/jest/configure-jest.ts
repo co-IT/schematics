@@ -10,7 +10,7 @@ import {
 } from '@angular-devkit/schematics';
 import { installDependencies, removeDependencies } from '../../../lib';
 
-const possibleKarmaConfigs = ['src/karma.conf.js'];
+const possibleKarmaConfigs = ['src/karma.conf.js', 'src/test.ts'];
 
 /**
  * TODO: Workaround
