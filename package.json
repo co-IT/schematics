@@ -8,7 +8,8 @@
     "tsc:update-schema": "node ./tools/tsconfig/update-schema.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "tslint --project ./tsconfig.json --format stylish"
+    "lint": "tslint --project ./tsconfig.json --format stylish",
+    "format": "prettier --write \"**/*.{js,json,css,scss,md,ts,html}\""
   },
   "keywords": [
     "schematics",
@@ -24,7 +25,8 @@
   "schematics": "./src/collection.json",
   "dependencies": {
     "@angular-devkit/core": "^7.3.4",
-    "@angular-devkit/schematics": "^7.3.4"
+    "@angular-devkit/schematics": "^7.3.4",
+    "prettier": "^1.16.4"
   },
   "devDependencies": {
     "@types/globby": "^8.0.0",

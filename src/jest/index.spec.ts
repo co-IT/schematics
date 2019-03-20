@@ -1,6 +1,6 @@
 import {
   SchematicTestRunner,
-  UnitTestTree,
+  UnitTestTree
 } from '@angular-devkit/schematics/testing';
 import { Tree } from '@angular-devkit/schematics';
 import * as path from 'path';
@@ -22,8 +22,8 @@ describe('@co-it/schematics:jest', () => {
         'karma-chrome-launcher': 'latest',
         'karma-coverage-istanbul-reporter': 'latest',
         'karma-jasmine': 'latest',
-        'karma-jasmine-html-reporter': 'latest',
-      },
+        'karma-jasmine-html-reporter': 'latest'
+      }
     };
     actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
   });
@@ -57,7 +57,7 @@ describe('@co-it/schematics:jest', () => {
       ['karma-chrome-launcher'],
       ['karma-coverage-istanbul-reporter'],
       ['karma-jasmine'],
-      ['karma-jasmine-html-reporter'],
+      ['karma-jasmine-html-reporter']
     ])(
       'should remove all karma related Packages from dev-dependencies',
       (packageId: string) => {
