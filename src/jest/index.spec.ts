@@ -15,7 +15,16 @@ describe('@co-it/schematics:jest', () => {
     runner = new SchematicTestRunner('jest', collectionPath);
     actualTree = new UnitTestTree(Tree.empty());
 
-    const packageBeforeInstall = { scripts: {}, devDependencies: {} };
+    const packageBeforeInstall = {
+      scripts: {},
+      devDependencies: {
+        karma: 'latest',
+        'karma-chrome-launcher': 'latest',
+        'karma-coverage-istanbul-reporter': 'latest',
+        'karma-jasmine': 'latest',
+        'karma-jasmine-html-reporter': 'latest',
+      },
+    };
     actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
   });
 
@@ -43,6 +52,21 @@ describe('@co-it/schematics:jest', () => {
 
       expect(tree.exists('src/setup-jest.ts'));
     });
+    it.each([
+      ['karma'],
+      ['karma-chrome-launcher'],
+      ['karma-coverage-istanbul-reporter'],
+      ['karma-jasmine'],
+      ['karma-jasmine-html-reporter'],
+    ])(
+      'should remove all karma related Packages from dev-dependencies',
+      (packageId: string) => {
+        const tree = runner.runSchematic('jest', {}, actualTree);
+        const packageJson = JSON.parse(tree.readContent('package.json'));
+
+        expect(packageJson.devDependencies[packageId]).toBeUndefined();
+      }
+    );
   });
 
   describe('when package.json does not contain jest scripts', () => {
