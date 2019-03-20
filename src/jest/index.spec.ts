@@ -4,6 +4,7 @@ import {
 } from '@angular-devkit/schematics/testing';
 import { Tree } from '@angular-devkit/schematics';
 import * as path from 'path';
+import { TsconfigPatchOptions } from './models/tsconfig-patch-options';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
@@ -82,42 +83,42 @@ describe('@co-it/schematics:jest', () => {
       actualTree.create('src/karma.conf.js', '');
 
       const tree = runner.runSchematic('jest', {}, actualTree);
-      expect(tree.exists('src/karma.conf.js')).toBeFalsy();
+      expect(tree.exists('src/karma.conf.js')).toBe(false);
     });
 
     it('should remove the karma setup file', () => {
       actualTree.create('src/test.ts', '');
 
       const tree = runner.runSchematic('jest', {}, actualTree);
-      expect(tree.exists('src/test.ts')).toBeFalsy();
+      expect(tree.exists('src/test.ts')).toBe(false);
     });
 
     it('should remove the karma setup file from the test-tsConfig', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
       const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
 
-      expect(tsConfig.files.includes('test.ts')).toEqual(false);
+      expect(tsConfig.files.includes('test.ts')).toBe(false);
     });
 
     it('should remove jasmine types from test-compiler options', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
       const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
 
-      expect(tsConfig.compilerOptions.types.includes('jasmine')).toEqual(false);
+      expect(tsConfig.compilerOptions.types.includes('jasmine')).toBe(false);
     });
 
     it('should add jest types to test-compiler options', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
       const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
 
-      expect(tsConfig.compilerOptions.types.includes('jest')).toEqual(true);
+      expect(tsConfig.compilerOptions.types.includes('jest')).toBe(true);
     });
 
     it('should set module to commonjs in test-compiler options', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
       const tsConfig = JSON.parse(tree.readContent('src/tsconfig.spec.json'));
 
-      expect(tsConfig.compilerOptions.module).toEqual('commonjs');
+      expect(tsConfig.compilerOptions.module).toBe('commonjs');
     });
   });
 

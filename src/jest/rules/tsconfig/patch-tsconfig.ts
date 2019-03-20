@@ -1,12 +1,5 @@
 import { Tree, Rule } from '@angular-devkit/schematics';
-
-type TsConfigPatchOptions = {
-  compilerOptions: {
-    types: string[];
-    module: string;
-  };
-  files: string[];
-};
+import { TsconfigPatchOptions } from '../../models/tsconfig-patch-options';
 
 export function patchTsConfig(): Rule {
   return (tree: Tree) => {
@@ -15,7 +8,7 @@ export function patchTsConfig(): Rule {
     if (!buffer) {
       throw new Error(`No ${file} found`);
     }
-    const tsconfig: TsConfigPatchOptions = JSON.parse(buffer.toString('utf-8'));
+    const tsconfig: TsconfigPatchOptions = JSON.parse(buffer.toString('utf-8'));
     tsconfig.compilerOptions = tsconfig.compilerOptions || {
       types: [],
       module: ''
