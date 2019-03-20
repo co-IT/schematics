@@ -41,7 +41,7 @@ export function configureJest(): Rule {
           tree.exists(path) ? tree.delete(path) : ''
         );
         return tree;
-      }, MergeStrategy.Overwrite),
+      }),
       mergeWith(
         apply(url('./templates'), [
           forEach(template => {
