@@ -1,26 +1,22 @@
 import {
   apply,
   chain,
+  forEach,
   mergeWith,
   Rule,
   Tree,
-  url,
-  forEach
+  url
 } from '@angular-devkit/schematics';
-import {
-  installDependencies,
-  PackageJson,
-  warnAgainstCompetingConfiguration
-} from '../lib';
+import { installDependencies, warnAgainstCompetingConfiguration } from '../lib';
 import { applyHuskyConfiguration } from '../lib/rules/husky';
 
 export default function commitlint(): Rule {
   return chain([
     installDependencies({
       devDependencies: [
-        '@commitlint/cli',
-        '@commitlint/config-conventional',
-        'husky'
+        { name: '@commitlint/cli' },
+        { name: '@commitlint/config-conventional' },
+        { name: 'husky' }
       ]
     }),
     warnAgainstCompetingConfiguration({

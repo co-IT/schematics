@@ -21,7 +21,10 @@ describe('installDependencies', () => {
 
     it('should add devDependencies to package.json', () => {
       const rule = installDependencies({
-        devDependencies: ['test-dependency1', 'test-dependency2']
+        devDependencies: [
+          { name: 'test-dependency1' },
+          { name: 'test-dependency2' }
+        ]
       });
       rule(tree, mockContext as SchematicContext);
 
@@ -34,9 +37,23 @@ describe('installDependencies', () => {
       );
     });
 
+    it('should allow to specify the version of a dependency', () => {
+      const rule = installDependencies({
+        devDependencies: [{ name: 'test-dependency1', version: '^1.0.0' }]
+      });
+      rule(tree, mockContext as SchematicContext);
+
+      const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
+      expect(packageAfterInstall.devDependencies).toEqual(
+        expect.objectContaining({
+          'test-dependency1': '^1.0.0'
+        })
+      );
+    });
+
     it('should add a NodePackageInstallTask to context', () => {
       const rule = installDependencies({
-        devDependencies: ['test-dependency']
+        devDependencies: [{ name: 'test-dependency' }]
       });
       rule(tree, mockContext as SchematicContext);
 
