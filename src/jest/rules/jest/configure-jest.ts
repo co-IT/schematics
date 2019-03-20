@@ -8,7 +8,7 @@ import {
   Tree,
   url,
 } from '@angular-devkit/schematics';
-import { installDependencies } from '../../../lib';
+import { installDependencies, removeDependencies } from '../../../lib';
 
 /**
  * TODO: Workaround
@@ -24,6 +24,15 @@ export function configureJest(): Rule {
     chain([
       installDependencies({
         devDependencies: ['jest', 'jest-preset-angular'],
+      }),
+      removeDependencies({
+        devDependencies: [
+          'karma',
+          'karma-chrome-launcher',
+          'karma-coverage-istanbul-reporter',
+          'karma-jasmine',
+          'karma-jasmine-html-reporter',
+        ],
       }),
       mergeWith(
         apply(url('./templates'), [

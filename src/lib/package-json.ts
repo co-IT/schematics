@@ -24,6 +24,10 @@ export class PackageJson {
     this._config.devDependencies[name] = version;
   }
 
+  removeDevDependency(name: string): void {
+    delete this._config.devDependencies[name];
+  }
+
   setScript(name: string, command: string): void {
     this._config.scripts[name] = command;
   }
