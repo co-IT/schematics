@@ -23,7 +23,7 @@ export function configureJest(): Rule {
   return (tree: Tree) =>
     chain([
       installDependencies({
-        devDependencies: ['jest', 'jest-preset-angular'],
+        devDependencies: ['jest', 'jest-preset-angular', '@types/jest'],
       }),
       removeDependencies({
         devDependencies: [
