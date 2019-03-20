@@ -18,6 +18,11 @@
     "jest": {
       "description": "configure the angular project to test with jest",
       "factory": "./jest/index"
+    },
+    "cypress": {
+      "description": "Install & configure cypress",
+      "factory": "./cypress/index",
+      "schema": "./cypress/cypress.schema.json"
     }
   }
 }
