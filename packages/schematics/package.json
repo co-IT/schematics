@@ -2,6 +2,9 @@
   "name": "@co-it/schematics",
   "version": "0.0.0",
   "description": "Automated & opinionated setup for large scaled Angular applications",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "ts-node -P ./build/tsconfig.json ./build",
     "format": "prettier --write \"**/*.{js,json,css,scss,md,ts,html}\"",
