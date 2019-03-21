@@ -21,6 +21,10 @@ export class AngularJson {
     return !!this._getApps().find(app => app.name === appName);
   }
 
+  getRootPathFor(appName: string): string {
+    return this.content.projects[appName].root;
+  }
+
   setCypressConfigFor(e2eAppName: string): void {
     if (!this.hasApp(e2eAppName)) {
       throw new SchematicsException(`Project "${e2eAppName}" does not exist.`);

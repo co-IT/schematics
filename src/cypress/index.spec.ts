@@ -134,6 +134,7 @@ describe('@co-it/schematics:cypress', () => {
     it.each([['cypress'], ['@nrwl/builders']])(
       'should install %s',
       packageId => {
+        treeBefore.create('e2e/.keep', '');
         treeBefore.create(
           'angular.json',
           JSON.stringify({
@@ -143,7 +144,7 @@ describe('@co-it/schematics:cypress', () => {
                 architect: {}
               },
               'my-app-e2e': {
-                root: '',
+                root: 'e2e/',
                 projectType: 'application',
                 architect: { e2e: { options: {} } }
               }
@@ -167,7 +168,7 @@ describe('@co-it/schematics:cypress', () => {
       }
     );
 
-    describe('with --overwrite=true', () => {
+    describe('When user wants to overwrite project files in /e2e folder', () => {
       const parameters = {
         ...defaultParameters,
         app: 'my-app',
@@ -175,6 +176,7 @@ describe('@co-it/schematics:cypress', () => {
       };
 
       beforeEach(() => {
+        treeBefore.create('e2e/.keep', '');
         treeBefore.create(
           'angular.json',
           JSON.stringify({
@@ -246,6 +248,142 @@ describe('@co-it/schematics:cypress', () => {
             }
           }
         });
+      });
+
+      it('should delete old content from root path', () => {
+        treeBefore.create('e2e/old-file', 'content');
+        treeBefore.create('e2e/old-folder/old-file', 'content');
+
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+
+        expect(treeAfter.files.filter(f => f.includes('old-file'))).toEqual([]);
+      });
+
+      it('should copy initial cypress files to app root folder', () => {
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+
+        expect(treeAfter.files.filter(f => f.startsWith('/e2e'))).toEqual([
+          '/e2e/cypress.json',
+          '/e2e/tsconfig.e2e.json',
+          '/e2e/tsconfig.json',
+          '/e2e/src/fixtures/example.json',
+          '/e2e/src/integration/examples/app.spec.ts',
+          '/e2e/src/plugins/index.ts',
+          '/e2e/src/support/commands.ts',
+          '/e2e/src/support/index.ts'
+        ]);
+      });
+
+      it('should set correct outDir compiler option in tsconfig.e2e.json', () => {
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+        const tsConfigE2eJson = JSON.parse(
+          treeAfter.readContent('/e2e/tsconfig.e2e.json')
+        );
+        expect(tsConfigE2eJson.compilerOptions.outDir).toEqual(
+          '../dist/out-tsc/apps/my-app-e2e/src'
+        );
+      });
+
+      it('should use correct directories in cypress.json', () => {
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+        const cypressJson = JSON.parse(
+          treeAfter.readContent('/e2e/cypress.json')
+        );
+        expect(cypressJson).toEqual(
+          expect.objectContaining({
+            fileServerFolder: '../dist/out-tsc/apps/my-app-e2e',
+            fixturesFolder: '../dist/out-tsc/apps/my-app-e2e/src/fixtures',
+            integrationFolder:
+              '../dist/out-tsc/apps/my-app-e2e/src/integration',
+            pluginsFile: '../dist/out-tsc/apps/my-app-e2e/src/plugins/index.js',
+            videosFolder: '../dist/out-tsc/apps/my-app-e2e/videos',
+            screenshotsFolder: '../dist/out-tsc/apps/my-app-e2e/screenshots'
+          })
+        );
+      });
+    });
+
+    describe('When user wants to overwrite project files in /projects/app-e2e folder', () => {
+      const parameters = {
+        ...defaultParameters,
+        app: 'my-app',
+        overwrite: true
+      };
+
+      beforeEach(() => {
+        treeBefore.create('project/app-e2e/.keep', '');
+        treeBefore.create(
+          'angular.json',
+          JSON.stringify({
+            projects: {
+              'my-app': {
+                projectType: 'application',
+                architect: {}
+              },
+              'my-app-e2e': {
+                root: 'projects/app-e2e/',
+                projectType: 'application',
+                prefix: '',
+                architect: {
+                  e2e: {}
+                }
+              }
+            }
+          })
+        );
+      });
+
+      it('should set correct outDir compiler option in tsconfig.e2e.json', () => {
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+        const tsConfigE2eJson = JSON.parse(
+          treeAfter.readContent('/projects/app-e2e/tsconfig.e2e.json')
+        );
+        expect(tsConfigE2eJson.compilerOptions.outDir).toEqual(
+          '../../dist/out-tsc/apps/my-app-e2e/src'
+        );
+      });
+
+      it('should use correct directories in cypress.json', () => {
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+        const cypressJson = JSON.parse(
+          treeAfter.readContent('/projects/app-e2e/cypress.json')
+        );
+        expect(cypressJson).toEqual(
+          expect.objectContaining({
+            fileServerFolder: '../../dist/out-tsc/apps/my-app-e2e',
+            fixturesFolder: '../../dist/out-tsc/apps/my-app-e2e/src/fixtures',
+            integrationFolder:
+              '../../dist/out-tsc/apps/my-app-e2e/src/integration',
+            pluginsFile:
+              '../../dist/out-tsc/apps/my-app-e2e/src/plugins/index.js',
+            videosFolder: '../../dist/out-tsc/apps/my-app-e2e/videos',
+            screenshotsFolder: '../../dist/out-tsc/apps/my-app-e2e/screenshots'
+          })
+        );
       });
     });
   });

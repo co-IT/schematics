@@ -3,11 +3,16 @@ import {
   SchematicContext,
   Tree,
   SchematicsException,
-  chain
+  chain,
+  mergeWith,
+  apply,
+  url,
+  template
 } from '@angular-devkit/schematics';
 import { CypressSchematicOptions } from './model';
 import { AngularJson } from '../lib/angular-json';
 import { installDependencies } from '../lib';
+import { strings } from '@angular-devkit/core';
 
 export default function cypress(options: CypressSchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -22,7 +27,8 @@ export default function cypress(options: CypressSchematicOptions): Rule {
       installDependencies({
         devDependencies: ['cypress', '@nrwl/builders']
       }),
-      configureAngularJson(patchedOptions, angularJson)
+      configureAngularJson(patchedOptions, angularJson),
+      overwriteAppFolderWithCypressFiles(patchedOptions, angularJson)
     ]);
   };
 }
@@ -83,6 +89,34 @@ function configureAngularJson(
     angularJson.setCypressConfigFor(getE2eProjectNameForApp(options.app));
     tree.overwrite('angular.json', angularJson.stringify());
     return tree;
+  };
+}
+
+function overwriteAppFolderWithCypressFiles(
+  options: CypressSchematicOptions,
+  angularJson: AngularJson
+): Rule {
+  return (_tree: Tree) => {
+    const e2eProjectName = getE2eProjectNameForApp(options.app);
+
+    const root = angularJson.getRootPathFor(e2eProjectName);
+
+    _tree.getDir(root).visit(oldFile => {
+      _tree.delete(oldFile);
+    });
+
+    const dotsUp = root.replace(/[^/]+/g, '..');
+    const outDir = `${dotsUp}dist/out-tsc/apps/${e2eProjectName}`;
+
+    return mergeWith(
+      apply(url('./templates/cypress-initial'), [
+        template({
+          ...strings,
+          root,
+          outDir
+        })
+      ])
+    );
   };
 }
 
