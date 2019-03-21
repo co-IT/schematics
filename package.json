@@ -3,13 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:co-IT/schematics.git",
   "author": "Gregor Woiwode <gw@co-IT.eu>",
   "contributors": [
     "Frank Strieter <fs@co-IT.eu>",
     "Markus Ende <me@markusende.de>"
   ],
-  "license": "MIT",
+  "license": "GNU GPLv3",
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
