@@ -24,8 +24,8 @@ export function configurePrettier(): Rule {
     chain([
       installDependencies({
         devDependencies: [
-          { name: 'prettier' },
-          { name: 'tslint-config-prettier' }
+          { name: 'prettier', version: '^1.16.4' },
+          { name: 'tslint-config-prettier', version: '^1.18.0' }
         ]
       }),
       mergeWith(

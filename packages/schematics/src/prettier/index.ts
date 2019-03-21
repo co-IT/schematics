@@ -29,9 +29,9 @@ export function configureHusky(): Rule {
   return chain([
     installDependencies({
       devDependencies: [
-        { name: 'husky' },
-        { name: 'pretty-quick' },
-        { name: 'lint-staged' }
+        { name: 'husky', version: '^1.3.1' },
+        { name: 'pretty-quick', version: '^1.10.0' },
+        { name: 'lint-staged', version: '^8.1.5' }
       ]
     }),
     applyHuskyConfiguration([
