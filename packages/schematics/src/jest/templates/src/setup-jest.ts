@@ -4,10 +4,10 @@ import 'jest-preset-angular';
 const mock = () => {
   let storage: { [key: string]: string } = {};
   return {
+    clear: () => (storage = {}),
     getItem: (key: string) => (key in storage ? storage[key] : null),
-    setItem: (key: string, value: string) => (storage[key] = value || ''),
     removeItem: (key: string) => delete storage[key],
-    clear: () => (storage = {})
+    setItem: (key: string, value: string) => (storage[key] = value || '')
   };
 };
 
@@ -20,8 +20,8 @@ Object.defineProperty(window, 'getComputedStyle', {
 Object.defineProperty(document.body.style, 'transform', {
   value: () => {
     return {
-      enumerable: true,
-      configurable: true
+      configurable: true,
+      enumerable: true
     };
   }
 });
