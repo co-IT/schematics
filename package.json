@@ -8,7 +8,7 @@
     "Frank Strieter <fs@co-IT.eu>",
     "Markus Ende <me@markusende.de>"
   ],
-  "license": "GNU GPLv3",
+  "license": "(ISC OR GPL-3.0)",
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
