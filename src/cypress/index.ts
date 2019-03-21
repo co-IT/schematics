@@ -7,12 +7,18 @@ import {
 } from '@angular-devkit/schematics';
 import { CypressSchematicOptions } from './model';
 import { AngularJson } from '../lib/angular-json';
+import { installDependencies } from '../lib';
 
 export default function cypress(options: CypressSchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const angularJson = readAngularJson(tree);
 
-    return chain([verifyOptions(options, angularJson)]);
+    return chain([
+      verifyOptions(options, angularJson),
+      installDependencies({
+        devDependencies: ['cypress', '@nrwl/builders']
+      })
+    ]);
   };
 }
 
