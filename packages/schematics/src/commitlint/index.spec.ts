@@ -55,9 +55,9 @@ describe('@co-it/schematics:commitlint', () => {
       );
       expect(packageAfterInstall.devDependencies).toEqual(
         expect.objectContaining({
-          '@commitlint/cli': 'latest',
-          '@commitlint/config-conventional': 'latest',
-          husky: 'latest'
+          '@commitlint/cli': expect.anything(),
+          '@commitlint/config-conventional': expect.anything(),
+          husky: expect.anything()
         })
       );
     });
