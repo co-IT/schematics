@@ -11,8 +11,10 @@
   ],
   "license": "MIT",
   "scripts": {
-    "lint": "tslint --project ./tsconfig.json --format stylish",
-    "format": "prettier --write \"**/*.{js,json,css,scss,md,ts,html}\""
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "format": "lerna run format"
   },
   "devDependencies": {
     "lerna": "^3.13.1"
