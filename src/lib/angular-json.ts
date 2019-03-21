@@ -13,12 +13,39 @@ export class AngularJson {
     this.content = JSON.parse(buffer.toString('utf-8'));
   }
 
-  get defaultProject() {
+  get defaultProject(): string {
     return this.content.defaultProject;
   }
 
   hasApp(appName: string): boolean {
     return !!this._getApps().find(app => app.name === appName);
+  }
+
+  setCypressConfigFor(e2eAppName: string): void {
+    if (!this.hasApp(e2eAppName)) {
+      throw new SchematicsException(`Project "${e2eAppName}" does not exist.`);
+    }
+    const projectConfig = this.content.projects[e2eAppName];
+    const projectArchitectConfig = projectConfig.architect;
+    if (!projectArchitectConfig.e2e) {
+      throw new SchematicsException(
+        `Did not find an e2e configuration in "${e2eAppName}".`
+      );
+    }
+    const rootPath = `${projectConfig.root}${
+      projectConfig.root.endsWith('/') ? '' : '/'
+    }`;
+    projectArchitectConfig.e2e.builder = '@nrwl/builders:cypress';
+    if (!projectArchitectConfig.e2e.options) {
+      projectArchitectConfig.e2e.options = {};
+    }
+    projectArchitectConfig.e2e.options.cypressConfig = `${rootPath}cypress.json`;
+    projectArchitectConfig.e2e.options.tsConfig = `${rootPath}tsconfig.e2e.json`;
+    delete projectArchitectConfig.e2e.options.protractorConfig;
+  }
+
+  stringify(): string {
+    return JSON.stringify(this.content, null, 2);
   }
 
   private _getApps() {
