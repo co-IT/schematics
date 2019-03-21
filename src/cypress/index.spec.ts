@@ -44,6 +44,8 @@ describe('@co-it/schematics:cypress', () => {
   });
 
   describe('When invalid schematics parameters are provided', () => {
+    beforeEach(() => {});
+
     it('should throw an error if app name is invalid', () => {
       const parameters = {
         ...defaultParameters,
@@ -118,5 +120,33 @@ describe('@co-it/schematics:cypress', () => {
         );
       });
     });
+  });
+
+  describe('When schematic parameters are valid', () => {
+    beforeEach(() => {
+      treeBefore.create(
+        'package.json',
+        JSON.stringify({ scripts: {}, devDependencies: {} })
+      );
+    });
+
+    it.each([['cypress'], ['@nrwl/builders']])(
+      'should install %s',
+      packageId => {
+        const parameters = {
+          ...defaultParameters,
+          app: 'app-without-e2e-tests'
+        };
+
+        console.log(treeBefore.files);
+        const tree = runner.runSchematic('cypress', parameters, treeBefore);
+
+        const packageJson = JSON.parse(tree.readContent('package.json'));
+
+        expect(packageJson.devDependencies).toEqual(
+          expect.objectContaining({ [packageId]: expect.anything() })
+        );
+      }
+    );
   });
 });
