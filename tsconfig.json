@@ -10,14 +10,10 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "rootDir": "src/",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "target": "es6",
-    "typeRoots": ["node_modules/@types"],
-    "resolveJsonModule": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["src/*/templates/**/*"]
+    "typeRoots": ["node_modules/@types"]
+  }
 }
