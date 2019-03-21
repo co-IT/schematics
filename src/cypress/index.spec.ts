@@ -20,31 +20,32 @@ describe('@co-it/schematics:cypress', () => {
 
   beforeEach(() => {
     treeBefore = new UnitTestTree(Tree.empty());
-    treeBefore.create(
-      'angular.json',
-      JSON.stringify({
-        projects: {
-          'my-app': {
-            projectType: 'application',
-            architect: {}
-          },
-          'my-app-e2e': {
-            projectType: 'application',
-            architect: { e2e: {} }
-          },
-          'app-without-e2e-tests': {
-            projectType: 'application',
-            architect: {}
-          }
-        },
-        defaultProject: 'my-app'
-      })
-    );
     runner = new SchematicTestRunner('schematics', collectionPath);
   });
 
   describe('When invalid schematics parameters are provided', () => {
-    beforeEach(() => {});
+    beforeEach(() => {
+      treeBefore.create(
+        'angular.json',
+        JSON.stringify({
+          projects: {
+            'my-app': {
+              projectType: 'application',
+              architect: {}
+            },
+            'my-app-e2e': {
+              projectType: 'application',
+              architect: { e2e: {} }
+            },
+            'app-without-e2e-tests': {
+              projectType: 'application',
+              architect: {}
+            }
+          },
+          defaultProject: 'my-app'
+        })
+      );
+    });
 
     it('should throw an error if app name is invalid', () => {
       const parameters = {
@@ -133,12 +134,29 @@ describe('@co-it/schematics:cypress', () => {
     it.each([['cypress'], ['@nrwl/builders']])(
       'should install %s',
       packageId => {
+        treeBefore.create(
+          'angular.json',
+          JSON.stringify({
+            projects: {
+              'my-app': {
+                projectType: 'application',
+                architect: {}
+              },
+              'my-app-e2e': {
+                root: '',
+                projectType: 'application',
+                architect: { e2e: { options: {} } }
+              }
+            }
+          })
+        );
+
         const parameters = {
           ...defaultParameters,
-          app: 'app-without-e2e-tests'
+          app: 'my-app',
+          overwrite: true
         };
 
-        console.log(treeBefore.files);
         const tree = runner.runSchematic('cypress', parameters, treeBefore);
 
         const packageJson = JSON.parse(tree.readContent('package.json'));
@@ -148,5 +166,87 @@ describe('@co-it/schematics:cypress', () => {
         );
       }
     );
+
+    describe('with --overwrite=true', () => {
+      const parameters = {
+        ...defaultParameters,
+        app: 'my-app',
+        overwrite: true
+      };
+
+      beforeEach(() => {
+        treeBefore.create(
+          'angular.json',
+          JSON.stringify({
+            projects: {
+              'my-app': {
+                projectType: 'application',
+                architect: {}
+              },
+              'my-app-e2e': {
+                root: 'e2e/',
+                projectType: 'application',
+                prefix: '',
+                architect: {
+                  e2e: {
+                    builder: '@angular-devkit/build-angular:protractor',
+                    options: {
+                      protractorConfig: 'e2e/protractor.conf.js',
+                      devServerTarget: 'test-project:serve'
+                    },
+                    configurations: {
+                      production: {
+                        devServerTarget: 'test-project:serve:production'
+                      }
+                    }
+                  },
+                  lint: {
+                    builder: '@angular-devkit/build-angular:tslint',
+                    options: {
+                      tsConfig: 'e2e/tsconfig.e2e.json',
+                      exclude: ['**/node_modules/**']
+                    }
+                  }
+                }
+              }
+            }
+          })
+        );
+      });
+
+      it('should configure project entry in angular.json', () => {
+        const tree = runner.runSchematic('cypress', parameters, treeBefore);
+
+        const angularJson = JSON.parse(tree.readContent('angular.json'));
+
+        expect(angularJson.projects['my-app-e2e']).toEqual({
+          root: 'e2e/',
+          projectType: 'application',
+          prefix: '',
+          architect: {
+            e2e: {
+              builder: '@nrwl/builders:cypress',
+              options: {
+                cypressConfig: 'e2e/cypress.json',
+                tsConfig: 'e2e/tsconfig.e2e.json',
+                devServerTarget: 'test-project:serve'
+              },
+              configurations: {
+                production: {
+                  devServerTarget: 'test-project:serve:production'
+                }
+              }
+            },
+            lint: {
+              builder: '@angular-devkit/build-angular:tslint',
+              options: {
+                tsConfig: 'e2e/tsconfig.e2e.json',
+                exclude: ['**/node_modules/**']
+              }
+            }
+          }
+        });
+      });
+    });
   });
 });
