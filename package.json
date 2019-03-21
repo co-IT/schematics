@@ -1,5 +1,6 @@
 {
   "name": "schematics",
+  "private": true,
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:co-IT/schematics.git",
@@ -9,7 +10,14 @@
     "Markus Ende <me@markusende.de>"
   ],
   "license": "MIT",
+  "scripts": {
+    "lint": "tslint --project ./tsconfig.json --format stylish",
+    "format": "prettier --write \"**/*.{js,json,css,scss,md,ts,html}\""
+  },
   "devDependencies": {
     "lerna": "^3.13.1"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }

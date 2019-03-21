@@ -4,12 +4,12 @@
   "description": "Automated & opinionated setup for large scaled Angular applications",
   "scripts": {
     "build": "ts-node -P ./build/tsconfig.json ./build",
+    "format": "prettier --write \"**/*.{js,json,css,scss,md,ts,html}\"",
     "tsc:prod": "tsc -p tsconfig.json",
     "tsc:update-schema": "node ./tools/tsconfig/update-schema.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "tslint --project ./tsconfig.json --format stylish",
-    "format": "prettier --write \"**/*.{js,json,css,scss,md,ts,html}\""
+    "lint": "tslint --project ./tsconfig.json --format stylish"
   },
   "keywords": [
     "schematics",
@@ -25,8 +25,7 @@
   "schematics": "./src/collection.json",
   "dependencies": {
     "@angular-devkit/core": "^7.3.4",
-    "@angular-devkit/schematics": "^7.3.4",
-    "prettier": "^1.16.4"
+    "@angular-devkit/schematics": "^7.3.4"
   },
   "devDependencies": {
     "@types/globby": "^8.0.0",
@@ -37,8 +36,8 @@
     "fs-extra": "^7.0.1",
     "globby": "^9.1.0",
     "jest": "^24.5.0",
-    "lerna": "^3.13.1",
     "node-fetch": "^2.3.0",
+    "prettier": "^1.16.4",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.2",
     "tslint": "^5.13.1",
