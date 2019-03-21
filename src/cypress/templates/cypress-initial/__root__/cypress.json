@@ -1,0 +1,11 @@
+{
+  "fileServerFolder": "<%= outDir %>",
+  "fixturesFolder": "<%= outDir %>/src/fixtures",
+  "integrationFolder": "<%= outDir %>/src/integration",
+  "pluginsFile": "<%= outDir %>/src/plugins/index.js",
+  "supportFile": false,
+  "video": true,
+  "videosFolder": "<%= outDir %>/videos",
+  "screenshotsFolder": "<%= outDir %>/screenshots",
+  "chromeWebSecurity": false
+}
