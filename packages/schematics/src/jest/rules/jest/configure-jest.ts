@@ -26,9 +26,9 @@ export function configureJest(): Rule {
     chain([
       installDependencies({
         devDependencies: [
-          { name: 'jest' },
-          { name: 'jest-preset-angular' },
-          { name: '@types/jest' }
+          { name: 'jest', version: '^24.5.0' },
+          { name: 'jest-preset-angular', version: '^7.0.1' },
+          { name: '@types/jest', version: '^24.0.11' }
         ]
       }),
       removeDependencies({
