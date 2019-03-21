@@ -14,9 +14,9 @@ export default function commitlint(): Rule {
   return chain([
     installDependencies({
       devDependencies: [
-        { name: '@commitlint/cli' },
-        { name: '@commitlint/config-conventional' },
-        { name: 'husky' }
+        { name: '@commitlint/cli', version: '^7.5.2' },
+        { name: '@commitlint/config-conventional', version: '^7.5.0 ' },
+        { name: 'husky', version: '^1.3.1' }
       ]
     }),
     warnAgainstCompetingConfiguration({
