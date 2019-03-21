@@ -24,7 +24,7 @@
     "cypress"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "GNU GPLv3",
   "schematics": "./src/collection.json",
   "dependencies": {
     "@angular-devkit/core": "^7.3.4",
