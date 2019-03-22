@@ -17,7 +17,7 @@
       "type": "string",
       "description": "Path of e2e test folder to be used as installation destination. if not set, the destination folder will be derived from target app folder.",
       "default": "",
-      "x-prompt": "Should existing e2e test folder be overwritten? Empty means, it will derived from target app folder."
+      "x-prompt": "Path of e2e test folder to be used as installation destination. Empty means, it will derived from target app folder."
     }
   }
 }
