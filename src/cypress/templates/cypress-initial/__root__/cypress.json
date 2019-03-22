@@ -1,11 +1,11 @@
 {
-  "fileServerFolder": "<%= outDir %>",
-  "fixturesFolder": "<%= outDir %>/src/fixtures",
-  "integrationFolder": "<%= outDir %>/src/integration",
-  "pluginsFile": "<%= outDir %>/src/plugins/index.js",
+  "fileServerFolder": "<%= tsOutDir %>",
+  "fixturesFolder": "<%= tsOutDir %>/src/fixtures",
+  "integrationFolder": "<%= tsOutDir %>/src/integration",
+  "pluginsFile": "<%= tsOutDir %>/src/plugins/index.js",
   "supportFile": false,
   "video": true,
-  "videosFolder": "<%= outDir %>/videos",
-  "screenshotsFolder": "<%= outDir %>/screenshots",
+  "videosFolder": "<%= tsOutDir %>/videos",
+  "screenshotsFolder": "<%= tsOutDir %>/screenshots",
   "chromeWebSecurity": false
 }
