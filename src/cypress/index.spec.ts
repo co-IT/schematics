@@ -296,6 +296,18 @@ describe('@co-it/schematics:cypress', () => {
         );
       });
 
+      it('should set correct extends option in tsconfig.json', () => {
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+        const tsConfigJson = JSON.parse(
+          treeAfter.readContent('/e2e/tsconfig.json')
+        );
+        expect(tsConfigJson.extends).toEqual('../tsconfig.json');
+      });
+
       it('should use correct directories in cypress.json', () => {
         const treeAfter = runner.runSchematic(
           'cypress',
@@ -361,6 +373,18 @@ describe('@co-it/schematics:cypress', () => {
         expect(tsConfigE2eJson.compilerOptions.outDir).toEqual(
           '../../dist/out-tsc/apps/my-app-e2e/src'
         );
+      });
+
+      it('should set correct extends option in tsconfig.json', () => {
+        const treeAfter = runner.runSchematic(
+          'cypress',
+          parameters,
+          treeBefore
+        );
+        const tsConfigJson = JSON.parse(
+          treeAfter.readContent('/projects/app-e2e/tsconfig.json')
+        );
+        expect(tsConfigJson.extends).toEqual('../../tsconfig.json');
       });
 
       it('should use correct directories in cypress.json', () => {

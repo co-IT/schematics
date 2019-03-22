@@ -106,14 +106,16 @@ function overwriteAppFolderWithCypressFiles(
     });
 
     const dotsUp = root.replace(/[^/]+/g, '..');
-    const outDir = `${dotsUp}dist/out-tsc/apps/${e2eProjectName}`;
+    const tsOutDir = `${dotsUp}dist/out-tsc/apps/${e2eProjectName}`;
+    const tsExtends = `${dotsUp}tsconfig.json`;
 
     return mergeWith(
       apply(url('./templates/cypress-initial'), [
         template({
           ...strings,
           root,
-          outDir
+          tsOutDir,
+          tsExtends
         })
       ])
     );
