@@ -100,8 +100,7 @@ describe('@co-it/schematics:cypress', () => {
           runner.runSchematic('cypress', parameters, treeBefore)
         ).toThrowError(
           'No e2e project named "app-without-e2e-tests-e2e" was found. ' +
-            'If you want to create a new e2e project, please set --overwrite to false ' +
-            ' and provide a root folder via --folder.'
+            'If you want to create a new e2e project, please set --overwrite to false '
         );
       });
 
