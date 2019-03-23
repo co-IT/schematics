@@ -1,5 +1,6 @@
 import { AngularJsonSchema } from './angular-json-schema';
 import { SchematicsException } from '@angular-devkit/schematics';
+import { AngularJsonProject } from './angular-json-project';
 
 export class AngularJson {
   private content: AngularJsonSchema;
@@ -19,6 +20,19 @@ export class AngularJson {
 
   hasApp(appName: string): boolean {
     return !!this._getApps().find(app => app.name === appName);
+  }
+
+  getApp(appName: string) {
+    if (!this.hasApp(appName)) {
+      throw new SchematicsException(
+        `No entry found for application "${appName}"`
+      );
+    }
+    return { ...this.content.projects[appName] };
+  }
+
+  setApp(appName: string, appDefinition: AngularJsonProject) {
+    this.content.projects[appName] = appDefinition;
   }
 
   getRootPathFor(appName: string): string {
