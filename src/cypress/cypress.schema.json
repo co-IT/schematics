@@ -14,7 +14,7 @@
     },
     "folder": {
       "type": "string",
-      "description": "Path of e2e test folder to be used as installation destination. If not set, the destination folder will be derived from target app folder."
+      "description": "Overwrite path for e2e project root folder to be used as installation destination. If not set, the destination folder will be derived from target app folder."
     }
   }
 }

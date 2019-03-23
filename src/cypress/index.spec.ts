@@ -426,6 +426,33 @@ describe('@co-it/schematics:cypress', () => {
         }
       );
 
+      it('should respect folder parameter', () => {
+        const parameters = {
+          ...defaultParameters,
+          app: 'my-app',
+          folder: 'some/folder'
+        };
+
+        treeBefore.create(
+          'angular.json',
+          JSON.stringify({
+            projects: {
+              'my-app': {
+                root: '',
+                projectType: 'application',
+                architect: {}
+              }
+            }
+          })
+        );
+
+        const tree = runner.runSchematic('cypress', parameters, treeBefore);
+
+        const angularJson = JSON.parse(tree.readContent('angular.json'));
+
+        expect(angularJson.projects['my-app-e2e'].root).toEqual('some/folder/');
+      });
+
       it('should throw an exception if new root folder already exists', () => {
         const parameters = {
           ...defaultParameters,

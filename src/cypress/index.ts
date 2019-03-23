@@ -121,6 +121,10 @@ function calculateRootFolderFromTargetApp(
   options: CypressSchematicOptions,
   angularJson: AngularJson
 ) {
+  if (options.folder) {
+    return options.folder;
+  }
+
   const targetAppRoot = angularJson.getApp(options.app).root;
   const sanitizedTargetAppRoot = targetAppRoot.endsWith('/')
     ? targetAppRoot
