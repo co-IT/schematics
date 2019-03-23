@@ -26,7 +26,10 @@ export default function cypress(options: CypressSchematicOptions): Rule {
     return chain([
       verifyOptions(patchedOptions, angularJson),
       installDependencies({
-        devDependencies: ['cypress', '@nrwl/builders']
+        devDependencies: [
+          { name: 'cypress', version: '^3.2.0' },
+          { name: '@nrwl/builders', version: '^7.7.2' }
+        ]
       }),
       configureAngularJson(patchedOptions, angularJson),
       overwriteAppFolderWithCypressFiles(patchedOptions, angularJson)
