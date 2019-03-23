@@ -14,8 +14,7 @@
     },
     "folder": {
       "type": "string",
-      "description": "Path of e2e test folder to be used as installation destination. If not set, the destination folder will be derived from target app folder.",
-      "x-prompt": "In which folder do you want to create a new e2e project? (leave as empty if you overwrite an existing one via overwrite parameter)"
+      "description": "Path of e2e test folder to be used as installation destination. If not set, the destination folder will be derived from target app folder."
     }
   }
 }
