@@ -189,27 +189,7 @@ describe('@co-it/schematics:cypress', () => {
                 root: 'e2e/',
                 projectType: 'application',
                 prefix: '',
-                architect: {
-                  e2e: {
-                    builder: '@angular-devkit/build-angular:protractor',
-                    options: {
-                      protractorConfig: 'e2e/protractor.conf.js',
-                      devServerTarget: 'test-project:serve'
-                    },
-                    configurations: {
-                      production: {
-                        devServerTarget: 'test-project:serve:production'
-                      }
-                    }
-                  },
-                  lint: {
-                    builder: '@angular-devkit/build-angular:tslint',
-                    options: {
-                      tsConfig: 'e2e/tsconfig.e2e.json',
-                      exclude: ['**/node_modules/**']
-                    }
-                  }
-                }
+                architect: {}
               }
             }
           })
@@ -231,11 +211,11 @@ describe('@co-it/schematics:cypress', () => {
               options: {
                 cypressConfig: 'e2e/cypress.json',
                 tsConfig: 'e2e/tsconfig.e2e.json',
-                devServerTarget: 'test-project:serve'
+                devServerTarget: 'my-app:serve'
               },
               configurations: {
                 production: {
-                  devServerTarget: 'test-project:serve:production'
+                  devServerTarget: 'my-app:serve:production'
                 }
               }
             },

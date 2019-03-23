@@ -13,6 +13,7 @@ import { CypressSchematicOptions } from './model';
 import { AngularJson } from '../lib/angular-json';
 import { installDependencies } from '../lib';
 import { strings } from '@angular-devkit/core';
+import { AngularJsonProject } from '../lib/angular-json-project';
 
 export default function cypress(options: CypressSchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -86,9 +87,52 @@ function configureAngularJson(
   angularJson: AngularJson
 ): Rule {
   return (tree: Tree) => {
-    angularJson.setCypressConfigFor(getE2eProjectNameForApp(options.app));
+    const e2eAppName = getE2eProjectNameForApp(options.app);
+    const root = angularJson.getApp(e2eAppName).root;
+
+    const newAppConfiguration: AngularJsonProject = createCypressProjectConfiguration(
+      root,
+      options.app
+    );
+
+    angularJson.setApp(e2eAppName, newAppConfiguration);
+
     tree.overwrite('angular.json', angularJson.stringify());
     return tree;
+  };
+}
+
+function createCypressProjectConfiguration(
+  root: string,
+  nameOfAppUnderTest: string
+): AngularJsonProject {
+  const sanitizedRoot = root.endsWith('/') ? root : `${root}/`;
+  return {
+    root: sanitizedRoot,
+    projectType: 'application',
+    prefix: '',
+    architect: {
+      e2e: {
+        builder: '@nrwl/builders:cypress',
+        options: {
+          cypressConfig: `${sanitizedRoot}cypress.json`,
+          tsConfig: `${sanitizedRoot}tsconfig.e2e.json`,
+          devServerTarget: `${nameOfAppUnderTest}:serve`
+        },
+        configurations: {
+          production: {
+            devServerTarget: `${nameOfAppUnderTest}:serve:production`
+          }
+        }
+      },
+      lint: {
+        builder: '@angular-devkit/build-angular:tslint',
+        options: {
+          tsConfig: `${sanitizedRoot}tsconfig.e2e.json`,
+          exclude: ['**/node_modules/**']
+        }
+      }
+    }
   };
 }
 

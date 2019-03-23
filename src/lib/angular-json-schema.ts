@@ -1,12 +1,8 @@
+import { AngularJsonProject } from './angular-json-project';
+
 export interface AngularJsonSchema {
   readonly projects: {
-    [key: string]: {
-      root: string;
-      projectType: 'application' | 'library';
-      architect: {
-        e2e?: any;
-      };
-    };
+    [key: string]: AngularJsonProject;
   };
   readonly defaultProject: string;
 }
