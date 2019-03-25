@@ -23,44 +23,6 @@ describe('@co-it/schematics:cypress', () => {
     runner = new SchematicTestRunner('schematics', collectionPath);
   });
 
-  describe('When invalid schematics parameters are provided', () => {
-    beforeEach(() => {
-      treeBefore.create(
-        'angular.json',
-        JSON.stringify({
-          projects: {
-            'my-app': {
-              projectType: 'application',
-              architect: {}
-            },
-            'my-app-e2e': {
-              projectType: 'application',
-              architect: { e2e: {} }
-            },
-            'app-without-e2e-tests': {
-              projectType: 'application',
-              architect: {}
-            }
-          },
-          defaultProject: 'my-app'
-        })
-      );
-    });
-
-    describe('with --overwrite=false', () => {
-      it('should throw an error if e2e project is found for default project', () => {
-        const parameters = defaultParameters;
-
-        expect(() =>
-          runner.runSchematic('cypress', parameters, treeBefore)
-        ).toThrowError(
-          'Existing project named "my-app-e2e" was found. ' +
-            'Please set --overwrite to true to overwrite existing project.'
-        );
-      });
-    });
-  });
-
   describe('When schematic parameters are valid', () => {
     beforeEach(() => {
       treeBefore.create(
@@ -132,53 +94,6 @@ describe('@co-it/schematics:cypress', () => {
             }
           })
         );
-      });
-
-      it('should configure project entry in angular.json', () => {
-        const tree = runner.runSchematic('cypress', parameters, treeBefore);
-
-        const angularJson = JSON.parse(tree.readContent('angular.json'));
-
-        expect(angularJson.projects['my-app-e2e']).toEqual({
-          root: 'e2e/',
-          projectType: 'application',
-          prefix: '',
-          architect: {
-            e2e: {
-              builder: '@nrwl/builders:cypress',
-              options: {
-                cypressConfig: 'e2e/cypress.json',
-                tsConfig: 'e2e/tsconfig.e2e.json',
-                devServerTarget: 'my-app:serve'
-              },
-              configurations: {
-                production: {
-                  devServerTarget: 'my-app:serve:production'
-                }
-              }
-            },
-            lint: {
-              builder: '@angular-devkit/build-angular:tslint',
-              options: {
-                tsConfig: 'e2e/tsconfig.e2e.json',
-                exclude: ['**/node_modules/**']
-              }
-            }
-          }
-        });
-      });
-
-      it('should delete old content from root path', () => {
-        treeBefore.create('e2e/old-file', 'content');
-        treeBefore.create('e2e/old-folder/old-file', 'content');
-
-        const treeAfter = runner.runSchematic(
-          'cypress',
-          parameters,
-          treeBefore
-        );
-
-        expect(treeAfter.files.filter(f => f.includes('old-file'))).toEqual([]);
       });
 
       it('should copy initial cypress files to app root folder', () => {
@@ -325,98 +240,6 @@ describe('@co-it/schematics:cypress', () => {
             videosFolder: '../../dist/out-tsc/apps/my-app-e2e/videos',
             screenshotsFolder: '../../dist/out-tsc/apps/my-app-e2e/screenshots'
           })
-        );
-      });
-    });
-
-    describe('When user wants to create new e2e project', () => {
-      it.each`
-        root                 | expected
-        ${''}                | ${'my-app-e2e/'}
-        ${'/'}               | ${'my-app-e2e/'}
-        ${'my-app/'}         | ${'my-app-e2e/'}
-        ${'projects/my-app'} | ${'projects/my-app-e2e/'}
-      `(
-        'should set e2e project root to "%expected" in angular.json for app with root "%root"',
-        ({ root, expected }: { root: string; expected: string }) => {
-          const parameters = {
-            ...defaultParameters,
-            app: 'my-app'
-          };
-
-          treeBefore.create(
-            'angular.json',
-            JSON.stringify({
-              projects: {
-                'my-app': {
-                  root,
-                  projectType: 'application',
-                  architect: {}
-                }
-              }
-            })
-          );
-
-          const tree = runner.runSchematic('cypress', parameters, treeBefore);
-
-          const angularJson = JSON.parse(tree.readContent('angular.json'));
-
-          expect(angularJson.projects['my-app-e2e'].root).toEqual(expected);
-        }
-      );
-
-      it('should respect folder parameter', () => {
-        const parameters = {
-          ...defaultParameters,
-          app: 'my-app',
-          folder: 'some/folder'
-        };
-
-        treeBefore.create(
-          'angular.json',
-          JSON.stringify({
-            projects: {
-              'my-app': {
-                root: '',
-                projectType: 'application',
-                architect: {}
-              }
-            }
-          })
-        );
-
-        const tree = runner.runSchematic('cypress', parameters, treeBefore);
-
-        const angularJson = JSON.parse(tree.readContent('angular.json'));
-
-        expect(angularJson.projects['my-app-e2e'].root).toEqual('some/folder/');
-      });
-
-      it('should throw an exception if new root folder already exists', () => {
-        const parameters = {
-          ...defaultParameters,
-          app: 'my-app'
-        };
-
-        treeBefore.create('my-app-e2e', '');
-        treeBefore.create('my-app-e2e/.keep', '');
-        treeBefore.create(
-          'angular.json',
-          JSON.stringify({
-            projects: {
-              'my-app': {
-                root: '',
-                projectType: 'application',
-                architect: {}
-              }
-            }
-          })
-        );
-
-        expect(() =>
-          runner.runSchematic('cypress', parameters, treeBefore)
-        ).toThrowError(
-          'Could not create root folder "my-app-e2e/" because it is not empty.'
         );
       });
     });
