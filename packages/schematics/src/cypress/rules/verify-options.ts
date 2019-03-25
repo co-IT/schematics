@@ -7,7 +7,9 @@ export function verifyOptions(
   options: CypressSchematicOptions,
   angularJson: AngularJson
 ): Rule {
-  return (tree: Tree) => {
+  return (tree: Tree, context: any) => {
+    console.log(context);
+
     if (!angularJson.hasApp(options.app)) {
       throw new SchematicsException(
         'Invalid app name provided. ' +
