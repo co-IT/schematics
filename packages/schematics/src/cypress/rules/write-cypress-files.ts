@@ -8,20 +8,18 @@ import {
 } from '@angular-devkit/schematics';
 import { AngularJson } from 'src/lib';
 import { CypressSchematicOptions } from '../model';
-import { getE2eProjectNameForApp } from './utils';
+import { getE2eProjectNameForApp, readAngularJson } from './utils';
 import { strings } from '@angular-devkit/core';
 
-export function writeCypressFiles(
-  options: CypressSchematicOptions,
-  angularJson: AngularJson
-): Rule {
-  return (_tree: Tree) => {
+export function writeCypressFiles(options: CypressSchematicOptions): Rule {
+  return (tree: Tree) => {
+    const angularJson = readAngularJson(tree);
     const e2eProjectName = getE2eProjectNameForApp(options.app);
 
     const root = angularJson.getRootPathFor(e2eProjectName);
 
-    _tree.getDir(root).visit(oldFile => {
-      _tree.delete(oldFile);
+    tree.getDir(root).visit(oldFile => {
+      tree.delete(oldFile);
     });
 
     const dotsUp = root.replace(/[^/]+/g, '..');

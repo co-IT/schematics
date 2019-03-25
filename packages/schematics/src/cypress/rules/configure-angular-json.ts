@@ -1,13 +1,11 @@
 import { CypressSchematicOptions } from '../model';
 import { Rule, Tree, SchematicsException } from '@angular-devkit/schematics';
 import { AngularJson, AngularJsonProject } from 'src/lib';
-import { getE2eProjectNameForApp } from './utils';
+import { getE2eProjectNameForApp, readAngularJson } from './utils';
 
-export function configureAngularJson(
-  options: CypressSchematicOptions,
-  angularJson: AngularJson
-): Rule {
+export function configureAngularJson(options: CypressSchematicOptions): Rule {
   return (tree: Tree) => {
+    const angularJson = readAngularJson(tree);
     const e2eAppName = getE2eProjectNameForApp(options.app);
 
     const root = options.overwrite
