@@ -4,11 +4,12 @@ import {
   SchematicContext,
   Tree
 } from '@angular-devkit/schematics';
-import { installDependencies } from '../lib';
+import { installDependencies, PackageJson } from '../lib';
 import { CypressSchematicOptions } from './model';
 import { configureAngularJson } from './rules/configure-angular-json';
 import { verifyOptions } from './rules/verify-options';
 import { writeCypressFiles } from './rules/write-cypress-files';
+import { addNpmScripts } from '../lib/rules/add-npm-scripts';
 
 export default function cypress(options: CypressSchematicOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -22,7 +23,8 @@ export default function cypress(options: CypressSchematicOptions): Rule {
         ]
       }),
       configureAngularJson(verifiedOptions),
-      writeCypressFiles(verifiedOptions)
+      writeCypressFiles(verifiedOptions),
+      addNpmScripts({ name: 'cy:open', command: 'cypress open' })
     ]);
   };
 }

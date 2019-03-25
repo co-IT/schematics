@@ -8,6 +8,7 @@ import { readParameterDefaults } from '../test';
 import { CypressSchematicOptions } from './model';
 
 import * as cypressSchema from './cypress.schema.json';
+import { PackageJsonSchema } from 'src/lib/package-json-schema';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 const defaultParameters = readParameterDefaults<CypressSchematicOptions>(
@@ -242,6 +243,40 @@ describe('@co-it/schematics:cypress', () => {
           })
         );
       });
+    });
+
+    it('should set an npm script for cypress open', () => {
+      treeBefore.create('e2e/.keep', '');
+      treeBefore.create(
+        'angular.json',
+        JSON.stringify({
+          projects: {
+            'my-app': {
+              projectType: 'application',
+              architect: {}
+            },
+            'my-app-e2e': {
+              root: 'e2e/',
+              projectType: 'application',
+              architect: { e2e: { options: {} } }
+            }
+          }
+        })
+      );
+
+      const parameters = {
+        ...defaultParameters,
+        app: 'my-app',
+        overwrite: true
+      };
+
+      const tree = runner.runSchematic('cypress', parameters, treeBefore);
+
+      const packageJson: PackageJsonSchema = JSON.parse(
+        tree.readContent('package.json')
+      );
+
+      expect(packageJson.scripts).toEqual({ 'cy:open': 'cypress open' });
     });
   });
 });
