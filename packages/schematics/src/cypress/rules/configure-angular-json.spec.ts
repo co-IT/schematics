@@ -87,8 +87,8 @@ describe('configureAngularJson', () => {
       ${'my-app/'}         | ${'my-app-e2e/'}
       ${'projects/my-app'} | ${'projects/my-app-e2e/'}
     `(
-      'should set e2e project root to "%expected" in angular.json for app with root "%root"',
-      ({ root, expected }: { root: string; expected: string }) => {
+      'should set e2e project root to "$expected" in angular.json for app with root "$root"',
+      ({ root, expected }) => {
         const parameters = {
           ...defaultParameters,
           app: 'my-app'
