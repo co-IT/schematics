@@ -90,12 +90,7 @@ describe('verify-options', () => {
   });
 
   describe('When --overwrite=false is used', () => {
-    it('should throw an error if e2e project is found for specified app', () => {
-      const parameters = {
-        ...defaultParameters,
-        app: 'my-app'
-      };
-
+    beforeEach(() => {
       treeBefore.create(
         'angular.json',
         JSON.stringify({
@@ -110,9 +105,29 @@ describe('verify-options', () => {
               projectType: 'application',
               architect: { e2e: {} }
             } as AngularJsonProject
-          }
+          },
+          defaultProject: 'my-app'
         })
       );
+    });
+
+    it('should throw an error if e2e project is found for specified app', () => {
+      const parameters = {
+        ...defaultParameters,
+        app: 'my-app'
+      };
+
+      expect(() => verifyOptions(parameters, treeBefore)).toThrowError(
+        'Existing project named "my-app-e2e" was found. ' +
+          'Please set --overwrite to true to overwrite existing project.'
+      );
+    });
+
+    it('should throw an error if e2e project is found for default project', () => {
+      const parameters = {
+        ...defaultParameters,
+        app: ''
+      };
 
       expect(() => verifyOptions(parameters, treeBefore)).toThrowError(
         'Existing project named "my-app-e2e" was found. ' +
