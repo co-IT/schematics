@@ -1,16 +1,16 @@
-import { CypressSchematicOptions } from '../model';
-import { Rule, Tree, SchematicsException } from '@angular-devkit/schematics';
+import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { AngularJson, AngularJsonProject } from 'src/lib';
+import { CypressSchematicOptions } from '../model';
 import { getE2eProjectNameForApp, readAngularJson } from './utils';
 
 export function configureAngularJson(options: CypressSchematicOptions): Rule {
   return (tree: Tree) => {
-    const angularJson = readAngularJson(tree);
+    const ngConfig = readAngularJson(tree);
     const e2eAppName = getE2eProjectNameForApp(options.app);
 
     const root = options.overwrite
-      ? angularJson.getApp(e2eAppName).root
-      : calculateRootFolderFromTargetApp(options, angularJson);
+      ? ngConfig.getApp(e2eAppName).root
+      : calculateRootFolderFromTargetApp(options, ngConfig);
 
     const newAppConfiguration: AngularJsonProject = createCypressProjectConfiguration(
       root,
@@ -29,9 +29,9 @@ export function configureAngularJson(options: CypressSchematicOptions): Rule {
       });
     }
 
-    angularJson.setApp(e2eAppName, newAppConfiguration);
+    ngConfig.setApp(e2eAppName, newAppConfiguration);
 
-    tree.overwrite('angular.json', angularJson.stringify());
+    tree.overwrite('angular.json', ngConfig.stringify());
     return tree;
   };
 }

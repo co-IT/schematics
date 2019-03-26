@@ -1,22 +1,21 @@
+import { strings } from '@angular-devkit/core';
 import {
-  Rule,
-  Tree,
-  mergeWith,
   apply,
-  url,
-  template
+  mergeWith,
+  Rule,
+  template,
+  Tree,
+  url
 } from '@angular-devkit/schematics';
-import { AngularJson } from 'src/lib';
 import { CypressSchematicOptions } from '../model';
 import { getE2eProjectNameForApp, readAngularJson } from './utils';
-import { strings } from '@angular-devkit/core';
 
 export function writeCypressFiles(options: CypressSchematicOptions): Rule {
   return (tree: Tree) => {
-    const angularJson = readAngularJson(tree);
+    const ngConfig = readAngularJson(tree);
     const e2eProjectName = getE2eProjectNameForApp(options.app);
 
-    const root = angularJson.getRootPathFor(e2eProjectName);
+    const root = ngConfig.getRootPathFor(e2eProjectName);
 
     tree.getDir(root).visit(oldFile => {
       tree.delete(oldFile);

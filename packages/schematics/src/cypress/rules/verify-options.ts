@@ -6,18 +6,18 @@ export function verifyOptions(
   options: CypressSchematicOptions,
   tree: Tree
 ): CypressSchematicOptions {
-  const angularJson = readAngularJson(tree);
+  const ngConfig = readAngularJson(tree);
 
-  const app = options.app || angularJson.defaultProject;
+  const app = options.app || ngConfig.defaultProject;
 
-  if (!angularJson.hasApp(app)) {
+  if (!ngConfig.hasApp(app)) {
     throw new SchematicsException(
       'Invalid app name provided. ' +
         'Please provide a name of an existing Angular app as configured in angular.json.'
     );
   }
 
-  const doesE2eAppExist = angularJson.hasApp(getE2eProjectNameForApp(app));
+  const doesE2eAppExist = ngConfig.hasApp(getE2eProjectNameForApp(app));
 
   if (doesE2eAppExist && !options.overwrite) {
     throw new SchematicsException(
