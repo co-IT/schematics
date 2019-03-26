@@ -276,7 +276,10 @@ describe('@co-it/schematics:cypress', () => {
         tree.readContent('package.json')
       );
 
-      expect(packageJson.scripts).toEqual({ 'cy:open': 'cypress open' });
+      expect(packageJson.scripts).toEqual({
+        'cy:open': 'cypress open',
+        'cy:run': 'cypress run'
+      });
     });
   });
 });
