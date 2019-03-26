@@ -51,7 +51,9 @@ describe('writeCypressFiles', () => {
 
       writeCypressFiles(parameters)(tree, null!);
 
-      expect(tree.files.filter(f => f.includes('old-file'))).toEqual([]);
+      expect(
+        tree.files.find(file => file.includes('old-file'))
+      ).toBeUndefined();
     });
   });
 });
