@@ -24,7 +24,10 @@ export default function cypress(options: CypressSchematicOptions): Rule {
       }),
       configureAngularJson(verifiedOptions),
       writeCypressFiles(verifiedOptions),
-      addNpmScripts({ name: 'cy:open', command: 'cypress open' })
+      addNpmScripts(
+        { name: 'cy:open', command: 'cypress open' },
+        { name: 'cy:run', command: 'cypress run' }
+      )
     ]);
   };
 }
