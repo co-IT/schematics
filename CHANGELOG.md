@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1-alpha.6](https://github.com/co-IT/schematics/compare/v1.0.1-alpha.5...v1.0.1-alpha.6) (2019-03-27)
+
+
+### Bug Fixes
+
+* **cypress:** use correct extends option in tsconfig ([6d24da3](https://github.com/co-IT/schematics/commit/6d24da3))
+* **cypress:** use correct wording in project prompt ([ea92eae](https://github.com/co-IT/schematics/commit/ea92eae))
+
+
+### Features
+
+* **cypress:** add cy:open npm script ([ba3703e](https://github.com/co-IT/schematics/commit/ba3703e))
+* **cypress:** add cy:run npm script ([e7d4b67](https://github.com/co-IT/schematics/commit/e7d4b67))
+* **cypress:** add initial configuration and some first error handling for parameters ([ad1ee0f](https://github.com/co-IT/schematics/commit/ad1ee0f))
+* **cypress:** configure angular.json project entry ([7f0e67e](https://github.com/co-IT/schematics/commit/7f0e67e))
+* **cypress:** generate new e2e app if overwrite parameter is false ([93578a6](https://github.com/co-IT/schematics/commit/93578a6))
+* **cypress:** install packages ([fec8fb4](https://github.com/co-IT/schematics/commit/fec8fb4))
+* **cypress:** let user overwrite e2e project folder path ([635bec7](https://github.com/co-IT/schematics/commit/635bec7))
+* **cypress:** remove prompt for folder parameter ([5073fe1](https://github.com/co-IT/schematics/commit/5073fe1))
+* **cypress:** replace old e2e files with cypress files ([7d31d17](https://github.com/co-IT/schematics/commit/7d31d17))
+* **cypress:** reword prompts ([b40fe50](https://github.com/co-IT/schematics/commit/b40fe50))
+* **cypress:** specify version for installed packages ([78e3d69](https://github.com/co-IT/schematics/commit/78e3d69))
+
+
+
+
+
 ## [1.0.1-alpha.5](https://github.com/co-IT/schematics/compare/v1.0.1-alpha.4...v1.0.1-alpha.5) (2019-03-21)
 
 **Note:** Version bump only for package schematics
