@@ -8,7 +8,8 @@
     },
     "commitlint": {
       "description": "Install & configure commitlint",
-      "factory": "./commitlint/index"
+      "factory": "./commitlint/index",
+      "schema": "./commitlint/commitlint.schema.json"
     },
     "tsconfig": {
       "description": "refine tsconfig.json making it more strict",
@@ -17,7 +18,8 @@
     },
     "jest": {
       "description": "configure the angular project to test with jest",
-      "factory": "./jest/index"
+      "factory": "./jest/index",
+      "schema": "./jest/jest.schema.json"
     },
     "cypress": {
       "description": "Install & configure cypress",
