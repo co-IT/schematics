@@ -1,4 +1,11 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "properties": {}
+  "properties": {
+    "hook": {
+      "type": "boolean",
+      "description": "Enable push hook to run all test before push",
+      "default": true,
+      "x-prompt": "Setup pre-push hook?"
+    }
+  }
 }
