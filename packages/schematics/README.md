@@ -17,7 +17,7 @@ and configured automatically for you.
 | ----------------------------------- | ------------------------------------------------------------ |
 | `ng g @co-it/schematics:commitlint` | Configure [commitlint] and set up commit hook using [husky]. |
 | `ng g @co-it/schematics:cypress`    | _coming soon_                                                |
-| `ng g @co-it/schematics:jest`       | _coming soon_                                                |
+| `ng g @co-it/schematics:jest`       | Configure [jest] and set up pre-push hook using [husky].                                                |
 | `ng g @co-it/schematics:prettier`   | Configure [prettier] and set up commit hook using [husky].   |
 | `ng g @co-it/schematics:tsconfig`   | Activate Typescript's strict compiler options.               |
 
