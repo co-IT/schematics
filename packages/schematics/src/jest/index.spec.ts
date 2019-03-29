@@ -4,7 +4,6 @@ import {
 } from '@angular-devkit/schematics/testing';
 import { Tree } from '@angular-devkit/schematics';
 import * as path from 'path';
-import { TsconfigPatchOptions } from './models/tsconfig-patch-options';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
@@ -134,7 +133,83 @@ describe('@co-it/schematics:jest', () => {
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
       expect(packageAfterInstall.scripts['test']).toBe('jest');
     });
+  });
 
-    it.todo('should add a husky git hook before push');
+  describe('husky configuration', () => {
+    describe('if the user don´t want to add a husky hook for jest', () => {
+      it('husky should not be configured', () => {
+        const tree = runner.runSchematic('jest', { hook: false }, actualTree);
+
+        expect(tree.exists('.huskyrc')).toBe(false);
+      });
+    });
+
+    describe('if husky isn´t configured in the project', () => {
+      it('should add a .huskyrc file', () => {
+        const tree = runner.runSchematic('jest', {}, actualTree);
+        expect(tree.exists('.huskyrc')).toBe(true);
+      });
+
+      it('huskyrc should contain a jest pre-push hook', () => {
+        const tree = runner.runSchematic('jest', {}, actualTree);
+
+        expect(JSON.parse(tree.readContent('.huskyrc'))).toHaveProperty(
+          'hooks.pre-push',
+          'jest --watch=false'
+        );
+      });
+    });
+
+    describe('if husky is already configured for the projet in .huskyrc', () => {
+      it('should add the jest hook to .huskyrc', () => {
+        actualTree.create(
+          '.huskyrc',
+          JSON.stringify({ hooks: { 'some-hook': 'script' } })
+        );
+        const tree = runner.runSchematic('jest', {}, actualTree);
+        const mergedHooks = {
+          hooks: { 'pre-push': 'jest --watch=false', 'some-hook': 'script' }
+        };
+        expect(JSON.parse(tree.readContent('.huskyrc'))).toEqual(mergedHooks);
+      });
+    });
+
+    describe('When a competing configuration is found', () => {
+      let mockLogger: { warn: () => void };
+      let warn: jest.SpyInstance;
+
+      beforeEach(() => {
+        mockLogger = { warn: () => {} };
+        runner['_logger'] = { createChild: () => mockLogger as any } as any;
+        warn = jest.spyOn(mockLogger, 'warn');
+      });
+      it('should warn if detected in package.json', () => {
+        const packageBeforeInstall = {
+          scripts: {},
+          devDependencies: {},
+          husky: {}
+        };
+        actualTree.overwrite(
+          'package.json',
+          JSON.stringify(packageBeforeInstall)
+        );
+        runner.runSchematic('jest', {}, actualTree);
+
+        expect(warn).toHaveBeenCalledWith(
+          'Found competing husky configuration in package.json.'
+        );
+      });
+
+      it.each([['.huskyrc.json'], ['.huskyrc.js']])(
+        ' should warn if detected in %s',
+        (file: string) => {
+          actualTree.create(file, JSON.stringify({}));
+          runner.runSchematic('jest', {}, actualTree);
+          expect(warn).toHaveBeenCalledWith(
+            `Found competing husky configuration in ${file}.`
+          );
+        }
+      );
+    });
   });
 });
