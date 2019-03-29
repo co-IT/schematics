@@ -47,7 +47,7 @@ export function configureJest(): Rule {
         return tree;
       }),
       mergeWith(
-        apply(url('./templates'), [
+        apply(url('./templates/jest'), [
           forEach(template => {
             tree.exists(template.path)
               ? tree.overwrite(template.path, template.content)
