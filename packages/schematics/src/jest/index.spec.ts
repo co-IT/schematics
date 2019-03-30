@@ -155,7 +155,7 @@ describe('@co-it/schematics:jest', () => {
 
         expect(JSON.parse(tree.readContent('.huskyrc'))).toHaveProperty(
           'hooks.pre-push',
-          'jest --watch=false'
+          'jest'
         );
       });
     });
@@ -168,7 +168,7 @@ describe('@co-it/schematics:jest', () => {
         );
         const tree = runner.runSchematic('jest', {}, actualTree);
         const mergedHooks = {
-          hooks: { 'pre-push': 'jest --watch=false', 'some-hook': 'script' }
+          hooks: { 'pre-push': 'jest', 'some-hook': 'script' }
         };
         expect(JSON.parse(tree.readContent('.huskyrc'))).toEqual(mergedHooks);
       });
