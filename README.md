@@ -13,13 +13,13 @@ and configured automatically for you.
 
 ### Overview
 
-| Command                             | Description                                                  |
-| ----------------------------------- | ------------------------------------------------------------ |
-| `ng g @co-it/schematics:commitlint` | Configure [commitlint] and set up commit hook using [husky]. |
-| `ng g @co-it/schematics:cypress`    | _coming soon_                                                |
-| `ng g @co-it/schematics:jest`       | _coming soon_                                                |
-| `ng g @co-it/schematics:prettier`   | Configure [prettier] and set up commit hook using [husky].   |
-| `ng g @co-it/schematics:tsconfig`   | Activate Typescript's strict compiler options.               |
+| Command                             | Description                                                             |
+| ----------------------------------- | ----------------------------------------------------------------------- |
+| `ng g @co-it/schematics:commitlint` | Configure [commitlint] and set up commit hook using [husky].            |
+| `ng g @co-it/schematics:cypress`    | Configure [cypress] with TypeScript support utilizing [@nrwl/builders]. |
+| `ng g @co-it/schematics:jest`       | _coming soon_                                                           |
+| `ng g @co-it/schematics:prettier`   | Configure [prettier] and set up commit hook using [husky].              |
+| `ng g @co-it/schematics:tsconfig`   | Activate Typescript's strict compiler options.                          |
 
 **@co-it/schematics** is internally used and maintained by [co-IT.eu GmbH](https://co-IT.eu).
 
@@ -31,3 +31,4 @@ and configured automatically for you.
 [jest]: https://jestjs.io/
 [prettier]: https://prettier.io/
 [typescript]: https://www.typescriptlang.org/
+[@nrwl/builders]: https://github.com/nrwl/nx/tree/master/packages/builders
