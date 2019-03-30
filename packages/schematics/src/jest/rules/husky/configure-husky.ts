@@ -12,7 +12,7 @@ export function configureHusky(): Rule {
     installDependencies({
       devDependencies: [{ name: 'husky', version: '^1.3.1' }]
     }),
-    applyHuskyConfiguration(['pre-push', 'jest --watch=false']),
+    applyHuskyConfiguration(['pre-push', 'jest']),
     warnAgainstCompetingConfiguration({
       packageJsonKey: 'husky',
       files: ['.huskyrc.json', '.huskyrc.js']
