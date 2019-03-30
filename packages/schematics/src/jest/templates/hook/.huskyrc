@@ -1,5 +1,5 @@
 {
   "hooks": {
-    "pre-push": "jest --watch=false"
+    "pre-push": "jest"
   }
 }
