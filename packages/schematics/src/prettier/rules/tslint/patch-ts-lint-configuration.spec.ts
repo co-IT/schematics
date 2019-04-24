@@ -29,35 +29,11 @@ describe('When "extends" does not exist', () => {
     expect(tslintJson.extends).toContain('tslint-config-prettier');
   });
 
-  it.skip('should enforce single quotes', () => {
-    rule(tree, emptyContext);
-
-    const tslintJson = JSON.parse(tree.readContent('tslint.json'));
-    expect(tslintJson.rules.quotemark).toEqual([true, 'single']);
-  });
-
   it('should remove max-line-length rule', () => {
     rule(tree, emptyContext);
 
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
     expect(tslintJson.rules['max-line-length']).toBeUndefined();
-  });
-
-  it.skip('should avoid arrow parens', () => {
-    rule(tree, emptyContext);
-
-    const tslintJson = JSON.parse(tree.readContent('tslint.json'));
-    expect(tslintJson.rules['arrow-parens']).toBe(false);
-  });
-
-  it.skip('should avoid trailing-comma', () => {
-    rule(tree, emptyContext);
-
-    const tslintJson = JSON.parse(tree.readContent('tslint.json'));
-    expect(tslintJson.rules['trailing-comma']).toEqual([
-      true,
-      { multiline: 'never', singleline: 'never' }
-    ]);
   });
 });
 
