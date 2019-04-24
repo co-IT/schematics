@@ -35,6 +35,12 @@ describe('When "extends" does not exist', () => {
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
     expect(tslintJson.rules['max-line-length']).toBeUndefined();
   });
+
+  it('should not remove existing rules', () => {
+    rule(tree, emptyContext);
+    const tslintJson = JSON.parse(tree.readContent('tslint.json'));
+    expect(tslintJson.rules['array-type']).toBe(false);
+  });
 });
 
 describe('When no tslint.json is present', () => {
