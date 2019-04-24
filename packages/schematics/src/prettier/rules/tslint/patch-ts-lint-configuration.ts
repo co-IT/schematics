@@ -21,8 +21,7 @@ export function patchTsLintConfiguration(): Rule {
       originTsLintJson.extends = ['tslint-config-prettier'];
     }
 
-    let tslintJson = { ...originTsLintJson, ...opinionatedTsLintRules };
-    tslintJson = omitRule(tslintJson, 'max-line-length');
+    const tslintJson = omitRule(originTsLintJson, 'max-line-length');
 
     tree.overwrite('tslint.json', JSON.stringify(tslintJson, null, 2));
   };
