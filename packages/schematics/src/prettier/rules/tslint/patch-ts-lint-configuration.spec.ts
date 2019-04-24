@@ -11,7 +11,15 @@ describe('When "extends" does not exist', () => {
     rule = patchTsLintConfiguration();
     emptyContext = {} as SchematicContext;
     tree = new UnitTestTree(Tree.empty());
-    tree.create('tslint.json', JSON.stringify({}));
+    tree.create(
+      'tslint.json',
+      JSON.stringify({
+        rules: {
+          'max-line-length': [true, 140],
+          'array-type': false
+        }
+      })
+    );
   });
 
   it('should add the property and add prettier tslint configuration', () => {
@@ -21,28 +29,28 @@ describe('When "extends" does not exist', () => {
     expect(tslintJson.extends).toContain('tslint-config-prettier');
   });
 
-  it('should enforce single quotes', () => {
+  it.skip('should enforce single quotes', () => {
     rule(tree, emptyContext);
 
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
     expect(tslintJson.rules.quotemark).toEqual([true, 'single']);
   });
 
-  it('should enforce max line length 80', () => {
+  it('should remove max-line-length rule', () => {
     rule(tree, emptyContext);
 
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
-    expect(tslintJson.rules['max-line-length']).toEqual([true, 80]);
+    expect(tslintJson.rules['max-line-length']).toBeUndefined();
   });
 
-  it('should avoid arrow parens', () => {
+  it.skip('should avoid arrow parens', () => {
     rule(tree, emptyContext);
 
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
     expect(tslintJson.rules['arrow-parens']).toBe(false);
   });
 
-  it('should avoid trailing-comma', () => {
+  it.skip('should avoid trailing-comma', () => {
     rule(tree, emptyContext);
 
     const tslintJson = JSON.parse(tree.readContent('tslint.json'));
