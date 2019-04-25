@@ -1,5 +1,4 @@
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { opinionatedTsLintRules } from './opinionated-tslint-rules';
 
 export function patchTsLintConfiguration(): Rule {
   return (tree: Tree) => {
@@ -28,9 +27,13 @@ export function patchTsLintConfiguration(): Rule {
 }
 
 function omitRule(
-  tslintConfig: { rules: { [key: string]: any } },
+  tslintConfig: { rules?: { [key: string]: any } },
   ruleKey: string
 ): object {
+  if (!tslintConfig || !tslintConfig.rules) {
+    return tslintConfig;
+  }
+
   delete tslintConfig.rules[ruleKey];
   return tslintConfig;
 }
