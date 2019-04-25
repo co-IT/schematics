@@ -23,7 +23,7 @@ and configured automatically for you.
 
 **@co-it/schematics** is internally used and maintained by [co-IT.eu GmbH](https://co-IT.eu).
 
-<img align="right" alt="Orange co-IT.eu GmbH Logo" src="./assets/co-it.logo.png">
+<img align="right" alt="Orange co-IT.eu GmbH Logo" src="https://github.com/co-IT/schematics/blob/master/assets/co-it.logo.png?raw=true">
 
 [commitlint]: https://github.com/conventional-changelog/commitlint
 [cypress]: https://www.cypress.io/

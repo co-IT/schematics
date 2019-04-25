@@ -11,6 +11,6 @@
 
 **@co-it/schematics** is internally used and maintained by [co-IT.eu GmbH](https://co-IT.eu).
 
-<img align="right" alt="Orange co-IT.eu GmbH Logo" src="./assets/co-it.logo.png">
+<img align="right" alt="Orange co-IT.eu GmbH Logo" src="https://github.com/co-IT/schematics/blob/master/assets/co-it.logo.png?raw=true">
 
 [@co-it/schematics]: ./packages/schematics
