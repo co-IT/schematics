@@ -16,6 +16,7 @@
     "tsc:update-schema": "node ./tools/tsconfig/update-schema.js",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:integration": "jest --config jest.integration.config.js",
     "lint": "tslint --project ./tsconfig.json --format stylish"
   },
   "keywords": [
