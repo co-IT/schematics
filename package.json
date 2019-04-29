@@ -12,6 +12,7 @@
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
+    "test:integration": "lerna run test:integration",
     "lint": "lerna run lint",
     "format": "lerna run format"
   },
