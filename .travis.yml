@@ -13,3 +13,4 @@ script:
   - yarn lint
   - yarn test
   - yarn build
+  - yarn test:integration
