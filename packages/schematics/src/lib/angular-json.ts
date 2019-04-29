@@ -39,6 +39,21 @@ export class AngularJson {
     return this.content.projects[appName].root;
   }
 
+  setJestConfigFor(testAppName: string) {
+    if (!this.hasApp(testAppName)) {
+      throw new SchematicsException(`Project "${testAppName}" does not exist.`);
+    }
+    const projectConfig = this.content.projects[testAppName];
+    const projectArchitectConfig = projectConfig.architect;
+    if (!projectArchitectConfig.test) {
+      throw new SchematicsException(
+        `Did not find a test configuration in "${testAppName}".`
+      );
+    }
+    projectArchitectConfig.test.builder = '@angular-builders/jest:run';
+    delete projectArchitectConfig.test.options.karmaConfig;
+  }
+
   setCypressConfigFor(e2eAppName: string): void {
     if (!this.hasApp(e2eAppName)) {
       throw new SchematicsException(`Project "${e2eAppName}" does not exist.`);

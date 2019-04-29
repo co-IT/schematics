@@ -33,6 +33,28 @@ describe('@co-it/schematics:jest', () => {
     };
     actualTree.create('package.json', JSON.stringify(packageBeforeInstall));
     actualTree.create(
+      'angular.json',
+      JSON.stringify({
+        defaultProject: 'my-app',
+        projects: {
+          'my-app': {
+            projectType: 'application',
+            architect: {
+              test: {
+                builder: '@angular-devkit/build-angular:karma',
+                options: {
+                  main: 'src/test.ts',
+                  polyfills: 'src/polyfills.ts',
+                  tsConfig: 'src/tsconfig.spec.json',
+                  karmaConfig: 'src/karma.conf.js'
+                }
+              }
+            }
+          }
+        }
+      })
+    );
+    actualTree.create(
       'src/tsconfig.spec.json',
       JSON.stringify(specsTsConfigBeforeInstall)
     );
@@ -125,13 +147,13 @@ describe('@co-it/schematics:jest', () => {
     it('should add a jest watch script', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
-      expect(packageAfterInstall.scripts['test:watch']).toBe('jest --watch');
+      expect(packageAfterInstall.scripts['test:watch']).toBe('ng test --watch');
     });
 
     it('should set the test script to jest', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
       const packageAfterInstall = JSON.parse(tree.readContent('package.json'));
-      expect(packageAfterInstall.scripts['test']).toBe('jest');
+      expect(packageAfterInstall.scripts['test']).toBe('ng test');
     });
   });
 
@@ -155,7 +177,7 @@ describe('@co-it/schematics:jest', () => {
 
         expect(JSON.parse(tree.readContent('.huskyrc'))).toHaveProperty(
           'hooks.pre-push',
-          'jest'
+          'ng test'
         );
       });
     });
@@ -168,7 +190,7 @@ describe('@co-it/schematics:jest', () => {
         );
         const tree = runner.runSchematic('jest', {}, actualTree);
         const mergedHooks = {
-          hooks: { 'pre-push': 'jest', 'some-hook': 'script' }
+          hooks: { 'pre-push': 'ng test', 'some-hook': 'script' }
         };
         expect(JSON.parse(tree.readContent('.huskyrc'))).toEqual(mergedHooks);
       });
