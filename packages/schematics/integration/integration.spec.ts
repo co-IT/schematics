@@ -19,14 +19,22 @@ describe('@co-it/schematics integration tests', () => {
 
     console.log(`Creating Angular test project in ${testBed.folder}`);
 
+    await testBed.execute(
+      'mkdir global_node_modules; yarn --cwd global_node_modules add @angular/cli'
+    );
+
     const result = await testBed.run(
-      'npx ng new integration-test --directory . --defaults'
+      './global_node_modules/node_modules/.bin/ng new integration-test --directory . --defaults'
     );
 
     console.log(result.stdout);
     if (result.code !== 0) {
       done.fail('Could not create Angular project');
     }
+
+    await testBed.execute(
+      'rm -rf global_node_modules; git commit -a --amend --no-edit'
+    );
 
     console.log('Finished creating Angular test project.');
 
