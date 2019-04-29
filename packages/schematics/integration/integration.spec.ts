@@ -1,65 +1,10 @@
-import * as os from 'os';
-import * as fs from 'fs';
-import * as path from 'path';
+import {
+  IntegrationTestBed,
+  initializeIntegrationTestBed
+} from './integration-test-bed';
 
-const nixt = require('nixt');
-
-const minute = 60000;
-jest.setTimeout(5 * minute);
-
-interface RunResult {
-  readonly code?: number;
-  readonly cmd?: string;
-  readonly err?: number;
-  readonly stdout?: string;
-  readonly stderr?: string;
-}
-
-function run(command: string, folder = '.'): Promise<RunResult> {
-  return new Promise((resolve, reject) => {
-    console.log(`Running command ${command} in folder ${folder}`);
-
-    let runResult: RunResult = {};
-    function expectationHook(result: any) {
-      runResult = result;
-      if (result.stderr) {
-        console.warn(result.stderr);
-      }
-    }
-    function done() {
-      resolve(runResult);
-    }
-
-    try {
-      nixt()
-        .cwd(folder)
-        .expect(expectationHook)
-        .run(command, done);
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
-}
-
-function execute(command: string, folder = '.'): Promise<void> {
-  console.log(`Executing command ${command} in folder ${folder}`);
-
-  return new Promise((resolve, reject) => {
-    try {
-      nixt()
-        .cwd(folder)
-        .exec(command)
-        .run('', resolve);
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
-}
-
-async function linkSchematics(folder: string) {
-  const linkResult = await run('yarn link @co-it/schematics', folder);
+async function linkSchematics(testBed: IntegrationTestBed) {
+  const linkResult = await testBed.run('yarn link @co-it/schematics');
   console.log(linkResult.stdout);
   expect(linkResult.stdout).toContain(
     'Using linked package for "@co-it/schematics"'
@@ -67,20 +12,15 @@ async function linkSchematics(folder: string) {
 }
 
 describe('@co-it/schematics integration tests', () => {
-  let folder: string;
+  let testBed: IntegrationTestBed;
 
   beforeAll(async done => {
-    folder = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'schematics-integration-test-workspace-')
-    );
+    testBed = await initializeIntegrationTestBed();
 
-    console.log(`Creating Angular test project in ${folder}`);
+    console.log(`Creating Angular test project in ${testBed.folder}`);
 
-    await execute(`cd dist; yarn unlink; yarn link;`);
-
-    const result = await run(
-      'npx ng new integration-test --directory . --defaults',
-      folder
+    const result = await testBed.run(
+      'npx ng new integration-test --directory . --defaults'
     );
 
     console.log(result.stdout);
@@ -96,14 +36,14 @@ describe('@co-it/schematics integration tests', () => {
   beforeEach(async done => {
     console.log('Cleaning git repository.');
 
-    await execute('git checkout -- .; git clean -fd', folder);
+    await testBed.execute('git checkout -- .; git clean -fd');
 
-    const statusResult = await run('git status', folder);
+    const statusResult = await testBed.run('git status');
     expect(statusResult.stdout).toContain(
       'nothing to commit, working tree clean'
     );
 
-    await linkSchematics(folder);
+    await linkSchematics(testBed);
 
     done();
   });
@@ -111,9 +51,8 @@ describe('@co-it/schematics integration tests', () => {
   describe('@co-it/schematics:commitlint', () => {
     describe('When "ng g @co-it/schematics:commitlint" is run', () => {
       it('should update files', async () => {
-        const result = await run(
-          'ng generate @co-it/schematics:commitlint',
-          folder
+        const result = await testBed.run(
+          'ng generate @co-it/schematics:commitlint'
         );
 
         expect(result.stdout).toMatch(
@@ -133,9 +72,8 @@ describe('@co-it/schematics integration tests', () => {
   describe('@co-it/schematics:cypress', () => {
     describe('When "ng generate @co-it/schematics:cypress --overwrite=true" is run', () => {
       it('should update files', async () => {
-        const result = await run(
-          'ng generate @co-it/schematics:cypress --overwrite=true --no-interactive',
-          folder
+        const result = await testBed.run(
+          'ng generate @co-it/schematics:cypress --overwrite=true --no-interactive'
         );
 
         expect(result.stdout).toMatch(
@@ -160,12 +98,11 @@ describe('@co-it/schematics integration tests', () => {
       });
 
       it('should setup e2e runner for cypress', async () => {
-        await execute(
-          'ng generate @co-it/schematics:cypress --overwrite=true --no-interactive',
-          folder
+        await testBed.execute(
+          'ng generate @co-it/schematics:cypress --overwrite=true --no-interactive'
         );
 
-        const result = await run('ng e2e --headless', folder);
+        const result = await testBed.run('ng e2e --headless');
 
         expect(result.stdout).toMatch(
           matchLines('✔ examples/app.spec.js', 'All specs passed!')
@@ -175,12 +112,11 @@ describe('@co-it/schematics integration tests', () => {
 
     describe('When "ng generate @co-it/schematics:cypress --app=second-app --overwrite=true" is run', () => {
       it('should update files', async () => {
-        await execute('ng generate app second-app', folder);
-        await linkSchematics(folder);
+        await testBed.execute('ng generate app second-app');
+        await linkSchematics(testBed);
 
-        const result = await run(
-          'ng generate @co-it/schematics:cypress --app=second-app --overwrite=true --no-interactive',
-          folder
+        const result = await testBed.run(
+          'ng generate @co-it/schematics:cypress --app=second-app --overwrite=true --no-interactive'
         );
 
         expect(result.stdout).toMatch(
@@ -205,14 +141,13 @@ describe('@co-it/schematics integration tests', () => {
       });
 
       it('should setup e2e runner for cypress', async () => {
-        await execute('ng generate app second-app', folder);
-        await linkSchematics(folder);
-        await execute(
-          'ng generate @co-it/schematics:cypress --app=second-app --overwrite=true --no-interactive',
-          folder
+        await testBed.execute('ng generate app second-app');
+        await linkSchematics(testBed);
+        await testBed.execute(
+          'ng generate @co-it/schematics:cypress --app=second-app --overwrite=true --no-interactive'
         );
 
-        const result = await run('ng e2e second-app-e2e --headless', folder);
+        const result = await testBed.run('ng e2e second-app-e2e --headless');
 
         expect(result.stdout).toMatch(
           matchLines('examples/app.spec.js', 'All specs passed!')
