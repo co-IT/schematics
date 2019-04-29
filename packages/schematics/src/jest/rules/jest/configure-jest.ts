@@ -10,7 +10,11 @@ import {
 } from '@angular-devkit/schematics';
 import { installDependencies, removeDependencies } from '../../../lib';
 
-const possibleKarmaConfigs = ['src/karma.conf.js', 'src/test.ts'];
+const possibleDeprecatedConfigs = [
+  'src/karma.conf.js',
+  'src/test.ts',
+  'src/test-config.helper.ts'
+];
 
 /**
  * TODO: Workaround
@@ -27,6 +31,7 @@ export function configureJest(): Rule {
       installDependencies({
         devDependencies: [
           { name: 'jest', version: '^24.5.0' },
+          { name: '@angular-builders/jest', version: '^7.4.1' },
           { name: 'jest-preset-angular', version: '^7.0.1' },
           { name: '@types/jest', version: '^24.0.11' }
         ]
@@ -41,7 +46,7 @@ export function configureJest(): Rule {
         ]
       }),
       mergeWith(() => {
-        possibleKarmaConfigs.forEach(path =>
+        possibleDeprecatedConfigs.forEach(path =>
           tree.exists(path) ? tree.delete(path) : ''
         );
         return tree;
