@@ -66,8 +66,7 @@ describe('@co-it/schematics integration tests', () => {
             'CREATE commitlint.config.js.*',
             'CREATE .huskyrc.*',
             'UPDATE package.json.*',
-            'husky > setting up git hooks.*',
-            'husky > done.*',
+            '> husky@.* install',
             'added .* packages.*'
           )
         );
