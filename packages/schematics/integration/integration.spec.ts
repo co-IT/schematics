@@ -110,7 +110,7 @@ describe('@co-it/schematics integration tests', () => {
         const result = await testBed.run('ng e2e --headless');
 
         expect(result.stdout).toMatch(
-          matchLines('✔ examples/app.spec.js', 'All specs passed!')
+          matchLines('examples/app.spec.js', 'All specs passed!')
         );
       });
     });
