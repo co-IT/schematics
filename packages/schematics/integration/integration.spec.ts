@@ -208,7 +208,39 @@ describe('@co-it/schematics integration tests', () => {
     });
   });
 
-  describe('@co-it/schematics:prettier', () => {});
+  describe('@co-it/schematics:prettier', () => {
+    describe('When "ng generate @co-it/schematics:prettier --hook=true" is run', () => {
+      it('should update files', async () => {
+        const result = await testBed.run(
+          'ng generate @co-it/schematics:prettier --hook=true'
+        );
+
+        expect(result.stdout).toMatch(
+          matchLines(
+            'CREATE .prettierrc',
+            'CREATE .huskyrc',
+            'CREATE .lintstagedrc',
+            'UPDATE package.json',
+            'UPDATE tslint.json'
+          )
+        );
+      });
+
+      it('should add working format script', async () => {
+        await testBed.execute(
+          'ng generate @co-it/schematics:prettier --hook=true'
+        );
+
+        const result = await testBed.run('yarn format');
+
+        expect(result.stdout).toMatch(
+          matchLines(
+            'prettier --write "\\*\\*\\/\\*\\.\\{js,json,css,scss,md,ts,html\\}"'
+          )
+        );
+      });
+    });
+  });
 
   describe('@co-it/schematics:tsconfig', () => {
     describe('When "ng generate @co-it/schematics:tsconfig --defaults" is run', () => {
