@@ -46,10 +46,8 @@ describe('@co-it/schematics integration tests', () => {
 
     await testBed.execute('git checkout -- .; git clean -fd');
 
-    const statusResult = await testBed.run('git status');
-    expect(statusResult.stdout).toContain(
-      'nothing to commit, working tree clean'
-    );
+    const statusResult = await testBed.run('git status --porcelain');
+    expect(statusResult.stdout).toBeFalsy();
 
     await linkSchematics(testBed);
 
