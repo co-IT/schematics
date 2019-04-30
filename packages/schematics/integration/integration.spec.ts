@@ -161,11 +161,66 @@ describe('@co-it/schematics integration tests', () => {
     });
   });
 
-  describe('@co-it/schematics:jest', () => {});
+  describe('@co-it/schematics:jest', () => {
+    describe('When "ng generate @co-it/schematics:jest --hook=true" is run', () => {
+      it('should update files', async () => {
+        const result = await testBed.run(
+          'ng generate @co-it/schematics:jest --hook=true'
+        );
+
+        expect(result.stdout).toMatch(
+          matchLines(
+            'DELETE src/karma.conf.js',
+            'DELETE src/test.ts',
+            'CREATE jest.config.js',
+            'CREATE src/setup-jest.ts',
+            'CREATE src/test-config.helper.ts',
+            'CREATE .huskyrc',
+            'UPDATE package.json',
+            'UPDATE src/tsconfig.spec.json',
+            '> husky@.* install',
+            'added .* packages'
+          )
+        );
+      });
+
+      it('should run jest tests', async () => {
+        await testBed.execute('ng generate @co-it/schematics:jest --hook=true');
+
+        const result = await testBed.run('yarn test');
+
+        // Jest uses stderr, see issue https://github.com/facebook/jest/issues/5064
+        expect(result.stderr).toMatch(
+          matchLines(
+            'PASS src/app/app.component.spec.ts',
+            'AppComponent',
+            ' should create the app',
+            " should have as title 'integration-test'",
+            ' should render title in a h1 tag',
+            'Test Suites: 1 passed, 1 total',
+            'Tests:       3 passed, 3 total',
+            'Snapshots:   0 total',
+            'Time: .*',
+            'Ran all test suites.'
+          )
+        );
+      });
+    });
+  });
 
   describe('@co-it/schematics:prettier', () => {});
 
-  describe('@co-it/schematics:tsconfig', () => {});
+  describe('@co-it/schematics:tsconfig', () => {
+    describe('When "ng generate @co-it/schematics:tsconfig --defaults" is run', () => {
+      it('should update tsconfig.json', async () => {
+        const result = await testBed.run(
+          'ng generate @co-it/schematics:tsconfig --defaults'
+        );
+
+        expect(result.stdout).toMatch(matchLines('UPDATE tsconfig.json'));
+      });
+    });
+  });
 });
 
 function matchLines(...lines: string[]): RegExp {
