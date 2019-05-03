@@ -1,8 +1,6 @@
-import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
 import * as nixtFacade from '../nixt-facade';
 import { IntegrationTestBed } from './integration-test-bed';
+import { createTempFolder } from './create-temp-folder';
 
 class IntegrationTestBedImpl {
   constructor(public readonly folder: string) {}
@@ -28,8 +26,8 @@ export async function initializeIntegrationTestBed(): Promise<
   const minute = 60000;
   jest.setTimeout(5 * minute);
 
-  const folder = fs.mkdtempSync(
-    path.join(os.tmpdir(), 'schematics-integration-test-workspace-')
+  const folder = await createTempFolder(
+    'schematics-integration-test-workspace-'
   );
 
   await nixtFacade.execute('cd dist; yarn unlink; yarn link;');
