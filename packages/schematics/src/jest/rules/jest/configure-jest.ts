@@ -38,7 +38,6 @@ export function configureJest(config: JestConfigOptions): Rule {
         devDependencies: [
           { name: 'jest', version: '^24.5.0' },
           { name: '@angular-builders/jest', version: '^7.4.1' },
-          { name: 'jest-preset-angular', version: '^7.0.1' },
           { name: '@types/jest', version: '^24.0.11' }
         ]
       }),
@@ -58,11 +57,14 @@ export function configureJest(config: JestConfigOptions): Rule {
         return tree;
       }),
       mergeWith(
-        apply(url(`./templates/jest/${config.app ? 'project' : 'default'}`), [
+        apply(url(`./templates/jest`), [
           forEach(template => {
-            tree.exists(`${root}${template.path}`)
-              ? tree.overwrite(`${root}${template.path}`, template.content)
-              : tree.create(`${root}${template.path}`, template.content);
+            const templatePath = config.app
+              ? `${template.path}`
+              : `src/${template.path}`;
+            tree.exists(`${root}${templatePath}`)
+              ? tree.overwrite(`${root}${templatePath}`, template.content)
+              : tree.create(`${root}${templatePath}`, template.content);
             return null;
           })
         ]),
