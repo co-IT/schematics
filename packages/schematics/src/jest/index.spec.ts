@@ -95,7 +95,7 @@ describe('@co-it/schematics:jest', () => {
 
     it('should add a jest configuration file', () => {
       const tree = runner.runSchematic('jest', {}, actualTree);
-      expect(tree.exists('jest.config.js'));
+      expect(tree.exists('src/jest.config.js'));
     });
 
     it('should add a jest setup file', () => {
@@ -330,10 +330,10 @@ describe('@co-it/schematics:jest', () => {
 
       expect(tsConfig.compilerOptions.module).toBe('commonjs');
     });
-    it('should not add a jest configuration for the additional app', () => {
+    it('should add a jest configuration for the additional app in the root', () => {
       const tree = runner.runSchematic('jest', config, actualTree);
 
-      expect(tree.exists('projects/my-second-app/jest.config.js')).toBe(false);
+      expect(tree.exists('projects/my-second-app/jest.config.js')).toBe(true);
     });
   });
 });

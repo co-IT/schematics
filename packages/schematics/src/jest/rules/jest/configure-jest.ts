@@ -58,11 +58,11 @@ export function configureJest(config: JestConfigOptions): Rule {
         return tree;
       }),
       mergeWith(
-        apply(url('./templates/jest'), [
+        apply(url(`./templates/jest/${config.app ? 'project' : 'default'}`), [
           forEach(template => {
-            tree.exists(template.path) && !config.app
-              ? tree.overwrite(template.path, template.content)
-              : tree.create(template.path, template.content);
+            tree.exists(`${root}${template.path}`)
+              ? tree.overwrite(`${root}${template.path}`, template.content)
+              : tree.create(`${root}${template.path}`, template.content);
             return null;
           })
         ]),
