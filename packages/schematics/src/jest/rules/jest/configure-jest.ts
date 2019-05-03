@@ -9,9 +9,12 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { installDependencies, removeDependencies } from '../../../lib';
+import { JestConfigOptions } from '../../models/jest-config-options';
+import { readAngularJson } from '../../../cypress/rules/utils';
 
 const possibleDeprecatedConfigs = [
   'src/karma.conf.js',
+  'karma.conf.js',
   'src/test.ts',
   'src/test-config.helper.ts'
 ];
@@ -25,9 +28,12 @@ const possibleDeprecatedConfigs = [
  *
  * Once the issue is resolved `forEach` should be removed.
  */
-export function configureJest(): Rule {
-  return (tree: Tree) =>
-    chain([
+export function configureJest(config: JestConfigOptions): Rule {
+  return (tree: Tree) => {
+    const ngConfig = readAngularJson(tree);
+    const root =
+      config && config.app ? `${ngConfig.getRootPathFor(config.app)}/` : '';
+    return chain([
       installDependencies({
         devDependencies: [
           { name: 'jest', version: '^24.5.0' },
@@ -47,14 +53,14 @@ export function configureJest(): Rule {
       }),
       mergeWith(() => {
         possibleDeprecatedConfigs.forEach(path =>
-          tree.exists(path) ? tree.delete(path) : ''
+          tree.exists(`${root}${path}`) ? tree.delete(`${root}${path}`) : ''
         );
         return tree;
       }),
       mergeWith(
         apply(url('./templates/jest'), [
           forEach(template => {
-            tree.exists(template.path)
+            tree.exists(template.path) && !config.app
               ? tree.overwrite(template.path, template.content)
               : tree.create(template.path, template.content);
             return null;
@@ -63,4 +69,5 @@ export function configureJest(): Rule {
         MergeStrategy.Overwrite
       )
     ]);
+  };
 }
