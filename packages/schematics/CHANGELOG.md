@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1-alpha.9](https://github.com/co-it/schematics/compare/v1.0.1-alpha.8...v1.0.1-alpha.9) (2019-05-03)
+
+
+### Bug Fixes
+
+* **tslint:** stop overwriting whole tslint config ([6626216](https://github.com/co-it/schematics/commit/6626216))
+* check if tslint config exists ([4b4573b](https://github.com/co-it/schematics/commit/4b4573b))
+
+
+
+
+
 ## [1.0.1-alpha.8](https://github.com/co-it/schematics/compare/v1.0.1-alpha.7...v1.0.1-alpha.8) (2019-04-01)
 
 
