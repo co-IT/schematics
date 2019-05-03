@@ -30,6 +30,7 @@ export function patchTsConfig(config: JestConfigOptions): Rule {
     );
     tsconfig.compilerOptions.module = 'commonjs';
     tsconfig.files.splice(tsconfig.files.indexOf('test.ts'), 1);
+    tsconfig.files.splice(tsconfig.files.indexOf('src/test.ts'), 1);
 
     tree.overwrite(file, JSON.stringify(tsconfig, null, 2));
   };
