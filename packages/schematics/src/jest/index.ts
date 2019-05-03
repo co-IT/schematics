@@ -6,10 +6,10 @@ import { configureHusky } from './rules/husky';
 
 export default function(config: JestConfigOptions): Rule {
   return chain([
-    configureJest(),
+    configureJest(config),
     registerJest(),
     registerBuilder(config),
-    patchTsConfig(),
-    config.hook ? configureHusky() : chain([])
+    patchTsConfig(config),
+    config.hook && !config.app ? configureHusky() : chain([])
   ]);
 }

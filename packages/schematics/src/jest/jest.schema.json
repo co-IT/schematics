@@ -5,7 +5,7 @@
       "type": "boolean",
       "description": "Enable push hook to run all test before push",
       "default": true,
-      "x-prompt": "Setup pre-push hook?"
+      "x-prompt": "Setup pre-push hook? (additional apps take the hook from the default project)"
     },
     "app": {
       "type": "string",
