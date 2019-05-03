@@ -80,7 +80,7 @@ describe('@co-it/schematics:jest', () => {
   });
 
   describe('when jest is not installed', () => {
-    it.each([['jest'], ['jest-preset-angular']])(
+    it.each([['jest'], ['@angular-builders/jest']])(
       'should add %p to devDependencies',
       (packageId: string) => {
         const tree = runner.runSchematic('jest', {}, actualTree);
