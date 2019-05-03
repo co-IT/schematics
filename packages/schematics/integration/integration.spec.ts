@@ -172,9 +172,7 @@ describe('@co-it/schematics integration tests', () => {
           matchLines(
             'DELETE src/karma.conf.js',
             'DELETE src/test.ts',
-            'CREATE jest.config.js',
-            'CREATE src/setup-jest.ts',
-            'CREATE src/test-config.helper.ts',
+            'CREATE src/jest.config.js',
             'CREATE .huskyrc',
             'UPDATE package.json',
             'UPDATE src/tsconfig.spec.json',
@@ -183,8 +181,7 @@ describe('@co-it/schematics integration tests', () => {
           )
         );
       });
-
-      it('should run jest tests', async () => {
+      it('should run jest tests for default app', async () => {
         await testBed.execute('ng generate @co-it/schematics:jest --hook=true');
 
         const result = await testBed.run('yarn test');
@@ -196,6 +193,54 @@ describe('@co-it/schematics integration tests', () => {
             'AppComponent',
             ' should create the app',
             " should have as title 'integration-test'",
+            ' should render title in a h1 tag',
+            'Test Suites: 1 passed, 1 total',
+            'Tests:       3 passed, 3 total',
+            'Snapshots:   0 total',
+            'Time: .*',
+            'Ran all test suites.'
+          )
+        );
+      });
+    });
+
+    describe('When "ng generate @co-it/schematics:jest --hook=false --app=second-app" is run', () => {
+      it('should update files', async () => {
+        await testBed.execute('ng generate app second-app');
+        await linkSchematics(testBed);
+
+        const result = await testBed.run(
+          'ng generate @co-it/schematics:jest --hook=false --app=second-app'
+        );
+
+        expect(result.stdout).toMatch(
+          matchLines(
+            'DELETE projects/second-app/karma.conf.js',
+            'DELETE projects/second-app/src/test.ts',
+            'CREATE projects/second-app/jest.config.js',
+            'UPDATE package.json',
+            'UPDATE angular.json',
+            'UPDATE projects/second-app/tsconfig.spec.json'
+          )
+        );
+      });
+
+      it('should run jest tests', async () => {
+        await testBed.execute('ng generate app second-app');
+        await linkSchematics(testBed);
+        await testBed.execute(
+          'ng generate @co-it/schematics:jest --hook=false --app=second-app'
+        );
+
+        const result = await testBed.run('yarn test --project=second-app');
+
+        // Jest uses stderr, see issue https://github.com/facebook/jest/issues/5064
+        expect(result.stderr).toMatch(
+          matchLines(
+            'PASS projects/second-app/src/app/app.component.spec.ts',
+            'AppComponent',
+            ' should create the app',
+            " should have as title 'second-app'",
             ' should render title in a h1 tag',
             'Test Suites: 1 passed, 1 total',
             'Tests:       3 passed, 3 total',
