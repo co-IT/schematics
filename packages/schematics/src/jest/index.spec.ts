@@ -141,6 +141,23 @@ describe('@co-it/schematics:jest', () => {
 
       expect(tsConfig.compilerOptions.module).toBe('commonjs');
     });
+
+    it('should override the builder for the test-architect in angular.json for the default project', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const angularJson = JSON.parse(tree.readContent('angular.json'));
+
+      expect(angularJson.projects['my-app'].architect.test.builder).toBe(
+        '@angular-builders/jest:run'
+      );
+    });
+    it('should remove the karma related configs from test-architect in angular.json for the default project', () => {
+      const tree = runner.runSchematic('jest', {}, actualTree);
+      const angularJson = JSON.parse(tree.readContent('angular.json'));
+
+      expect(
+        angularJson.projects['my-app'].architect.test.options.karmaConfig
+      ).toBeUndefined();
+    });
   });
 
   describe('when package.json does not contain jest scripts', () => {
@@ -232,6 +249,11 @@ describe('@co-it/schematics:jest', () => {
           );
         }
       );
+    });
+
+    describe('When an app name is specified', () => {
+      beforeEach(() => {});
+      it('should set the jest builder for the app in angular.json', () => {});
     });
   });
 });
