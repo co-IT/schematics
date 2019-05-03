@@ -6,6 +6,11 @@
       "description": "Enable push hook to run all test before push",
       "default": true,
       "x-prompt": "Setup pre-push hook?"
+    },
+    "app": {
+      "type": "string",
+      "description": "Name of the application under test as defined in angular.json. If not set, defaultProject will be used.",
+      "x-prompt": "Which app would you like to prepare Jest for? (leave empty to use default project)"
     }
   }
 }

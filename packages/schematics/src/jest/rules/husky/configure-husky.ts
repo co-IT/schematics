@@ -1,4 +1,3 @@
-import { JestConfigOptions } from 'src/jest/models/jest-config-options';
 import { chain, Rule } from '@angular-devkit/schematics';
 
 import { applyHuskyConfiguration } from '../../../lib/rules/husky';

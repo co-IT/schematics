@@ -8,7 +8,7 @@ export default function(config: JestConfigOptions): Rule {
   return chain([
     configureJest(),
     registerJest(),
-    registerBuilder(),
+    registerBuilder(config),
     patchTsConfig(),
     config.hook ? configureHusky() : chain([])
   ]);
