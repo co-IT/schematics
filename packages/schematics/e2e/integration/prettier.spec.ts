@@ -1,9 +1,9 @@
 import {
   IntegrationTestBed,
   initializeIntegrationTestBed
-} from './integration-test-bed';
+} from '../integration-test-bed';
 
-import { linkSchematics, matchLines } from './utils';
+import { linkSchematics, matchLines } from '../utils';
 
 describe('Prettier', () => {
   let testBed: IntegrationTestBed;
