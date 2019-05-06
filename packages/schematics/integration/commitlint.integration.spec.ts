@@ -58,9 +58,7 @@ describe('Commitlint', () => {
         matchLines(
           'CREATE commitlint.config.js.*',
           'CREATE .huskyrc.*',
-          'UPDATE package.json.*',
-          '> husky@.* install',
-          'added .* packages.*'
+          'UPDATE package.json.*'
         )
       );
     });
