@@ -23,6 +23,10 @@ describe('@co-it/schematics integration tests', () => {
       'mkdir global_node_modules; yarn --cwd global_node_modules add @angular/cli'
     );
 
+    await testBed.execute(
+      './global_node_modules/node_modules/.bin/ng config -g cli.packageManager yarn'
+    );
+
     const result = await testBed.run(
       './global_node_modules/node_modules/.bin/ng new integration-test --directory . --defaults'
     );
@@ -65,9 +69,7 @@ describe('@co-it/schematics integration tests', () => {
           matchLines(
             'CREATE commitlint.config.js.*',
             'CREATE .huskyrc.*',
-            'UPDATE package.json.*',
-            '> husky@.* install',
-            'added .* packages.*'
+            'UPDATE package.json.*'
           )
         );
       });
@@ -95,9 +97,7 @@ describe('@co-it/schematics integration tests', () => {
             'CREATE e2e/src/support/index.ts .*',
             'UPDATE package.json .*',
             'UPDATE angular.json .*',
-            'UPDATE e2e/tsconfig.e2e.json .*',
-            '> cypress.* postinstall .*',
-            'added .* packages .*'
+            'UPDATE e2e/tsconfig.e2e.json .*'
           )
         );
       });
@@ -138,9 +138,7 @@ describe('@co-it/schematics integration tests', () => {
             'CREATE projects/second-app-e2e/src/support/index.ts .*',
             'UPDATE package.json .*',
             'UPDATE angular.json .*',
-            'UPDATE projects/second-app-e2e/tsconfig.e2e.json .*',
-            '> cypress@.* postinstall .*',
-            'added .* packages .*'
+            'UPDATE projects/second-app-e2e/tsconfig.e2e.json .*'
           )
         );
       });
@@ -175,9 +173,7 @@ describe('@co-it/schematics integration tests', () => {
             'CREATE src/jest.config.js',
             'CREATE .huskyrc',
             'UPDATE package.json',
-            'UPDATE src/tsconfig.spec.json',
-            '> husky@.* install',
-            'added .* packages'
+            'UPDATE src/tsconfig.spec.json'
           )
         );
       });
