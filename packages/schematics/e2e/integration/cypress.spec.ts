@@ -1,8 +1,8 @@
 import {
   IntegrationTestBed,
   initializeIntegrationTestBed
-} from './integration-test-bed';
-import { matchLines, linkSchematics } from './utils';
+} from '../integration-test-bed';
+import { matchLines, linkSchematics } from '../utils';
 
 describe('Cypress', () => {
   let testBed: IntegrationTestBed;

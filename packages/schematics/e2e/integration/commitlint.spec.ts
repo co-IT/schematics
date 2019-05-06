@@ -1,11 +1,11 @@
 import {
   IntegrationTestBed,
   initializeIntegrationTestBed
-} from './integration-test-bed';
+} from '../integration-test-bed';
 
-import { linkSchematics, matchLines } from './utils';
+import { linkSchematics, matchLines } from '../utils';
 
-describe('TsConfig', () => {
+describe('Commitlint', () => {
   let testBed: IntegrationTestBed;
 
   beforeAll(async done => {
@@ -52,13 +52,19 @@ describe('TsConfig', () => {
     done();
   });
 
-  describe('When "ng generate @co-it/schematics:tsconfig --defaults" is run', () => {
-    it('should update tsconfig.json', async () => {
+  describe('When "ng g @co-it/schematics:commitlint" is run', () => {
+    it('should update files', async () => {
       const result = await testBed.run(
-        'ng generate @co-it/schematics:tsconfig --defaults'
+        'ng generate @co-it/schematics:commitlint'
       );
 
-      expect(result.stdout).toMatch(matchLines('UPDATE tsconfig.json'));
+      expect(result.stdout).toMatch(
+        matchLines(
+          'CREATE commitlint.config.js.*',
+          'CREATE .huskyrc.*',
+          'UPDATE package.json.*'
+        )
+      );
     });
   });
 });
