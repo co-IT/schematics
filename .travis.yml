@@ -19,4 +19,4 @@ script:
   - yarn lint
   - yarn test
   - yarn build
-  - yarn test:integration
+  - yarn test:e2e
