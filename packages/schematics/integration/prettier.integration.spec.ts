@@ -17,6 +17,10 @@ describe('Prettier', () => {
       'mkdir global_node_modules; yarn --cwd global_node_modules add @angular/cli'
     );
 
+    await testBed.execute(
+      './global_node_modules/node_modules/.bin/ng config -g cli.packageManager yarn'
+    );
+
     const result = await testBed.run(
       './global_node_modules/node_modules/.bin/ng new integration-test --directory . --defaults'
     );
