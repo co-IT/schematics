@@ -1,5 +1,4 @@
 module.exports = {
-  roots: ['<rootDir>/integration'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest'
   },
@@ -8,7 +7,7 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/'],
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.integration.json'
+      tsConfig: '<rootDir>/tsconfig.json'
     }
   }
 };
