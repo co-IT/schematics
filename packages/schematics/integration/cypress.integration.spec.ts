@@ -48,7 +48,7 @@ describe('Cypress', () => {
   });
 
   describe('When "ng generate @co-it/schematics:cypress --overwrite=true" is run', () => {
-    it('should update files', async () => {
+    it('should update files 1', async () => {
       const result = await testBed.run(
         'ng generate @co-it/schematics:cypress --overwrite=true --no-interactive'
       );
@@ -67,9 +67,7 @@ describe('Cypress', () => {
           'CREATE e2e/src/support/index.ts .*',
           'UPDATE package.json .*',
           'UPDATE angular.json .*',
-          'UPDATE e2e/tsconfig.e2e.json .*',
-          '> cypress.* postinstall .*',
-          'added .* packages .*'
+          'UPDATE e2e/tsconfig.e2e.json .*'
         )
       );
     });
@@ -110,9 +108,7 @@ describe('Cypress', () => {
           'CREATE projects/second-app-e2e/src/support/index.ts .*',
           'UPDATE package.json .*',
           'UPDATE angular.json .*',
-          'UPDATE projects/second-app-e2e/tsconfig.e2e.json .*',
-          '> cypress@.* postinstall .*',
-          'added .* packages .*'
+          'UPDATE projects/second-app-e2e/tsconfig.e2e.json .*'
         )
       );
     });

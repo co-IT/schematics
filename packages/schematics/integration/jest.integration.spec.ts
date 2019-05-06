@@ -61,9 +61,7 @@ describe('Jest', () => {
           'CREATE src/jest.config.js',
           'CREATE .huskyrc',
           'UPDATE package.json',
-          'UPDATE src/tsconfig.spec.json',
-          '> husky@.* install',
-          'added .* packages'
+          'UPDATE src/tsconfig.spec.json'
         )
       );
     });
