@@ -117,23 +117,26 @@ Set up [jest] and optionally configure a pre-push hook using [husky].
 
 ##### Parameters
 
-| Name   | Description                                   | Default |
-| ------ | --------------------------------------------- | ------- |
-| `hook` | Enable push hook to run all test before push. | true    |
+| Name   | Description                                                    | Default                                    |
+| ------ | -------------------------------------------------------------- | ------------------------------------------ |
+| `hook` | Enable push hook to run all test before push.                  | true; false if `app` parameter is provided |
+| `app`  | Name of the application under test as defined in angular.json. | Default project according to angular.json. |
 
 ##### Example scenarios
 
 - Replace existing Karma/Jasmine configuration for default project by Jest and install pre-push hook: `ng g @co-it/schematics:jest --no-interactive`
+- Replace existing Karma/Jasmine configuration by Jest for `myapp`: `ng g @co-it/schematics:jest --app myapp --no-interactive`
 
-##### Resulting changes in workspace
+##### Resulting changes in workspace (for default project)
 
-- Installs npm packages `jest`, `jest-preset-angular`, `@types/jest` and `husky` as dev dependencies
+- Installs npm packages `jest`, `@angular-builders/jest`, `@angular-devkit/build-angular`, `@types/jest` and `husky` as dev dependencies
+- Removes `karma`, `karma-chrome-launcher`, `karma-coverage-istanbul-reporter`, `karma-jasmine`, `karma-jasmine-html-reporter` from dev dependencies
 - Replaces existing karma configuration with jest configuration
 - Configures husky pre-push hook in `.huskyrc`
-- adds jest types to ts.config.spec.json
-- Adds npm scripts:
-  - `"test": "jest"`
-  - `"test:watch": "jest --watch"`
+- adds jest types to tsconfig.spec.json
+- Adds npm script:
+  - `"test:watch": "ng test --watch"`
+- replaces the test configuration in angular.json using [@angular-builders/jest:run] 
 
 #### ➡️ @co-it/schematics:prettier
 
