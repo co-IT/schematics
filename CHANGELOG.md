@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-beta.0](https://github.com/co-IT/schematics/compare/v1.0.1-alpha.9...v1.1.0-beta.0) (2019-05-07)
+
+
+### Bug Fixes
+
+* **integration-tests:** configure ng to use yarn as package manager ([7837a59](https://github.com/co-IT/schematics/commit/7837a59))
+* **jest:** place jest config in the right folder, depending on the app type ([818cd43](https://github.com/co-IT/schematics/commit/818cd43))
+
+
+### Features
+
+* **jest:** add integeration tests ([e536053](https://github.com/co-IT/schematics/commit/e536053))
+* **jest:** configure jest-builder for additional app if app parameter is used ([5c32e22](https://github.com/co-IT/schematics/commit/5c32e22))
+* **jest:** remove deprecated config files ([a22a4f0](https://github.com/co-IT/schematics/commit/a22a4f0))
+* **jest:** replace standalone jest setup with the jest angular builder ([e27b506](https://github.com/co-IT/schematics/commit/e27b506))
+* **jest:** simplify jest configuration ([a3c5a1c](https://github.com/co-IT/schematics/commit/a3c5a1c))
+* **jest:** test if test-architect-builder for default app is set to jest runner ([6cafd12](https://github.com/co-IT/schematics/commit/6cafd12))
+
+
+
+
+
 ## [1.0.1-alpha.9](https://github.com/co-IT/schematics/compare/v1.0.1-alpha.8...v1.0.1-alpha.9) (2019-05-03)
 
 
