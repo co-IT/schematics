@@ -109,7 +109,7 @@ Run cypress in headless mode (e.g. on a CI server):
 ng e2e --headless
 ```
 
-See [the Nrwl documentation](https://github.com/nrwl/nx/blob/master/docs/api-builders/cypress.md) for details about all available options.
+See [the Nrwl documentation](https://github.com/nrwl/nx/blob/master/docs/api-cypress/builders/cypress.md) for details about all available options.
 
 #### ➡️ @co-it/schematics:jest
 
