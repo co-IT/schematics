@@ -1,17 +1,17 @@
-import { Tree, Rule } from '@angular-devkit/schematics';
-import { TsconfigPatchOptions } from '../../models/tsconfig-patch-options';
-import { JestConfigOptions } from '../../models/jest-config-options';
+import { Rule, Tree } from '@angular-devkit/schematics';
 import { readAngularJson } from '../../../cypress/rules/utils';
+import { JestConfigOptions } from '../../models/jest-config-options';
+import { TsconfigPatchOptions } from '../../models/tsconfig-patch-options';
 
 export function patchTsConfig(config: JestConfigOptions): Rule {
   return (tree: Tree) => {
     const ngConfig = readAngularJson(tree);
     const root =
       config && config.app ? `${ngConfig.getRootPathFor(config.app)}/` : '';
-    const file =
-      config && config.app
-        ? `${root}/tsconfig.spec.json`
-        : 'src/tsconfig.spec.json';
+
+    // TODO: Read path to project tsconfig.sepc from angular.json
+    const file = 'tsconfig.spec.json';
+
     const buffer = tree.read(file);
     if (!buffer) {
       throw new Error(`No ${file} found`);

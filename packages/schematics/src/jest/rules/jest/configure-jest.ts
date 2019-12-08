@@ -8,9 +8,9 @@ import {
   Tree,
   url
 } from '@angular-devkit/schematics';
+import { readAngularJson } from '../../../cypress/rules/utils';
 import { installDependencies, removeDependencies } from '../../../lib';
 import { JestConfigOptions } from '../../models/jest-config-options';
-import { readAngularJson } from '../../../cypress/rules/utils';
 
 const possibleDeprecatedConfigs = [
   'src/karma.conf.js',
@@ -36,9 +36,9 @@ export function configureJest(config: JestConfigOptions): Rule {
     return chain([
       installDependencies({
         devDependencies: [
-          { name: 'jest', version: '^24.5.0' },
-          { name: '@angular-builders/jest', version: '^7.4.1' },
-          { name: '@types/jest', version: '^24.0.11' }
+          { name: 'jest', version: '24.9.0' },
+          { name: '@angular-builders/jest', version: '8.3.2' },
+          { name: '@types/jest', version: '24.0.23' }
         ]
       }),
       removeDependencies({
